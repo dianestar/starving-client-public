@@ -18,7 +18,7 @@ const Slick = () => {
             autoplaySpeed={5000}
           >
             {slickData.map((v, i) => (
-              <div className="w-full h-[500px] p-4 bg-cyan-400">
+              <div key={i} className="w-full h-[500px] p-4 bg-cyan-400">
                 <h3 className="text-white text-center font-bold text-4xl">{v} {i+1}</h3>
               </div>
             ))}

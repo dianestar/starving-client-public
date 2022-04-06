@@ -28,9 +28,9 @@ const Layout = ({ children }) => {
                     </article>
                 </section>
                 <section className="w-full h-[55px] bg-slate-100">
-                    <article className="w-2/3 h-full flex items-center justify-around mx-auto">
+                    <article className="w-2/3 h-full flex items-center mx-auto">
                         <span className="text-2xl font-bold">해먹남녀</span>
-                        <section className="flex space-x-6">
+                        <section className="flex space-x-6 mx-auto">
                             <a className="flex space-x-6 text-slate-400">
                                 <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="gray">
                                     <path fillRule="evenodd" d="M3 5a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 10a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 15a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z" clipRule="evenodd" />
@@ -45,7 +45,7 @@ const Layout = ({ children }) => {
             </header>
             {children}
             <footer className="w-full h-[150px] bg-slate-100 flex items-center justify-center">
-                I AM FOOTER :)
+                <span className="text-xl text-neutral-400 italic">Starving Project</span>
             </footer>
         </div>
     );

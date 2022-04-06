@@ -1,7 +1,7 @@
 import React from "react";
 import FormButton from "./FormButton";
 
-const LoginWrapper = ({ title, text1, link1, text2, link2, children }) => {
+const FormWrapper = ({ title, text1, link1, text2, link2, children }) => {
     return (
         <div className="
             w-full h-screen flex flex-col items-center
@@ -25,4 +25,4 @@ const LoginWrapper = ({ title, text1, link1, text2, link2, children }) => {
     );
 }
 
-export default LoginWrapper;
+export default FormWrapper;
