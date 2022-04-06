@@ -1,0 +1,11 @@
+import React from "react";
+
+const FormButton = ({ desc }) => {
+    return (
+        <button className="w-3/4 h-12 rounded bg-cyan-400 text-white">
+            {desc}
+        </button>
+    );
+}
+
+export default FormButton;
