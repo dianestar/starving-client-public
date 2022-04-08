@@ -1,4 +1,5 @@
 import React from "react";
+import router from "next/router";
 
 const FormWrapper = ({ title, text1, link1, text2, link2, children }) => {
   return (
@@ -9,9 +10,25 @@ const FormWrapper = ({ title, text1, link1, text2, link2, children }) => {
       <article className="min-h-[260px] bg-neutral-200 flex flex-col items-center space-y-4 py-8">
         {children}
         <section className="text-neutral-600">
-          <a>{text1}</a>
-          <span> / </span>
-          <a>{text2}</a>
+          <p className="cursor-pointer">
+            <span
+              onClick={() => {
+                router.push(`${link1}`);
+              }}
+            >
+              {text1}
+            </span>
+
+            <span> / </span>
+
+            <span
+              onClick={() => {
+                router.push(`${link2}`);
+              }}
+            >
+              {text2}
+            </span>
+          </p>
         </section>
       </article>
     </section>
