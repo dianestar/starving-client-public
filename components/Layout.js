@@ -22,7 +22,7 @@ const Layout = ({ children }) => {
                             <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8 hover:stroke-slate-400 hover:cursor-pointer" fill="none" viewBox="0 0 24 24" stroke="white" strokeWidth={2}>
                                 <path strokeLinecap="round" strokeLinejoin="round" d="M12 4v16m8-8H4" />
                             </svg>
-                            <Link href="/login">
+                            <Link href="/login" passHref>
                                 <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8 hover:fill-slate-400 hover:cursor-pointer" viewBox="0 0 20 20" fill="white">
                                     <path fillRule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clipRule="evenodd" />
                                 </svg>
@@ -41,7 +41,7 @@ const Layout = ({ children }) => {
                                     <span>카테고리</span>
                                     <span>|</span>
                             </a>
-                            {category.map((v) => (<span className="text-slate-400">{v}</span>))}
+                            {category.map((v, i) => (<span key={i} className="text-slate-400">{v}</span>))}
                         </section>
                     </article>
                 </section>
