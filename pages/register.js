@@ -21,13 +21,10 @@ function Register() {
 
   const onSubmit = async () => {
     const res = await axios.post("http://3.38.33.154:9999/api/auth/register", {
-      email: "starving@gmail.com",
-      password: "abcabc123123",
-      nickname: "mynickname",
-      avatarImage: null,
-      social: null,
+      email: watch("email"),
+      password: watch("password"),
+      nickname: watch("nickname"),
     });
-
     if (res.status === 200 || res.status === 201) {
       alert("회원가입이 완료되었습니다.");
       router.push("/login");
@@ -60,25 +57,26 @@ function Register() {
                 placeholder="이메일주소"
                 {...register("email", {
                   required: true,
-                  pattern: /^\S+@\S+$/i,
+                  pattern:
+                    /^[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*\.[a-zA-Z]{2,3}$/i,
                 })}
               />
               {errors.email && (
                 <p className="text-cyan-600">이메일 형식을 지켜주세요</p>
               )}
 
-              <label htmlFor="name"></label>
+              <label htmlFor="nickname"></label>
               <input
-                name="name"
+                name="nickname"
                 type="name"
                 className="w-3/4 px-4 py-3 mt-3"
                 placeholder="이름"
-                {...register("name", { required: true, maxLength: 10 })}
+                {...register("nickname", { required: true, maxLength: 10 })}
               />
-              {errors.name && errors.name.type === "required" && (
+              {errors.nickname && errors.nickname.type === "required" && (
                 <p className="text-cyan-600">이름을 입력해주세요</p>
               )}
-              {errors.name && errors.name.type === "maxLength" && (
+              {errors.nickname && errors.nickname.type === "maxLength" && (
                 <p className="text-cyan-600">
                   이름은 10자리를 넘길 수 없습니다.
                 </p>
