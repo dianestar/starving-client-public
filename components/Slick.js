@@ -15,7 +15,7 @@ const Slick = () => {
             slidesToShow={1}
             slidesToScroll={1}
             autoplay
-            autoplaySpeed={5000}
+            autoplaySpeed={3000}
           >
             {slickData.map((v, i) => (
               <div key={i} className="w-full h-[500px] p-4 bg-cyan-400">
