@@ -1,4 +1,5 @@
 import React from "React";
+import Link from "next/link";
 
 const category = ["편의점요리", "밑반찬", "면역력", "저칼로리", "키토제닉", "술안주", "고단백", "떡볶이", "초간단" ];
 
@@ -15,15 +16,17 @@ const Layout = ({ children }) => {
                             </svg>
                         </section>
                         <section className="flex items-center space-x-4">
-                            <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8" viewBox="0 0 20 20" fill="white">
+                            <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8 hover:fill-slate-400 hover:cursor-pointer" viewBox="0 0 20 20" fill="white">
                             <path fillRule="evenodd" d="M3 3a1 1 0 011-1h12a1 1 0 011 1v3a1 1 0 01-.293.707L12 11.414V15a1 1 0 01-.293.707l-2 2A1 1 0 018 17v-5.586L3.293 6.707A1 1 0 013 6V3z" clipRule="evenodd" />
                             </svg>
-                            <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="white" strokeWidth={2}>
+                            <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8 hover:stroke-slate-400 hover:cursor-pointer" fill="none" viewBox="0 0 24 24" stroke="white" strokeWidth={2}>
                                 <path strokeLinecap="round" strokeLinejoin="round" d="M12 4v16m8-8H4" />
                             </svg>
-                            <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8" viewBox="0 0 20 20" fill="white">
-                                <path fillRule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clipRule="evenodd" />
-                            </svg>
+                            <Link href="/login">
+                                <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8 hover:fill-slate-400 hover:cursor-pointer" viewBox="0 0 20 20" fill="white">
+                                    <path fillRule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clipRule="evenodd" />
+                                </svg>
+                            </Link>
                         </section>
                     </article>
                 </section>

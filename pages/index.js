@@ -2,9 +2,7 @@ import React from "react";
 import Head from "next/head";
 import Layout from "../components/Layout";
 import Slick from "../components/Slick";
-import FormButton from "../components/FormButton"
 import RecipePreview from "../components/RecipePreview";
-import RecommendForm from "../components/RecommendForm";
 import { FaCarrot } from "react-icons/fa";
 import { GiCookingGlove } from "react-icons/gi";
 import { IoRestaurantOutline } from "react-icons/io5";

@@ -1,5 +1,4 @@
 import React from "react";
-import FormButton from "./FormButton";
 
 const FormWrapper = ({ title, text1, link1, text2, link2, children }) => {
     return (
@@ -13,7 +12,6 @@ const FormWrapper = ({ title, text1, link1, text2, link2, children }) => {
                 </article>
                 <article className="bg-neutral-200 flex flex-col items-center space-y-4 py-4">
                     {children}
-                    <FormButton desc="로그인"/>
                     <section className="text-neutral-600">
                         <a>{text1}</a>
                         <span> / </span>
