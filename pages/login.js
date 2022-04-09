@@ -1,5 +1,6 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import KakaoLogin from "react-kakao-login";
+import NaverLogin from "react-naver-login";
 import axios from "axios";
 import { useRouter } from "next/router";
 import Head from "next/head";
@@ -151,13 +152,28 @@ function Login() {
               <FormButton desc="로그인" />
             </form>
           </FormWrapper>
-          <div className="flex flex-col">
+
+          <div className="flex flex-col z-10 cursor-pointer">
             <KakaoLogin
-              className="mt-8 z-10"
+              className="mt-8"
               token={KAKAO_TOKEN}
               onSuccess={handleKakaoSuccess}
               onFail={(error) => console.error("로그인 실패", error)}
               onLogout={() => console.log("로그아웃")}
+            />
+            <NaverLogin
+              clientId="xHsYc3c4HlvbuZ1gQZ9Z"
+              callbackUrl="http://localhost:3000/"
+              render={(props) => (
+                <div
+                  className="mt-4 px-3 py-3 rounded text-center text-white bg-green-500"
+                  onClick={props.onClick}
+                >
+                  네이버로 로그인하기
+                </div>
+              )}
+              onSuccess={(res) => console.log(res)}
+              onFailure={(err) => console.error("로그인 실패", err)}
             />
           </div>
         </FormBg>
