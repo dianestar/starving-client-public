@@ -1,14 +1,12 @@
 import React, { useState } from "react";
-import KakaoLogin from "react-kakao-login";
-import axios from "axios";
 import { useRouter } from "next/router";
+import  { LOGIN, REGISTER } from "../_axios/user";
+import KakaoLogin from "react-kakao-login";
 import Head from "next/head";
 import Layout from "../components/Layout";
 import FormBg from "../components/FormBg";
 import FormWrapper from "../components/FormWrapper";
 import FormButton from "../components/FormButton";
-
-const KAKAO_TOKEN = "dc9bce1a914ba5fe828942d564915e2b"
 
 function Login() {
     const router = useRouter();
@@ -58,13 +56,26 @@ function Login() {
 
     // 기본 로그인
     const handleDefaultLogin = async () => {
-        try {
-            const response = await axios.post("http://3.38.33.154:9999/api/auth/login", {
-                "email": emailInput,
-                "password": passwordInput
-            })
-            console.log(response);
-            router.push("/");
+        const form = {
+            email: emailInput,
+            password: passwordInput,
+        }
+
+        try {    
+            const {
+                data: { access, error, token },
+            } = await LOGIN(form);
+
+             // 로그인 실패 시
+            if (!access) {
+                alert(error)
+            }
+
+            // 로그인 성공 시
+            else {
+                localStorage.setItem("access_token", token);
+                router.push("/");
+            }
         } catch (error) {
             console.log(error);
         }
@@ -72,8 +83,6 @@ function Login() {
 
     // 카카오 소셜 로그인
     const handleKakaoSuccess = async (res) => {
-        console.log(res);
-
         const {
             profile: { id, kakao_account },
         } = res;
@@ -92,8 +101,17 @@ function Login() {
         }
 
         try {
-            const response = await axios.post("http://3.38.33.154:9999/api/auth/register", form);
-            console.log(response);
+            const {
+                data: { success }
+            } = await REGISTER(form);
+
+            // 최초 회원가입 시
+            if (success === "Success register user account") {
+                alert("축하합니다! 회원가입이 완료되었습니다.");
+            }
+
+            // 로그인 성공 시
+            localStorage.setItem("access_token", token);
             router.push("/");
 
         } catch (error) {
@@ -120,7 +138,7 @@ function Login() {
                 <div className="flex flex-col">
                     <KakaoLogin
                         className="mt-8 z-10"
-                        token={KAKAO_TOKEN}
+                        token={process.env.NEXT_PUBLIC_KAKAO_TOKEN}
                         onSuccess={handleKakaoSuccess}
                         onFail={(error) => console.error("로그인 실패", error)}
                         onLogout={() => console.log("로그아웃")}
