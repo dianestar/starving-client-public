@@ -40,3 +40,10 @@ export const UPLOAD_AVATAR = (form) => {
     headers: {"Content-Type": "multipart/form-data"},
   });
 };
+
+export const GET_AUTH = () => {
+  return Api({
+    method: METHOD.GET,
+    url: "auth",
+  })
+}

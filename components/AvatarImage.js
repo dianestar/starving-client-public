@@ -1,16 +1,36 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import Image from "next/image";
-import { UPLOAD_AVATAR } from "../_axios/user";
+import { UPLOAD_AVATAR, GET_AUTH } from "../_axios/user";
 
-const DEFAULT_URL = "/defaultAvatarImage.png"
+const NO_USER_IMAGE_URL = "/defaultAvatarImage.png";
 
 const AvatarImage = () => {
     const imageInputRef = useRef();
     const [imageFile, setImageFile] = useState(null);
-    const [imageUrl, setImageUrl] = useState(DEFAULT_URL);
+    const [imageUrl, setImageUrl] = useState(NO_USER_IMAGE_URL);
+    const [defaultUrl, setDefaultUrl] = useState(NO_USER_IMAGE_URL);
     const [editMode, setEditMode] = useState(false);
 
-    const onChangeImage = (e) => {
+    const getUserImage = async () => {
+        try {
+            const {
+                data: { avatarImage }
+            } = await GET_AUTH();
+            
+            if (avatarImage) {
+                setDefaultUrl(avatarImage);
+                setImageUrl(avatarImage);
+            }
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
+    useEffect(() => {
+        getUserImage();
+    }, [])
+
+    const onChangeImage = async (e) => {
         setEditMode(true);
         setImageFile(e.target.files[0]);
         setImageUrl(URL.createObjectURL(e.target.files[0]));
@@ -19,7 +39,7 @@ const AvatarImage = () => {
     const onCancelImage = () => {
         setEditMode(false);
         setImageFile(null);
-        setImageUrl(DEFAULT_URL);
+        setImageUrl(defaultUrl);
         URL.revokeObjectURL(imageUrl);
         imageInputRef.current.value = "";
     }
@@ -42,7 +62,7 @@ const AvatarImage = () => {
         <div className="w-[150px] h-[150px] flex flex-col items-center justify-center border-solid border-2">
             <section>
                 <label className="cursor-pointer" htmlFor="image-input">
-                    <Image className="rounded-full" src={imageUrl} alt="avatar image preview" width={75} height={75}/>
+                    <Image className="rounded-full object-cover" src={imageUrl} alt="avatar image preview" width={100} height={100}/>
                 </label>
                 <input id="image-input" className="hidden" type="file" accept="image/*" ref={imageInputRef} onChange={onChangeImage}/>
             </section>
