@@ -102,15 +102,9 @@ function Login() {
 
         try {
             const {
-                data: { success }
+                data: { token }
             } = await REGISTER(form);
 
-            // 최초 회원가입 시
-            if (success === "Success register user account") {
-                alert("축하합니다! 회원가입이 완료되었습니다.");
-            }
-
-            // 로그인 성공 시
             localStorage.setItem("access_token", token);
             router.push("/");
 
