@@ -6,7 +6,7 @@ import FormButton from "../components/FormButton";
 import { useForm } from "react-hook-form";
 import FormBg from "../components/FormBg";
 import router from "next/router";
-import axios from "axios";
+import { POST } from "../_axios/interceptor";
 
 function Register() {
   const {
