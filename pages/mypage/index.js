@@ -49,7 +49,6 @@ const index = () => {
                 <NoContent text={`아직 등록하신 레시피가 없습니다`} />
                 {/* <RecipePreview /> */}
               </article>
-              <article></article>
             </section>
           </section>
         </section>
