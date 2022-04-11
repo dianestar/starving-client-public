@@ -1,4 +1,4 @@
-import { useState, useRef } from "react";
+import { useRef } from "react";
 import Head from "next/head";
 import Layout from "../components/Layout";
 import FormWrapper from "../components/FormWrapper";
@@ -6,7 +6,7 @@ import FormButton from "../components/FormButton";
 import { useForm } from "react-hook-form";
 import FormBg from "../components/FormBg";
 import router from "next/router";
-import axios from "axios";
+import { REGISTER } from "../_axios/user";
 
 function Register() {
   const {
@@ -14,25 +14,32 @@ function Register() {
     watch,
     formState: { errors },
     handleSubmit,
-  } = useForm();
+  } = useForm({ mode: "onChange" });
 
   const password = useRef({});
   password.current = watch("password", "");
 
   const onSubmit = async () => {
-    const res = await axios.post("http://3.38.33.154:9999/api/auth/register", {
+    const form = {
       email: watch("email"),
       password: watch("password"),
       nickname: watch("nickname"),
-    });
-    if (res.status === 200 || res.status === 201) {
-      alert("회원가입이 완료되었습니다.");
-      router.push("/login");
-    } else {
-      console.log(res);
+    };
+
+    try {
+      const {
+        data: { access, message },
+      } = await REGISTER(form);
+
+      if (!access) {
+        alert(message);
+      } else {
+        alert("회원가입이 완료되었습니다");
+        router.push("/");
+      }
+    } catch (err) {
+      console.log(err);
     }
-    console.log(res);
-    return res;
   };
 
   return (
@@ -49,7 +56,10 @@ function Register() {
             link1="/login"
             link2="/"
           >
-            <form className="text-center" onSubmit={handleSubmit(onSubmit)}>
+            <form
+              className="w-full flex flex-col items-center text-center"
+              onSubmit={handleSubmit(onSubmit)}
+            >
               <label htmlFor="email"></label>
               <input
                 name="email"
@@ -57,12 +67,15 @@ function Register() {
                 placeholder="이메일주소"
                 {...register("email", {
                   required: true,
-                  pattern:
-                    /^[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*\.[a-zA-Z]{2,3}$/i,
+                  pattern: {
+                    value:
+                      /^[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*\.[a-zA-Z]{2,3}$/i,
+                    message: "이메일을 입력해 주세요",
+                  },
                 })}
               />
-              {errors.email && (
-                <p className="text-cyan-600">이메일 형식을 지켜주세요</p>
+              {errors.email && errors.email.message && (
+                <p className="text-cyan-600">{errors.email.message}</p>
               )}
 
               <label htmlFor="nickname"></label>
@@ -70,7 +83,7 @@ function Register() {
                 name="nickname"
                 type="name"
                 className="w-3/4 px-4 py-3 mt-3"
-                placeholder="이름"
+                placeholder="닉네임"
                 {...register("nickname", { required: true, maxLength: 10 })}
               />
               {errors.nickname && errors.nickname.type === "required" && (
