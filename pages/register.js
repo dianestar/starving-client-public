@@ -6,7 +6,7 @@ import FormButton from "../components/FormButton";
 import { useForm } from "react-hook-form";
 import FormBg from "../components/FormBg";
 import router from "next/router";
-import { POST } from "../_axios/interceptor";
+import { REGISTER } from "../_axios/user";
 
 function Register() {
   const {
@@ -20,19 +20,26 @@ function Register() {
   password.current = watch("password", "");
 
   const onSubmit = async () => {
-    const res = await axios.post("http://3.38.33.154:9999/api/auth/register", {
+    const form = {
       email: watch("email"),
       password: watch("password"),
       nickname: watch("nickname"),
-    });
-    if (res.status === 200 || res.status === 201) {
-      alert("회원가입이 완료되었습니다.");
-      router.push("/login");
-    } else {
-      console.log(res);
+    };
+
+    try {
+      const {
+        data: { access, message },
+      } = await REGISTER(form);
+
+      if (!access) {
+        alert(message);
+      } else {
+        alert("회원가입이 완료되었습니다");
+        router.push("/");
+      }
+    } catch (err) {
+      console.log(err);
     }
-    console.log(res);
-    return res;
   };
 
   return (
