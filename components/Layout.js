@@ -1,6 +1,6 @@
-import router from "next/router";
-import React from "React";
+import React, { useState, useEffect } from "react";
 import Link from "next/link";
+import { GET_AUTH } from "../_axios/user";
 
 const category = [
   "편의점요리",
@@ -15,6 +15,23 @@ const category = [
 ];
 
 const Layout = ({ children }) => {
+  const [isLogin, setIsLogin] = useState(false);
+
+  const getAuth = async () => {
+    const res = await GET_AUTH();
+
+    if (!res) {
+      setIsLogin(false);
+    }
+    else {
+      setIsLogin(true);
+    }
+  }
+
+  useEffect(() => {
+    getAuth();
+  }, [])
+
   return (
     <div>
       <header>
@@ -68,7 +85,7 @@ const Layout = ({ children }) => {
                   d="M12 4v16m8-8H4"
                 />
               </svg>
-              <Link href="/login" passHref>
+              <Link href={isLogin ? "/mypage" : "/login"} passHref>
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   className="h-8 w-8 hover:fill-slate-400 hover:cursor-pointer"

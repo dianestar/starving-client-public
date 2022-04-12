@@ -35,7 +35,7 @@ function Register() {
         alert(message);
       } else {
         alert("회원가입이 완료되었습니다");
-        router.push("/");
+        router.push("/login");
       }
     } catch (err) {
       console.log(err);

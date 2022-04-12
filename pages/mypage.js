@@ -1,27 +1,35 @@
-import React from "react";
-import AvatarImage from "../../components/AvatarImage";
+import React, { useState, useEffect } from "react";
+import { useRouter } from "next/router";;
+import { GET_AUTH } from "../_axios/user";
+import AvatarImage from "../components/AvatarImage";
 import Head from "next/head";
-import Layout from "../../components/Layout";
-import NoContent from "../../components/NoContent";
-import RecipePreview from "../../components/RecipePreview";
+import Layout from "../components/Layout";
+import NoContent from "../components/NoContent";
+import RecipePreview from "../components/RecipePreview";
 
-export async function getServerSideProps(context) {
-  const testTT = await GET_AUTH();
-  try {
-    if (statusCode === 401) {
-      alert(message);
-      router.push("/login");
+const Mypage = () => {
+  const router = useRouter();
+  const currentUrl = router.asPath;
+
+  const [nickname, setNickname] = useState("");
+  const [email, setEmail] = useState("");
+
+  const getAuth = async () => {
+    const res = await GET_AUTH();
+
+    if (!res) {
+      router.push(`/login/?returnUrl=${currentUrl}`);
     }
-  } catch (err) {
-    console.log(err);
+    else {
+      setNickname(res.data.nickname);
+      setEmail(res.data.email);
+    }
   }
 
-  return {
-    props: { testTT },
-  };
-}
+  useEffect(() => {
+    getAuth();
+  }, []);
 
-const index = () => {
   return (
     <>
       <Head>
@@ -35,21 +43,18 @@ const index = () => {
             </h2>
 
             <section className="flex border-solid border-t-2 border-gray-500 bg-sky-50">
-              <article className="flex flex-col items-center basis-1/4 px-5 py-5 border-solid border border-gray-200">
-                <AvatarImage />
-                <p className="font-semibold text-sm text-center mt-2">
-                  Jetom<span className="font-light">님</span>
-                </p>
+              <article className="flex flex-col items-center basis-1/4 px-5 pt-5 pb-12 border-solid border border-gray-200">
+                <AvatarImage nickname={nickname}/>
               </article>
 
               <article className="flex flex-col justify-center pl-5 basis-3/4 border-solid border-r border-b border-gray-200">
                 <div>
                   <h3 className="text-sm text-blue-400">이름</h3>
-                  <p className="text-gray-700">Jetom</p>
+                  <p className="text-gray-700">{nickname}</p>
                 </div>
                 <div className="mt-2">
                   <h3 className="text-sm text-blue-400">E-mail</h3>
-                  <p className="text-gray-700">jetom@jetom.com</p>
+                  <p className="text-gray-700">{email}</p>
                 </div>
               </article>
             </section>
@@ -73,4 +78,4 @@ const index = () => {
   );
 };
 
-export default index;
+export default Mypage;
