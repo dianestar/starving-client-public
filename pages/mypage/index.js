@@ -5,6 +5,22 @@ import Layout from "../../components/Layout";
 import NoContent from "../../components/NoContent";
 import RecipePreview from "../../components/RecipePreview";
 
+export async function getServerSideProps(context) {
+  const testTT = await GET_AUTH();
+  try {
+    if (statusCode === 401) {
+      alert(message);
+      router.push("/login");
+    }
+  } catch (err) {
+    console.log(err);
+  }
+
+  return {
+    props: { testTT },
+  };
+}
+
 const index = () => {
   return (
     <>
