@@ -5,9 +5,9 @@ import KakaoLogin from "react-kakao-login";
 import NaverLogin from "react-naver-login";
 import Head from "next/head";
 import Layout from "../components/Layout";
-import FormBg from "../components/FormBg";
-import FormWrapper from "../components/FormWrapper";
-import FormButton from "../components/FormButton";
+import FormBg from "../components/form/FormBg";
+import FormWrapper from "../components/form/FormWrapper";
+import FormButton from "../components/form/FormButton";
 
 function Login() {
     const router = useRouter();

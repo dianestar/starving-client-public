@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useState } from "react";
-import RecipeCard from "../components/RecipeCard";
+import RecipeCard from "./RecipeCard";
 import { GET_ALL_RECIPE } from "../_axios/recipe";
 import ReactPaginate from "react-paginate";
 

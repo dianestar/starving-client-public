@@ -1,10 +1,10 @@
 import { useRef } from "react";
 import Head from "next/head";
 import Layout from "../components/Layout";
-import FormWrapper from "../components/FormWrapper";
-import FormButton from "../components/FormButton";
+import FormWrapper from "../components/form/FormWrapper";
+import FormButton from "../components/form/FormButton";
 import { useForm } from "react-hook-form";
-import FormBg from "../components/FormBg";
+import FormBg from "../components/form/FormBg";
 import router from "next/router";
 import { REGISTER } from "../_axios/user";
 
