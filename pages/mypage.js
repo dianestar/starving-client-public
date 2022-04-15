@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useRouter } from "next/router";;
+import { useRouter } from "next/router";
 import { GET_AUTH } from "../_axios/user";
 import AvatarImage from "../components/AvatarImage";
 import Head from "next/head";
@@ -19,12 +19,11 @@ const Mypage = () => {
 
     if (!res) {
       router.push(`/login/?returnUrl=${currentUrl}`);
-    }
-    else {
+    } else {
       setNickname(res.data.nickname);
       setEmail(res.data.email);
     }
-  }
+  };
 
   useEffect(() => {
     getAuth();
@@ -44,7 +43,7 @@ const Mypage = () => {
 
             <section className="flex border-solid border-t-2 border-gray-500 bg-sky-50">
               <article className="flex flex-col items-center basis-1/4 px-5 pt-5 pb-12 border-solid border border-gray-200">
-                <AvatarImage nickname={nickname}/>
+                <AvatarImage nickname={nickname} />
               </article>
 
               <article className="flex flex-col justify-center pl-5 basis-3/4 border-solid border-r border-b border-gray-200">

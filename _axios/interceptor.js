@@ -34,4 +34,12 @@ instance.interceptors.response.use(
   }
 );
 
+export const METHOD = {
+  GET: "GET",
+  POST: "POST",
+  PUT: "PUT",
+  PATCH: "PATCH",
+  DELETE: "DELETE",
+};
+
 export default instance;
