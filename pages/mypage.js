@@ -1,27 +1,11 @@
 import React from "react";
-import AvatarImage from "../../components/AvatarImage";
+import AvatarImage from "../components/AvatarImage";
 import Head from "next/head";
-import Layout from "../../components/Layout";
-import NoContent from "../../components/NoContent";
-import RecipePreview from "../../components/RecipePreview";
+import Layout from "../components/Layout";
+import NoContent from "../components/NoContent";
+import RecipePreview from "../components/RecipePreview";
 
-export async function getServerSideProps(context) {
-  const testTT = await GET_AUTH();
-  try {
-    if (statusCode === 401) {
-      alert(message);
-      router.push("/login");
-    }
-  } catch (err) {
-    console.log(err);
-  }
-
-  return {
-    props: { testTT },
-  };
-}
-
-const index = () => {
+const Mypage = () => {
   return (
     <>
       <Head>
@@ -73,4 +57,4 @@ const index = () => {
   );
 };
 
-export default index;
+export default Mypage;
