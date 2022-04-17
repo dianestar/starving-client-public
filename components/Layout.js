@@ -4,15 +4,11 @@ import { GET_AUTH } from "../_axios/user";
 import { useRouter } from "next/router";
 
 const category = [
-  "편의점요리",
-  "밑반찬",
-  "면역력",
-  "저칼로리",
-  "키토제닉",
-  "술안주",
-  "고단백",
-  "떡볶이",
-  "초간단",
+  "RICE",
+  "SOUP",
+  "BREAD",
+  "NOODLE",
+  "FRIED",
 ];
 
 const Layout = ({ children }) => {
@@ -111,7 +107,7 @@ const Layout = ({ children }) => {
             >
               해먹남녀
             </span>
-            <section className="flex space-x-6 mx-auto">
+            <section className="flex w-1/2 justify-between mx-auto">
               <a className="flex space-x-6 text-slate-400">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -129,7 +125,14 @@ const Layout = ({ children }) => {
                 <span>|</span>
               </a>
               {category.map((v, i) => (
-                <span key={i} className="text-slate-400">
+                <span
+                  key={i}
+                  className="text-slate-400 cursor-pointer hover:text-cyan-600"
+                  onClick={async () => await router.push({
+                    pathname: "/category",
+                    query: { categoryName: v },
+                  })}
+                >
                   {v}
                 </span>
               ))}

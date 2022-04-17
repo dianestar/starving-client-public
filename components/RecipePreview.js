@@ -40,6 +40,7 @@ const RecipePreview = () => {
             time="30분"
             like="702명"
             avatarImage={recipe.owner.avatarImage}
+            cookImages={recipe.cookImages}
           />
         ))}
       </div>
