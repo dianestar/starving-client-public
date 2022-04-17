@@ -32,7 +32,7 @@ const Mypage = () => {
 
   const logout = () => {
     const token = localStorage.removeItem("access_token");
-    if (token === null || "undefined") router.reload();
+    if (token === undefined) router.push(`/login/?returnUrl=${currentUrl}`);
   };
 
   return (
