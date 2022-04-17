@@ -1,10 +1,10 @@
 import React, { useState, useRef, useEffect } from "react";
 import Image from "next/image";
-import { UPLOAD_AVATAR, GET_AUTH } from "../_axios/user";
+import { UPLOAD_AVATAR, GET_AUTH } from "../../_axios/user";
 
 const NO_USER_IMAGE_URL = "/defaultAvatarImage.png";
 
-const AvatarImage = () => {
+const AvatarImage = ({ nickname }) => {
   const imageInputRef = useRef();
   const [imageFile, setImageFile] = useState(null);
   const [imageUrl, setImageUrl] = useState(NO_USER_IMAGE_URL);
@@ -79,7 +79,7 @@ const AvatarImage = () => {
         />
       </section>
 
-      {editMode && (
+      {editMode ? (
         <section className="space-x-2">
           <button
             className="border-solid border-2 rounded-md p-0.5 text-neutral-400 hover:text-white hover:bg-neutral-200"
@@ -94,6 +94,11 @@ const AvatarImage = () => {
             확인
           </button>
         </section>
+      ) : (
+        <p className="font-semibold text-sm text-center mt-2">
+          {nickname}
+          <span className="font-light">님</span>
+        </p>
       )}
     </div>
   );

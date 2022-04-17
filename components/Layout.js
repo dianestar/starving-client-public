@@ -1,6 +1,7 @@
-import router from "next/router";
-import React from "React";
+import React, { useState, useEffect } from "react";
 import Link from "next/link";
+import { GET_AUTH } from "../_axios/user";
+import { useRouter } from "next/router";
 
 const category = [
   "편의점요리",
@@ -15,6 +16,23 @@ const category = [
 ];
 
 const Layout = ({ children }) => {
+  const router = useRouter();
+  const [isLogin, setIsLogin] = useState(false);
+
+  const getAuth = async () => {
+    const res = await GET_AUTH();
+
+    if (!res) {
+      setIsLogin(false);
+    } else {
+      setIsLogin(true);
+    }
+  };
+
+  useEffect(() => {
+    getAuth();
+  }, []);
+
   return (
     <div>
       <header>
@@ -68,7 +86,7 @@ const Layout = ({ children }) => {
                   d="M12 4v16m8-8H4"
                 />
               </svg>
-              <Link href="/login" passHref>
+              <Link href={isLogin ? "/mypage" : "/login"} passHref>
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   className="h-8 w-8 hover:fill-slate-400 hover:cursor-pointer"
@@ -87,7 +105,12 @@ const Layout = ({ children }) => {
         </section>
         <section className="w-full h-[55px] bg-slate-100">
           <article className="w-2/3 h-full flex items-center mx-auto">
-            <span className="text-2xl font-bold">해먹남녀</span>
+            <span
+              onClick={async () => await router.push("/")}
+              className="text-2xl font-bold cursor-pointer"
+            >
+              해먹남녀
+            </span>
             <section className="flex space-x-6 mx-auto">
               <a className="flex space-x-6 text-slate-400">
                 <svg

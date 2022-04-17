@@ -1,14 +1,60 @@
-import React from "react";
-import RecipeCard from "../components/RecipeCard";
-
-const arr = Array(4).fill("0");
+import React, { useCallback, useEffect, useState } from "react";
+import RecipeCard from "./RecipeCard";
+import { GET_ALL_RECIPE } from "../_axios/recipe";
+import ReactPaginate from "react-paginate";
 
 const RecipePreview = () => {
-    return (
-        <div className="w-[1060px] flex justify-between mx-auto my-4">
-            {arr.map((v, i) => (<RecipeCard key={i} percent="1.5" nickname="제이소다" desc="부대찌개 맛있게 끓이는법~" title="부대찌개" time="30분" like="702명" />))}
-        </div>
-    );
-}
+  const [recipes, setRecipes] = useState([]);
+  const [pageCount, setPageCount] = useState(0);
+  const [page, setPage] = useState(1);
+
+  const getRecipeAll = useCallback(async () => {
+    const {
+      data: { access, recipesCount, totalPages, recipes },
+    } = await GET_ALL_RECIPE(page, 3);
+    if (access) {
+      setRecipes(recipes);
+      setPageCount(totalPages);
+    }
+  }, [page]);
+
+  useEffect(() => {
+    getRecipeAll();
+  }, [getRecipeAll]);
+
+  const onPageChange = (count) => {
+    const { selected } = count;
+    setPage(selected + 1);
+  };
+
+  return (
+    <>
+      <div className="w-[1060px] flex justify-between mx-auto my-4">
+        {recipes.map((recipe, index) => (
+          <RecipeCard
+            key={index}
+            percent="1.5"
+            nickname={recipe.owner.nickname}
+            desc={recipe.description}
+            title={recipe.title}
+            time="30분"
+            like="702명"
+            avatarImage={recipe.owner.avatarImage}
+          />
+        ))}
+      </div>
+      <ReactPaginate
+        breakLabel="..."
+        nextLabel="next >"
+        onPageChange={onPageChange}
+        pageRangeDisplayed={5}
+        pageCount={pageCount}
+        previousLabel="< previous"
+        renderOnZeroPageCount={null}
+        containerClassName={"pagination"}
+      />
+    </>
+  );
+};
 
 export default RecipePreview;

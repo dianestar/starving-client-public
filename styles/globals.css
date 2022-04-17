@@ -1,3 +1,11 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.pagination {
+  @apply flex justify-center items-center list-none h-12 w-full mt-12;
+}
+
+.pagination li a {
+  @apply flex items-center h-full cursor-pointer m-4;
+}
