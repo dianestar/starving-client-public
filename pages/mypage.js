@@ -30,6 +30,11 @@ const Mypage = () => {
     getAuth();
   }, []);
 
+  const logout = () => {
+    const token = localStorage.removeItem("access_token");
+    if (token === null || "undefined") router.reload();
+  };
+
   return (
     <>
       <Head>
@@ -38,9 +43,15 @@ const Mypage = () => {
       <Layout>
         <section className="w-[1060px] mx-auto">
           <section className="mt-20">
-            <h2 className="mb-14 text-gray-700 font-semibold text-2xl">
-              마이페이지
-            </h2>
+            <div className="flex">
+              <h2 className="mb-14 text-gray-700 font-semibold text-2xl mr-auto">
+                마이페이지
+              </h2>
+
+              <button className="text-gray-400" onClick={logout}>
+                로그아웃
+              </button>
+            </div>
 
             <section className="flex border-solid border-t-2 border-gray-500 bg-sky-50">
               <article className="flex flex-col items-center basis-1/4 px-5 pt-5 pb-12 border-solid border border-gray-200">
