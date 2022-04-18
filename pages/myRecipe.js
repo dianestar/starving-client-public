@@ -1,12 +1,6 @@
 import Head from "next/head";
 import React from "react";
 import Layout from "../components/Layout";
-const {
-  register,
-  watch,
-  formState: { errors },
-  handleSubmit,
-} = useForm({ mode: "onChange" });
 
 const myrecipe = () => {
   return (
