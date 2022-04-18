@@ -39,3 +39,10 @@ export const GET_AUTH = () => {
     url: "auth",
   });
 };
+
+export const DELETE_AUTH = () => {
+  return Api({
+    method: METHOD.DELETE,
+    url: "auth",
+  });
+};
