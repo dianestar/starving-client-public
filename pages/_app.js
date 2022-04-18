@@ -1,10 +1,19 @@
 import "../styles/globals.css";
 import { RecoilRoot } from "recoil";
+import { SnackbarProvider } from "notistack";
 
 function MyApp({ Component, pageProps }) {
   return (
     <RecoilRoot>
-      <Component {...pageProps} />
+      <SnackbarProvider
+        anchorOrigin={{
+          vertical: "top",
+          horizontal: "center",
+        }}
+        autoHideDuration={2500}
+      >
+        <Component {...pageProps} />
+      </SnackbarProvider>
     </RecoilRoot>
   );
 }

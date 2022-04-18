@@ -1,6 +1,7 @@
 import React, { useState, useRef, useEffect } from "react";
 import Image from "next/image";
 import { UPLOAD_AVATAR, GET_AUTH } from "../../_axios/user";
+import { useSnackbar } from "notistack";
 
 const NO_USER_IMAGE_URL = "/defaultAvatarImage.png";
 
@@ -10,6 +11,7 @@ const AvatarImage = ({ nickname }) => {
   const [imageUrl, setImageUrl] = useState(NO_USER_IMAGE_URL);
   const [defaultUrl, setDefaultUrl] = useState(NO_USER_IMAGE_URL);
   const [editMode, setEditMode] = useState(false);
+  const { enqueueSnackbar } = useSnackbar();
 
   const getUserImage = async () => {
     try {
@@ -42,6 +44,7 @@ const AvatarImage = ({ nickname }) => {
     setImageUrl(defaultUrl);
     URL.revokeObjectURL(imageUrl);
     imageInputRef.current.value = "";
+    enqueueSnackbar("이미지 변경 취소", { variant: "default" });
   };
 
   const onConfirmImage = async () => {
@@ -52,6 +55,7 @@ const AvatarImage = ({ nickname }) => {
       const response = await UPLOAD_AVATAR(form);
       console.log(response);
       setEditMode(false);
+      enqueueSnackbar("이미지 변경 완료", { variant: "success" });
     } catch (error) {
       console.log(error);
     }

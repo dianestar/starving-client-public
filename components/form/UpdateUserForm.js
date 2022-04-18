@@ -3,9 +3,11 @@ import { useForm } from "react-hook-form";
 import { UPDATE } from "../../_axios/user";
 import { useRouter } from "next/router";
 import FormErrorMessage from "../error/FormErrorMessage";
+import { useSnackbar } from "notistack";
 
 function ProfileUpdateForm() {
   const router = useRouter();
+  const { enqueueSnackbar } = useSnackbar();
 
   const {
     register,
@@ -19,7 +21,9 @@ function ProfileUpdateForm() {
 
   const onSubmit = async () => {
     if (!getValues().nickname && !getValues().password) {
-      window.alert("Please you enter nickname or password");
+      enqueueSnackbar("닉네임이나 비밀번호 중 하나를 변경해주세요", {
+        variant: "info",
+      });
       return;
     }
     const { confirmPassword, ...form } = getValues();
@@ -27,13 +31,12 @@ function ProfileUpdateForm() {
       data: { access, message, user },
     } = await UPDATE(form);
     if (!access) {
-      window.alert(message);
+      enqueueSnackbar(message, { variant: "error" });
       return;
     }
-    window.alert(message);
-    console.log(user);
     window.localStorage.removeItem("access_token");
     await router.push("/login");
+    return enqueueSnackbar(message, { variant: "success" });
   };
 
   return (
@@ -45,13 +48,13 @@ function ProfileUpdateForm() {
             {...register("nickname", {
               required: false,
               pattern: {
-                value: /^[A-za-z0-9]{2,12}$/,
-                message: "Please insert a valid nickname",
+                value: /^[A-za-z0-9ㄱ-ㅎㅏ-ㅣ가-힣]{2,12}$/,
+                message: "닉네임은 2자리 이상 12자리 이하입니다.",
               },
             })}
             type="text"
             name="nickname"
-            placeholder="이름"
+            placeholder="닉네임"
             autoComplete="off"
             className="border-b"
           />
@@ -69,7 +72,7 @@ function ProfileUpdateForm() {
               required: false,
               pattern: {
                 value: /(?=.*\d)(?=.*[a-z]).{8,}/,
-                message: "Please insert a valid password",
+                message: "비밀번호는 영문 숫자 조합의 8자리 이상입니다.",
               },
             })}
             type="password"
@@ -89,7 +92,7 @@ function ProfileUpdateForm() {
           <input
             {...register("confirmPassword", {
               validate: (v) =>
-                v === watch("password") || "The passwords do not match",
+                v === watch("password") || "비밀번호가 일치하지 않습니다.",
             })}
             type="password"
             name="confirmPassword"

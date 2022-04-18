@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { useRouter } from "next/router";
 import { GET_AUTH } from "../_axios/user";
 import AvatarImage from "../components/form/AvatarImage";
@@ -7,6 +7,7 @@ import Layout from "../components/Layout";
 import NoContent from "../components/NoContent";
 import RecipePreview from "../components/RecipePreview";
 import UpdataUserForm from "../components/form/UpdateUserForm";
+import { useSnackbar } from "notistack";
 
 const Mypage = () => {
   const router = useRouter();
@@ -14,25 +15,27 @@ const Mypage = () => {
 
   const [nickname, setNickname] = useState("");
   const [email, setEmail] = useState("");
+  const { enqueueSnackbar } = useSnackbar();
 
-  const getAuth = async () => {
+  const getAuth = useCallback(async () => {
     const res = await GET_AUTH();
 
     if (!res) {
-      router.push(`/login/?returnUrl=${currentUrl}`);
+      await router.push(`/login/?returnUrl=${currentUrl}`);
     } else {
       setNickname(res.data.nickname);
       setEmail(res.data.email);
     }
-  };
+  }, [currentUrl, router]);
 
   useEffect(() => {
     getAuth();
-  }, []);
+  }, [getAuth]);
 
-  const logout = () => {
-    const token = localStorage.removeItem("access_token");
-    if (token === undefined) router.push(`/login/?returnUrl=${currentUrl}`);
+  const logout = async () => {
+    localStorage.removeItem("access_token");
+    await router.push(`/login/?returnUrl=${currentUrl}`);
+    return enqueueSnackbar("로그아웃", { variant: "info" });
   };
 
   return (
