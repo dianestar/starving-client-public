@@ -38,68 +38,80 @@ function ProfileUpdateForm() {
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
-      <label>
-        <h2>Nickname</h2>
-        <input
-          {...register("nickname", {
-            required: false,
-            pattern: {
-              value: /^[A-za-z0-9]{2,12}$/,
-              message: "Please insert a valid nickname",
-            },
-          })}
-          type="text"
-          name="nickname"
-          placeholder="Nickname"
-          autoComplete="off"
-        />
-      </label>
-      <section>
-        {errors.nickname && errors.nickname.message && (
-          <FormErrorMessage message={errors.nickname.message} />
-        )}
+      <section className="flex justify-between mb-6">
+        <label>
+          <h2 className="mb-2 text-sm text-blue-400">이름</h2>
+          <input
+            {...register("nickname", {
+              required: false,
+              pattern: {
+                value: /^[A-za-z0-9]{2,12}$/,
+                message: "Please insert a valid nickname",
+              },
+            })}
+            type="text"
+            name="nickname"
+            placeholder="이름"
+            autoComplete="off"
+            className="border-b"
+          />
+        </label>
+        <section>
+          {errors.nickname && errors.nickname.message && (
+            <FormErrorMessage message={errors.nickname.message} />
+          )}
+        </section>
+
+        <label>
+          <h2 className="mb-2 text-sm text-blue-400">비밀번호</h2>
+          <input
+            {...register("password", {
+              required: false,
+              pattern: {
+                value: /(?=.*\d)(?=.*[a-z]).{8,}/,
+                message: "Please insert a valid password",
+              },
+            })}
+            type="password"
+            name="password"
+            placeholder="비밀번호"
+            className="border-b"
+          />
+        </label>
+        <section>
+          {errors.password && errors.password.message && (
+            <FormErrorMessage message={errors.password.message} />
+          )}
+        </section>
+
+        <label>
+          <h2 className="mb-2 text-sm text-blue-400">비밀번호 확인</h2>
+          <input
+            {...register("confirmPassword", {
+              validate: (v) =>
+                v === watch("password") || "The passwords do not match",
+            })}
+            type="password"
+            name="confirmPassword"
+            placeholder="비밀번호 확인"
+            className="border-b"
+          />
+        </label>
+        <section>
+          {errors.confirmPassword && errors.confirmPassword.message && (
+            <FormErrorMessage message={errors.confirmPassword.message} />
+          )}
+        </section>
       </section>
 
-      <label>
-        <h2>Password</h2>
-        <input
-          {...register("password", {
-            required: false,
-            pattern: {
-              value: /(?=.*\d)(?=.*[a-z]).{8,}/,
-              message: "Please insert a valid password",
-            },
-          })}
-          type="password"
-          name="password"
-          placeholder="Password"
-        />
-      </label>
       <section>
-        {errors.password && errors.password.message && (
-          <FormErrorMessage message={errors.password.message} />
-        )}
+        <button
+          type="submit"
+          className="px-5 py-1 rounded font-medium text-white bg-sky-600"
+        >
+          변경
+        </button>
       </section>
-
-      <label>
-        <h2>Confirm Password</h2>
-        <input
-          {...register("confirmPassword", {
-            validate: (v) =>
-              v === watch("password") || "The passwords do not match",
-          })}
-          type="password"
-          name="confirmPassword"
-          placeholder="Confirm Password"
-        />
-      </label>
-      <section>
-        {errors.confirmPassword && errors.confirmPassword.message && (
-          <FormErrorMessage message={errors.confirmPassword.message} />
-        )}
-      </section>
-
-      <button type="submit">UPDATE</button>
     </form>
   );
 }

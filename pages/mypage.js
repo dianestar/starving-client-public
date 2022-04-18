@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from "react";
 import { useRouter } from "next/router";
 import { GET_AUTH } from "../_axios/user";
-import AvatarImage from "../components/AvatarImage";
+import AvatarImage from "../components/form/AvatarImage";
 import Head from "next/head";
 import Layout from "../components/Layout";
 import NoContent from "../components/NoContent";
 import RecipePreview from "../components/RecipePreview";
+import UpdataUserForm from "../components/form/UpdateUserForm";
 
 const Mypage = () => {
   const router = useRouter();
@@ -29,6 +30,11 @@ const Mypage = () => {
     getAuth();
   }, []);
 
+  const logout = () => {
+    const token = localStorage.removeItem("access_token");
+    if (token === undefined) router.push(`/login/?returnUrl=${currentUrl}`);
+  };
+
   return (
     <>
       <Head>
@@ -37,9 +43,15 @@ const Mypage = () => {
       <Layout>
         <section className="w-[1060px] mx-auto">
           <section className="mt-20">
-            <h2 className="mb-14 text-gray-700 font-semibold text-2xl">
-              마이페이지
-            </h2>
+            <div className="flex">
+              <h2 className="mb-14 text-gray-700 font-semibold text-2xl mr-auto">
+                마이페이지
+              </h2>
+
+              <button className="text-gray-400" onClick={logout}>
+                로그아웃
+              </button>
+            </div>
 
             <section className="flex border-solid border-t-2 border-gray-500 bg-sky-50">
               <article className="flex flex-col items-center basis-1/4 px-5 pt-5 pb-12 border-solid border border-gray-200">
@@ -55,6 +67,18 @@ const Mypage = () => {
                   <h3 className="text-sm text-blue-400">E-mail</h3>
                   <p className="text-gray-700">{email}</p>
                 </div>
+              </article>
+            </section>
+          </section>
+
+          <section className="my-20">
+            <h2 className="mb-14 text-gray-700 font-semibold text-2xl">
+              회원정보수정
+            </h2>
+
+            <section className="flex py-6 px-5 border-solid border border-gray-200">
+              <article className="w-full">
+                <UpdataUserForm />
               </article>
             </section>
           </section>

@@ -7,6 +7,7 @@ import { useForm } from "react-hook-form";
 import FormBg from "../components/form/FormBg";
 import router from "next/router";
 import { REGISTER } from "../_axios/user";
+import FormErrorMessage from "../components/error/FormErrorMessage";
 
 function Register() {
   const {
@@ -75,7 +76,7 @@ function Register() {
                 })}
               />
               {errors.email && errors.email.message && (
-                <p className="text-cyan-600">{errors.email.message}</p>
+                <FormErrorMessage message={errors.email.message} />
               )}
 
               <label htmlFor="nickname"></label>
@@ -87,12 +88,12 @@ function Register() {
                 {...register("nickname", { required: true, maxLength: 10 })}
               />
               {errors.nickname && errors.nickname.type === "required" && (
-                <p className="text-cyan-600">이름을 입력해주세요</p>
+                <FormErrorMessage message={"이름을 입력해주세요"} />
               )}
               {errors.nickname && errors.nickname.type === "maxLength" && (
-                <p className="text-cyan-600">
-                  이름은 10자리를 넘길 수 없습니다.
-                </p>
+                <FormErrorMessage
+                  message={"이름은 10자리를 넘길 수 없습니다."}
+                />
               )}
 
               <label htmlFor="password"></label>
@@ -104,10 +105,10 @@ function Register() {
                 {...register("password", { required: true, minLength: 8 })}
               />
               {errors.password && errors.password.type === "required" && (
-                <p className="text-cyan-600">비밀번호를 입력해주세요</p>
+                <FormErrorMessage message={"비밀번호를 입력해주세요"} />
               )}
               {errors.password && errors.password.type === "minLength" && (
-                <p className="text-cyan-600">비밀번호는 최소 8자리 입니다</p>
+                <FormErrorMessage message={"비밀번호는 최소 8자리 입니다"} />
               )}
 
               <label htmlFor="password_confirm"></label>
@@ -124,14 +125,14 @@ function Register() {
 
               {errors.password_confirm &&
                 errors.password_confirm.type === "required" && (
-                  <p className="text-cyan-600">
-                    비밀번호를 한번 더 입력해주세요
-                  </p>
+                  <FormErrorMessage
+                    message={"비밀번호를 한번 더 입력해주세요"}
+                  />
                 )}
 
               {errors.password_confirm &&
                 errors.password_confirm.type === "validate" && (
-                  <p className="text-cyan-600">비밀번호가 일치하지 않습니다</p>
+                  <FormErrorMessage message={"비밀번호가 일치하지 않습니다"} />
                 )}
 
               <FormButton desc="회원가입" />
