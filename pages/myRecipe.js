@@ -1,8 +1,29 @@
 import Head from "next/head";
 import React from "react";
 import Layout from "../components/Layout";
+import TextEditor from "../components/TextEditor";
+import { GET_AUTH } from "../_axios/user";
+import { useRouter } from "next/router";
 
 const myrecipe = () => {
+  const router = useRouter();
+  const currentUrl = router.asPath;
+
+  const getAuth = async () => {
+    const res = await GET_AUTH();
+
+    if (!res) {
+      router.push(`/login/?returnUrl=${currentUrl}`);
+    } else {
+      setNickname(res.data.nickname);
+      setEmail(res.data.email);
+    }
+  };
+
+  useEffect(() => {
+    getAuth();
+  }, []);
+
   return (
     <>
       <Head>

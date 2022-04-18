@@ -10,6 +10,14 @@ export const GET_ALL_RECIPE = (page, size) => {
 export const GET_CATEGORY_RECIPE = (page, size, values) => {
   return Api({
     method: METHOD.GET,
-    url: `recipe/category?page=${page}&size=${size}&values=${values}`
+    url: `recipe/category?page=${page}&size=${size}&values=${values}`,
+  });
+};
+
+export const UPLOAD_RECIPE = (form) => {
+  return Api({
+    method: METHOD.POST,
+    url: "recipe",
+    data: form,
   });
 };
