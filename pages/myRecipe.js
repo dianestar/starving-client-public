@@ -1,6 +1,12 @@
 import Head from "next/head";
 import React from "react";
 import Layout from "../components/Layout";
+const {
+  register,
+  watch,
+  formState: { errors },
+  handleSubmit,
+} = useForm({ mode: "onChange" });
 
 const myrecipe = () => {
   return (
@@ -10,19 +16,21 @@ const myrecipe = () => {
       </Head>
       <Layout>
         <section className="w-[1060px] mx-auto">
-          <section className="mt-20">
+          <article className="mt-20">
             <div className="flex">
               <h2 className="mb-14 text-gray-700 font-semibold text-2xl mr-auto">
                 레시피 등록하기
               </h2>
             </div>
-          </section>
+          </article>
 
-          <div className="text-center my-3">
-            <button className="px-10 py-3 rounded font-medium text-white bg-sky-600">
-              등록완료
-            </button>
-          </div>
+          <article>
+            <div className="text-center my-3">
+              <button className="px-10 py-3 rounded font-medium text-white bg-sky-600">
+                등록완료
+              </button>
+            </div>
+          </article>
         </section>
       </Layout>
     </>
