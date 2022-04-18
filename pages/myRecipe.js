@@ -1,8 +1,13 @@
 import Head from "next/head";
-import React from "react";
+import React, { useState } from "react";
 import Layout from "../components/Layout";
+import RecipeUpperPart from "../components/RecipeUpperPart";
 
-const myrecipe = () => {
+const Myrecipe = () => {
+  const [title, setTitle] = useState("");
+  const [desc, setDesc] = useState("");
+  const [category, setCategory] = useState("");
+
   return (
     <>
       <Head>
@@ -17,7 +22,7 @@ const myrecipe = () => {
               </h2>
             </div>
           </article>
-
+          <RecipeUpperPart setTitle={setTitle} setDesc={setDesc} setCategory={setCategory} category={category}/>
           <article>
             <div className="text-center my-3">
               <button className="px-10 py-3 rounded font-medium text-white bg-sky-600">
@@ -31,4 +36,4 @@ const myrecipe = () => {
   );
 };
 
-export default myrecipe;
+export default Myrecipe;
