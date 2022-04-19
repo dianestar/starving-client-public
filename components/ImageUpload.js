@@ -1,6 +1,4 @@
 import React from "react";
-import { useRecoilState } from "recoil";
-import { showImagesState } from "../_recoil/state";
 
 const ImageUpload = ({ onLoadFile, handleDeleteImage, showImages }) => {
   return (
@@ -43,7 +41,7 @@ const ImageUpload = ({ onLoadFile, handleDeleteImage, showImages }) => {
         {showImages.map((image, id) => (
           <div key={id} className="mr-4">
             <p
-              onClick={(id) => {
+              onClick={() => {
                 handleDeleteImage(id);
               }}
             >

@@ -4,16 +4,10 @@ import { useForm } from "react-hook-form";
 import { UPLOAD_RECIPE } from "../_axios/recipe";
 import FormErrorMessage from "../components/error/FormErrorMessage";
 import ImageUpload from "../components/ImageUpload";
-import { useRecoilState } from "recoil";
-import { showImagesState } from "../_recoil/state";
 import { useState } from "react";
-import RecipeUpperPart from "../components/RecipeUpperPart";
 
 const Myrecipe = () => {
   const [showImages, setShowImages] = useState([]);
-  const [title, setTitle] = useState("");
-  const [desc, setDesc] = useState("");
-  const [category, setCategory] = useState("");
   const categories = ["RICE", "SOUP", "BREAD", "NOODLE", "FRIED"];
   const {
     register,
@@ -24,11 +18,11 @@ const Myrecipe = () => {
 
   const onSubmit = async () => {
     const form = {
-      title: title,
-      description: description,
+      title: watch("title"),
+      description: watch("description"),
       mainText: watch("mainText"),
       cookImages: watch("cookImages"),
-      category: category,
+      category: watch("category"),
     };
 
     try {
@@ -86,59 +80,68 @@ const Myrecipe = () => {
             </div>
           </article>
 
-          {/* <section className="space-y-8 my-8">
-            <article className="w-full flex items-center justify-between">
-              <span className="w-1/4 text-gray-700 font-bold text-xl">
-                레시피 제목
-              </span>
-              <input
-                className="w-3/4 h-12 px-4 border-2 rounded"
-                placeholder="레시피의 제목을 입력해주세요"
-                onChange={onChangeTitle}
-              />
-            </article>
-            <article className="w-full flex items-center justify-between">
-              <span className="w-1/4 text-gray-700 font-bold text-xl">
-                한줄설명
-              </span>
-              <input
-                className="w-3/4 h-12 px-4 border-2 rounded"
-                placeholder="레시피를 소개할 수 있는 한줄설명을 입력해주세요"
-                onChange={onChangeDesc}
-              />
-            </article>
-            <article className="w-full flex">
-              <span className="w-1/4 text-gray-700 font-bold text-xl">
-                카테고리
-              </span>
-              <section className="flex space-x-4">
-                {categories.map((v, i) => (
-                  <article key={i} className="space-x-2 font-bold">
-                    <input
-                      type="radio"
-                      id={v}
-                      value={v}
-                      checked={v === category}
-                      onChange={onChangeRadioBtn}
-                    />
-                    <label htmlFor={v}>{v}</label>
-                  </article>
-                ))}
-              </section>
-            </article>
-          </section> */}
-
-          <RecipeUpperPart
-            setTitle={setTitle}
-            setDesc={setDesc}
-            setCategory={setCategory}
-            category={category}
-          />
-          <article>
+          <section className="space-y-8 my-8">
             <form onSubmit={handleSubmit(onSubmit)}>
+              <article className="w-full flex items-center justify-between mb-4">
+                <label
+                  className="w-1/4 text-gray-700 font-bold text-xl"
+                  htmlFor="title"
+                >
+                  레시피 제목
+                </label>
+                <input
+                  className="w-3/4 h-12 px-4 border-2 rounded"
+                  placeholder="레시피의 제목을 입력해주세요"
+                  {...register("title", { required: true })}
+                />
+                {errors.mainText && errors.description.type === "required" && (
+                  <FormErrorMessage message={"레시피의 제목을 입력해주세요"} />
+                )}
+              </article>
+
+              <article className="w-full flex items-center justify-between mb-4">
+                <label
+                  className="w-1/4 text-gray-700 font-bold text-xl"
+                  htmlFor="description"
+                >
+                  한줄설명
+                </label>
+                <input
+                  className="w-3/4 h-12 px-4 border-2 rounded"
+                  placeholder="레시피를 소개할 수 있는 한줄설명을 입력해주세요"
+                  {...register("description", { required: true })}
+                />
+                {errors.mainText && errors.description.type === "required" && (
+                  <FormErrorMessage message={"설명은 필수 입력값입니다"} />
+                )}
+              </article>
+
+              <article className="w-full flex">
+                <label className="w-1/4 text-gray-700 font-bold text-xl mb-4">
+                  카테고리
+                </label>
+                <section className="flex space-x-4">
+                  {categories.map((v, i) => (
+                    <article key={i} className="space-x-2 font-bold">
+                      <input
+                        type="radio"
+                        id={v}
+                        value={v}
+                        checked={v === watch("category")}
+                        {...register("category", { required: true })}
+                      />
+                      <label htmlFor={v}>{v}</label>
+                    </article>
+                  ))}
+                  {errors.mainText && errors.category.type === "required" && (
+                    <FormErrorMessage message={"카테고리를 선택해주세요"} />
+                  )}
+                </section>
+              </article>
+
               <textarea
                 placeholder="조리 방법을 입력해주세요 🍳"
-                className="w-full h-[250px] px-2 py-2 resize-none border rounded-md"
+                className="w-full h-[250px] px-2 py-2 resize-none border-2 rounded-md"
                 {...register("mainText", { required: true, minLength: 30 })}
               ></textarea>
               {errors.mainText && errors.mainText.type === "required" && (
@@ -165,7 +168,7 @@ const Myrecipe = () => {
                 </button>
               </div>
             </form>
-          </article>
+          </section>
         </section>
       </Layout>
     </>
