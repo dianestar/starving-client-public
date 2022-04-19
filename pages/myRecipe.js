@@ -9,7 +9,7 @@ import { showImagesState } from "../_recoil/state";
 import { useState } from "react";
 
 const Myrecipe = () => {
-  const [showImages, setShowImages] = useRecoilState(showImagesState);
+  const [showImages, setShowImages] = useState([]);
   const {
     register,
     watch,
@@ -98,6 +98,7 @@ const Myrecipe = () => {
               <ImageUpload
                 onLoadFile={onLoadFile}
                 handleDeleteImage={handleDeleteImage}
+                showImages={showImages}
               />
               {errors.cookImages && errors.cookImages.type === "required" && (
                 <FormErrorMessage message={"최소 업로드 갯수는 1개입니다."} />

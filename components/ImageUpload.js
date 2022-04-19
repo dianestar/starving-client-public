@@ -2,8 +2,7 @@ import React from "react";
 import { useRecoilState } from "recoil";
 import { showImagesState } from "../_recoil/state";
 
-const ImageUpload = ({ onLoadFile, handleDeleteImage }) => {
-  const [showImages, setShowImages] = useRecoilState(showImagesState);
+const ImageUpload = ({ onLoadFile, handleDeleteImage, showImages }) => {
   return (
     <section className="mt-3">
       <article>

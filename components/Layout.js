@@ -3,13 +3,7 @@ import Link from "next/link";
 import { GET_AUTH } from "../_axios/user";
 import { useRouter } from "next/router";
 
-const category = [
-  "RICE",
-  "SOUP",
-  "BREAD",
-  "NOODLE",
-  "FRIED",
-];
+const category = ["RICE", "SOUP", "BREAD", "NOODLE", "FRIED"];
 
 const Layout = ({ children }) => {
   const router = useRouter();
@@ -68,7 +62,7 @@ const Layout = ({ children }) => {
                   clipRule="evenodd"
                 />
               </svg>
-              <Link href={isLogin ? "/myRecipe" : "/login"}>
+              <Link href={isLogin ? "/myrecipe" : "/login"}>
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   className="h-8 w-8 hover:stroke-slate-400 hover:cursor-pointer"
@@ -130,10 +124,12 @@ const Layout = ({ children }) => {
                 <span
                   key={i}
                   className="text-slate-400 cursor-pointer hover:text-cyan-600"
-                  onClick={async () => await router.push({
-                    pathname: "/category",
-                    query: { categoryName: v },
-                  })}
+                  onClick={async () =>
+                    await router.push({
+                      pathname: "/category",
+                      query: { categoryName: v },
+                    })
+                  }
                 >
                   {v}
                 </span>
