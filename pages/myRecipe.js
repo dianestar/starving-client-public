@@ -4,10 +4,11 @@ import { useForm } from "react-hook-form";
 import { UPLOAD_RECIPE } from "../_axios/recipe";
 import FormErrorMessage from "../components/error/FormErrorMessage";
 import ImageUpload from "../components/ImageUpload";
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 
 const Myrecipe = () => {
   const [showImages, setShowImages] = useState([]);
+  const inputFocus = useRef(null);
   const categories = ["RICE", "SOUP", "BREAD", "NOODLE", "FRIED"];
   const {
     register,
@@ -16,12 +17,16 @@ const Myrecipe = () => {
     handleSubmit,
   } = useForm({ mode: "onChange" });
 
+  useEffect(() => {
+    inputFocus.current.focus();
+  }, []);
+
   const onSubmit = async () => {
     const form = {
       title: watch("title"),
       description: watch("description"),
       mainText: watch("mainText"),
-      cookImages: watch("cookImages"),
+      cookImages: watch(showImages),
       category: watch("category"),
     };
 
@@ -58,11 +63,7 @@ const Myrecipe = () => {
   };
 
   const handleDeleteImage = (id) => {
-    setShowImages(
-      showImages.filter((_, index) => {
-        index !== id;
-      })
-    );
+    setShowImages(showImages.filter((_, index) => index !== id));
   };
 
   return (
@@ -74,7 +75,7 @@ const Myrecipe = () => {
         <section className="w-[1060px] mx-auto">
           <article className="mt-20">
             <div className="flex">
-              <h2 className="mb-14 text-gray-700 font-semibold text-2xl mr-auto">
+              <h2 className="mb-10 text-gray-700 font-semibold text-2xl mr-auto">
                 레시피 등록하기
               </h2>
             </div>
@@ -93,9 +94,10 @@ const Myrecipe = () => {
                   className="w-3/4 h-12 px-4 border-2 rounded"
                   placeholder="레시피의 제목을 입력해주세요"
                   {...register("title", { required: true })}
+                  ref={inputFocus}
                 />
-                {errors.mainText && errors.description.type === "required" && (
-                  <FormErrorMessage message={"레시피의 제목을 입력해주세요"} />
+                {errors.title && errors.title.type === "required" && (
+                  <FormErrorMessage message={"제목을 입력해주세요"} />
                 )}
               </article>
 
@@ -111,9 +113,10 @@ const Myrecipe = () => {
                   placeholder="레시피를 소개할 수 있는 한줄설명을 입력해주세요"
                   {...register("description", { required: true })}
                 />
-                {errors.mainText && errors.description.type === "required" && (
-                  <FormErrorMessage message={"설명은 필수 입력값입니다"} />
-                )}
+                {errors.description &&
+                  errors.description.type === "required" && (
+                    <FormErrorMessage message={"한줄설명을 입력해주세요"} />
+                  )}
               </article>
 
               <article className="w-full flex">
@@ -133,7 +136,7 @@ const Myrecipe = () => {
                       <label htmlFor={v}>{v}</label>
                     </article>
                   ))}
-                  {errors.mainText && errors.category.type === "required" && (
+                  {errors.category && errors.category.type === "required" && (
                     <FormErrorMessage message={"카테고리를 선택해주세요"} />
                   )}
                 </section>
@@ -155,6 +158,8 @@ const Myrecipe = () => {
                 onLoadFile={onLoadFile}
                 handleDeleteImage={handleDeleteImage}
                 showImages={showImages}
+                register={register}
+                name={"cookImages"}
               />
               {errors.cookImages && errors.cookImages.type === "required" && (
                 <FormErrorMessage message={"최소 업로드 갯수는 1개입니다."} />

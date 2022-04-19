@@ -1,13 +1,15 @@
 import React, { useState, useEffect, useCallback } from "react";
 import { useRouter } from "next/router";
 import { GET_AUTH, DELETE_AUTH } from "../_axios/user";
+import { GET_MY_RECIPE } from "../_axios/recipe";
 import AvatarImage from "../components/form/AvatarImage";
 import Head from "next/head";
 import Layout from "../components/Layout";
 import NoContent from "../components/NoContent";
-import RecipePreview from "../components/RecipePreview";
+import RecipeCard from "../components/RecipeCard";
 import UpdataUserForm from "../components/form/UpdateUserForm";
 import { useSnackbar, Fragment, Button } from "notistack";
+import ReactPaginate from "react-paginate";
 
 const Mypage = () => {
   const router = useRouter();
@@ -16,6 +18,10 @@ const Mypage = () => {
   const [nickname, setNickname] = useState("");
   const [email, setEmail] = useState("");
   const { enqueueSnackbar } = useSnackbar();
+
+  const [page, setPage] = useState(1);
+  const [recipes, setRecipes] = useState([]);
+  const [pageCount, setPageCount] = useState(0);
 
   const getAuth = useCallback(async () => {
     const res = await GET_AUTH();
@@ -28,9 +34,27 @@ const Mypage = () => {
     }
   }, [currentUrl, router]);
 
+  const getMyrecipePage = async () => {
+    const SIZE = 4;
+    try {
+      const {
+        data: { access, recipesCount, totalPages, recipes },
+      } = await GET_MY_RECIPE(page, SIZE);
+
+      if (access) {
+        setRecipes(recipes);
+        setRecipesCount(recipesCount);
+        setPageCount(totalPages);
+      }
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
   useEffect(() => {
     getAuth();
-  }, [getAuth]);
+    getMyrecipePage();
+  }, [getAuth, page]);
 
   const logout = async () => {
     localStorage.removeItem("access_token");
@@ -41,7 +65,7 @@ const Mypage = () => {
   const handleDeleteUser = async () => {
     try {
       const {
-        data : { access }
+        data: { access },
       } = await DELETE_AUTH();
 
       if (access) {
@@ -52,6 +76,10 @@ const Mypage = () => {
     } catch (error) {
       console.log(error);
     }
+  };
+
+  const handlePageClick = (e) => {
+    setPage(e.selected + 1);
   };
 
   return (
@@ -67,19 +95,19 @@ const Mypage = () => {
                 마이페이지
               </h2>
               <article className="space-x-2 text-gray-400">
-                <button onClick={() => {
-                  const isConfirmed = confirm("탈퇴하시겠습니까?");
-                  if (isConfirmed) {
-                    handleDeleteUser();
-                  }
-                }}>
+                <button
+                  onClick={() => {
+                    const isConfirmed = confirm("탈퇴하시겠습니까?");
+                    if (isConfirmed) {
+                      handleDeleteUser();
+                    }
+                  }}
+                >
                   회원탈퇴
                 </button>
                 <span>|</span>
-                <button onClick={logout}>
-                  로그아웃
-                </button>
-              </article> 
+                <button onClick={logout}>로그아웃</button>
+              </article>
             </section>
 
             <section className="flex border-solid border-t-2 border-gray-500 bg-sky-50">
@@ -119,8 +147,37 @@ const Mypage = () => {
 
             <section>
               <article>
-                <NoContent text={`아직 등록하신 레시피가 없습니다`} />
-                {/* <RecipePreview /> */}
+                {recipes.length !== 0 ? (
+                  <div>
+                    <div className="flex">
+                      {recipes.map((recipe) => (
+                        <RecipeCard
+                          key={recipe.category.pk}
+                          percent="5.0"
+                          nickname={nickname}
+                          desc={recipe.description}
+                          title={recipe.title}
+                          time="⏰"
+                          like="♾"
+                          avatarImage={"/defaultAvatarImage.png"}
+                          cookImages={recipe.cookImages}
+                        />
+                      ))}
+                    </div>
+                    <ReactPaginate
+                      className="flex justify-center space-x-4"
+                      breakLabel="..."
+                      nextLabel="next >"
+                      onPageChange={handlePageClick}
+                      pageRangeDisplayed={5}
+                      pageCount={pageCount}
+                      previousLabel="< previous"
+                      renderOnZeroPageCount={null}
+                    ></ReactPaginate>
+                  </div>
+                ) : (
+                  <NoContent text={`아직 등록하신 레시피가 없습니다`} />
+                )}
               </article>
             </section>
           </section>

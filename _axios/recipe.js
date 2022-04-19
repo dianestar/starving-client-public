@@ -14,6 +14,13 @@ export const GET_CATEGORY_RECIPE = (page, size, values) => {
   });
 };
 
+export const GET_MY_RECIPE = (page, size) => {
+  return Api({
+    method: METHOD.GET,
+    url: `recipe/my?page=${page}&size=${size}`,
+  });
+};
+
 export const UPLOAD_RECIPE = (form) => {
   return Api({
     method: METHOD.POST,
