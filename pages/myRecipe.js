@@ -17,10 +17,6 @@ const Myrecipe = () => {
     handleSubmit,
   } = useForm({ mode: "onChange" });
 
-  useEffect(() => {
-    inputFocus.current.focus();
-  }, []);
-
   const onSubmit = async () => {
     const form = {
       title: watch("title"),
@@ -83,63 +79,74 @@ const Myrecipe = () => {
 
           <section className="space-y-8 my-8">
             <form onSubmit={handleSubmit(onSubmit)}>
-              <article className="w-full flex items-center justify-between mb-4">
-                <label
-                  className="w-1/4 text-gray-700 font-bold text-xl"
-                  htmlFor="title"
-                >
-                  레시피 제목
-                </label>
-                <input
-                  className="w-3/4 h-12 px-4 border-2 rounded"
-                  placeholder="레시피의 제목을 입력해주세요"
-                  {...register("title", { required: true })}
-                  ref={inputFocus}
-                />
-                {errors.title && errors.title.type === "required" && (
-                  <FormErrorMessage message={"제목을 입력해주세요"} />
-                )}
-              </article>
+              <article>
+                <div className="w-full flex items-center mb-4">
+                  <label
+                    className="mr-11 text-gray-700 font-bold text-xl"
+                    htmlFor="title"
+                  >
+                    레시피 제목
+                  </label>
+                  <input
+                    className="w-3/4 h-12 px-4 border-2 rounded"
+                    placeholder="레시피의 제목을 입력해주세요"
+                    {...register("title", { required: true })}
+                  />
+                  <div className="ml-3">
+                    {errors.title && errors.title.type === "required" && (
+                      <FormErrorMessage message={"제목을 입력해주세요"} />
+                    )}
+                  </div>
+                </div>
 
-              <article className="w-full flex items-center justify-between mb-4">
-                <label
-                  className="w-1/4 text-gray-700 font-bold text-xl"
-                  htmlFor="description"
-                >
-                  한줄설명
-                </label>
-                <input
-                  className="w-3/4 h-12 px-4 border-2 rounded"
-                  placeholder="레시피를 소개할 수 있는 한줄설명을 입력해주세요"
-                  {...register("description", { required: true })}
-                />
-                {errors.description &&
-                  errors.description.type === "required" && (
-                    <FormErrorMessage message={"한줄설명을 입력해주세요"} />
-                  )}
-              </article>
+                <div className="w-full flex items-center mb-4">
+                  <label
+                    className="mr-11 text-gray-700 font-bold text-xl"
+                    htmlFor="description"
+                  >
+                    한줄설명
+                  </label>
+                  <input
+                    className="w-3/4 h-12 px-4 border-2 rounded"
+                    placeholder="레시피를 소개할 수 있는 한줄설명을 입력해주세요"
+                    {...register("description", { required: true })}
+                  />
 
-              <article className="w-full flex">
-                <label className="w-1/4 text-gray-700 font-bold text-xl mb-4">
-                  카테고리
-                </label>
-                <section className="flex space-x-4">
-                  {categories.map((v, i) => (
-                    <article key={i} className="space-x-2 font-bold">
-                      <input
-                        type="radio"
-                        id={v}
-                        value={v}
-                        checked={v === watch("category")}
-                        {...register("category", { required: true })}
-                      />
-                      <label htmlFor={v}>{v}</label>
-                    </article>
-                  ))}
-                  {errors.category && errors.category.type === "required" && (
-                    <FormErrorMessage message={"카테고리를 선택해주세요"} />
-                  )}
-                </section>
+                  <div className="ml-3">
+                    {errors.description &&
+                      errors.description.type === "required" && (
+                        <FormErrorMessage message={"한줄설명을 입력해주세요"} />
+                      )}
+                  </div>
+                </div>
+
+                <div className="w-full flex items-center mb-4">
+                  <label className="mr-11 text-gray-700 font-bold text-xl mb-4">
+                    카테고리
+                  </label>
+                  <section className="w-3/4 flex space-x-4">
+                    {categories.map((v, i) => (
+                      <article key={i} className="space-x-2 font-bold">
+                        <input
+                          type="radio"
+                          id={v}
+                          value={v}
+                          checked={v === watch("category")}
+                          {...register("category", { required: true })}
+                        />
+                        <label htmlFor={v}>{v}</label>
+                      </article>
+                    ))}
+                    <div className="ml-3">
+                      {errors.category &&
+                        errors.category.type === "required" && (
+                          <FormErrorMessage
+                            message={"카테고리를 선택해주세요"}
+                          />
+                        )}
+                    </div>
+                  </section>
+                </div>
               </article>
 
               <textarea
