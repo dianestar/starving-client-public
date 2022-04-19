@@ -8,8 +8,11 @@ import FormBg from "../components/form/FormBg";
 import router from "next/router";
 import { REGISTER } from "../_axios/user";
 import FormErrorMessage from "../components/error/FormErrorMessage";
+import { useSnackbar } from "notistack";
 
 function Register() {
+  const { enqueueSnackbar } = useSnackbar();
+
   const {
     register,
     watch,
@@ -33,10 +36,10 @@ function Register() {
       } = await REGISTER(form);
 
       if (!access) {
-        alert(message);
+        return enqueueSnackbar(message, { variant: "error" });
       } else {
-        alert("회원가입이 완료되었습니다");
-        router.push("/login");
+        await router.push("/login");
+        return enqueueSnackbar("회원가입 완료!", { variant: "success" });
       }
     } catch (err) {
       console.log(err);

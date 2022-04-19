@@ -1,12 +1,13 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { useRouter } from "next/router";
-import { GET_AUTH } from "../_axios/user";
+import { GET_AUTH, DELETE_AUTH } from "../_axios/user";
 import AvatarImage from "../components/form/AvatarImage";
 import Head from "next/head";
 import Layout from "../components/Layout";
 import NoContent from "../components/NoContent";
 import RecipePreview from "../components/RecipePreview";
 import UpdataUserForm from "../components/form/UpdateUserForm";
+import { useSnackbar, Fragment, Button } from "notistack";
 
 const Mypage = () => {
   const router = useRouter();
@@ -14,25 +15,43 @@ const Mypage = () => {
 
   const [nickname, setNickname] = useState("");
   const [email, setEmail] = useState("");
+  const { enqueueSnackbar } = useSnackbar();
 
-  const getAuth = async () => {
+  const getAuth = useCallback(async () => {
     const res = await GET_AUTH();
 
     if (!res) {
-      router.push(`/login/?returnUrl=${currentUrl}`);
+      await router.push(`/login/?returnUrl=${currentUrl}`);
     } else {
       setNickname(res.data.nickname);
       setEmail(res.data.email);
     }
-  };
+  }, [currentUrl, router]);
 
   useEffect(() => {
     getAuth();
-  }, []);
+  }, [getAuth]);
 
-  const logout = () => {
-    const token = localStorage.removeItem("access_token");
-    if (token === undefined) router.push(`/login/?returnUrl=${currentUrl}`);
+  const logout = async () => {
+    localStorage.removeItem("access_token");
+    await router.push(`/login/?returnUrl=${currentUrl}`);
+    return enqueueSnackbar("로그아웃", { variant: "info" });
+  };
+
+  const handleDeleteUser = async () => {
+    try {
+      const {
+        data : { access }
+      } = await DELETE_AUTH();
+
+      if (access) {
+        localStorage.removeItem("access_token");
+        alert("회원탈퇴가 완료되었습니다.");
+        router.push("/");
+      }
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (
@@ -43,15 +62,25 @@ const Mypage = () => {
       <Layout>
         <section className="w-[1060px] mx-auto">
           <section className="mt-20">
-            <div className="flex">
+            <section className="flex">
               <h2 className="mb-14 text-gray-700 font-semibold text-2xl mr-auto">
                 마이페이지
               </h2>
-
-              <button className="text-gray-400" onClick={logout}>
-                로그아웃
-              </button>
-            </div>
+              <article className="space-x-2 text-gray-400">
+                <button onClick={() => {
+                  const isConfirmed = confirm("탈퇴하시겠습니까?");
+                  if (isConfirmed) {
+                    handleDeleteUser();
+                  }
+                }}>
+                  회원탈퇴
+                </button>
+                <span>|</span>
+                <button onClick={logout}>
+                  로그아웃
+                </button>
+              </article> 
+            </section>
 
             <section className="flex border-solid border-t-2 border-gray-500 bg-sky-50">
               <article className="flex flex-col items-center basis-1/4 px-5 pt-5 pb-12 border-solid border border-gray-200">
