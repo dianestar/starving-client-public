@@ -4,11 +4,10 @@ import { useForm } from "react-hook-form";
 import { UPLOAD_RECIPE } from "../_axios/recipe";
 import FormErrorMessage from "../components/error/FormErrorMessage";
 import ImageUpload from "../components/ImageUpload";
-import { useState, useRef, useEffect } from "react";
+import { useState } from "react";
 
 const Myrecipe = () => {
   const [showImages, setShowImages] = useState([]);
-  const inputFocus = useRef(null);
   const categories = ["RICE", "SOUP", "BREAD", "NOODLE", "FRIED"];
   const {
     register,
