@@ -2,7 +2,7 @@ import React from "react";
 
 function FormErrorMessage({ message }) {
   return (
-    <section className="text-sm font-bold text-red-700">{message}</section>
+    <section className="text-sm font-semibold text-red-500">{message}</section>
   );
 }
 
