@@ -12,8 +12,8 @@ const FormWrapper = ({ title, text1, link1, text2, link2, children }) => {
         <section className="text-neutral-600">
           <p className="cursor-pointer">
             <span
-              onClick={() => {
-                router.push(`${link1}`);
+              onClick={async () => {
+                await router.push(`${link1}`);
               }}
             >
               {text1}
@@ -22,8 +22,8 @@ const FormWrapper = ({ title, text1, link1, text2, link2, children }) => {
             <span> / </span>
 
             <span
-              onClick={() => {
-                router.push(`${link2}`);
+              onClick={async () => {
+                await router.push(`${link2}`);
               }}
             >
               {text2}

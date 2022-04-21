@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from "react";
+import React, { useState, useEffect, useCallback, Fragment } from "react";
 import { useRouter } from "next/router";
 import { GET_AUTH, DELETE_AUTH } from "../_axios/user";
 import { GET_MY_RECIPE } from "../_axios/recipe";
@@ -8,7 +8,8 @@ import Layout from "../components/Layout";
 import NoContent from "../components/NoContent";
 import RecipeCard from "../components/RecipeCard";
 import UpdataUserForm from "../components/form/UpdateUserForm";
-import { useSnackbar, Fragment, Button } from "notistack";
+import { useSnackbar } from "notistack";
+import Button from '@mui/material/Button';
 import CustomizedPaginate from "../components/CustomizedPaginate";
 
 const Mypage = () => {
@@ -17,7 +18,7 @@ const Mypage = () => {
 
   const [nickname, setNickname] = useState("");
   const [email, setEmail] = useState("");
-  const { enqueueSnackbar } = useSnackbar();
+  const { enqueueSnackbar, closeSnackbar } = useSnackbar();
 
   const [page, setPage] = useState(1);
   const [recipes, setRecipes] = useState([]);
@@ -70,8 +71,8 @@ const Mypage = () => {
 
       if (access) {
         localStorage.removeItem("access_token");
-        alert("회원탈퇴가 완료되었습니다.");
-        router.push("/");
+        enqueueSnackbar("회원탈퇴가 완료되었습니다", { variant: "info"});
+        await router.push("/");
       }
     } catch (error) {
       console.log(error);
@@ -93,10 +94,21 @@ const Mypage = () => {
               <article className="space-x-2 text-gray-400">
                 <button
                   onClick={() => {
-                    const isConfirmed = confirm("탈퇴하시겠습니까?");
-                    if (isConfirmed) {
-                      handleDeleteUser();
-                    }
+                    const action = key => (
+                      <Fragment>
+                          <Button color="error" onClick={() => { closeSnackbar(key); }}>
+                              취소
+                          </Button>
+                          <Button color="error" onClick={handleDeleteUser}>
+                              확인
+                          </Button>
+                      </Fragment>
+                  );
+                  
+                  return enqueueSnackbar("탈퇴하시겠습니까?", {
+                      variant: 'warning',
+                      action,
+                  });
                   }}
                 >
                   회원탈퇴
