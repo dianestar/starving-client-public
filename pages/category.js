@@ -1,8 +1,8 @@
 import React, { useState, useEffect, useCallback } from "react";
 import Layout from "../components/Layout";
 import RecipeCard from "../components/RecipeCard";
+import CustomizedPaginate from "../components/CustomizedPaginate";
 import { GET_CATEGORY_RECIPE } from "../_axios/recipe";
-import ReactPaginate from "react-paginate";
 import { useRouter } from "next/router";
 
 const Category = () => {
@@ -29,11 +29,6 @@ const Category = () => {
         }  
     }, [categoryName, page]);
 
-    const handlePageClick = (event) => {
-        // console.log(event);
-        setPage(event.selected + 1);
-    }
-
     useEffect(() => {
         getCategorizedRecipe();
     }, [getCategorizedRecipe]);
@@ -59,17 +54,7 @@ const Category = () => {
                             />
                         ))}
                     </article>
-                    <ReactPaginate
-                        className="flex justify-center space-x-4"
-                        breakLabel="..."
-                        nextLabel="next >"
-                        onPageChange={handlePageClick}
-                        pageRangeDisplayed={5}
-                        pageCount={pageCount}
-                        previousLabel="< previous"
-                        renderOnZeroPageCount={null}
-                        >
-                    </ReactPaginate>
+                    <CustomizedPaginate setPage={setPage} pageCount={pageCount} />
                 </section>
             </Layout>
             

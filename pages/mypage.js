@@ -9,7 +9,7 @@ import NoContent from "../components/NoContent";
 import RecipeCard from "../components/RecipeCard";
 import UpdataUserForm from "../components/form/UpdateUserForm";
 import { useSnackbar, Fragment, Button } from "notistack";
-import ReactPaginate from "react-paginate";
+import CustomizedPaginate from "../components/CustomizedPaginate";
 
 const Mypage = () => {
   const router = useRouter();
@@ -76,10 +76,6 @@ const Mypage = () => {
     } catch (error) {
       console.log(error);
     }
-  };
-
-  const handlePageClick = (e) => {
-    setPage(e.selected + 1);
   };
 
   return (
@@ -164,16 +160,7 @@ const Mypage = () => {
                         />
                       ))}
                     </div>
-                    <ReactPaginate
-                      className="flex justify-center space-x-4"
-                      breakLabel="..."
-                      nextLabel="next >"
-                      onPageChange={handlePageClick}
-                      pageRangeDisplayed={5}
-                      pageCount={pageCount}
-                      previousLabel="< previous"
-                      renderOnZeroPageCount={null}
-                    ></ReactPaginate>
+                    <CustomizedPaginate setPage={setPage} pageCount={pageCount} />
                   </div>
                 ) : (
                   <NoContent text={`아직 등록하신 레시피가 없습니다`} />

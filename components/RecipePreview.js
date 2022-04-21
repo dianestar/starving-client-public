@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, useState } from "react";
 import RecipeCard from "./RecipeCard";
 import { GET_ALL_RECIPE } from "../_axios/recipe";
-import ReactPaginate from "react-paginate";
+import CustomizedPaginate from "../components/CustomizedPaginate";
 
 const RecipePreview = () => {
   const [recipes, setRecipes] = useState([]);
@@ -22,11 +22,6 @@ const RecipePreview = () => {
     getRecipeAll();
   }, [getRecipeAll]);
 
-  const onPageChange = (count) => {
-    const { selected } = count;
-    setPage(selected + 1);
-  };
-
   return (
     <>
       <div className="w-[1060px] flex justify-between mx-auto my-4">
@@ -44,16 +39,7 @@ const RecipePreview = () => {
           />
         ))}
       </div>
-      <ReactPaginate
-        breakLabel="..."
-        nextLabel="next >"
-        onPageChange={onPageChange}
-        pageRangeDisplayed={5}
-        pageCount={pageCount}
-        previousLabel="< previous"
-        renderOnZeroPageCount={null}
-        containerClassName={"pagination"}
-      />
+      <CustomizedPaginate setPage={setPage} pageCount={pageCount} />
     </>
   );
 };
