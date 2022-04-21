@@ -57,17 +57,10 @@ function Home() {
             </button>
           </section>
           <section className="w-full bg-cyan-50 flex flex-col items-center py-8 space-y-8">
-            <article>
-              <p className="text-lg text-neutral-400">초딩입맛 사로잡는</p>
-              <p className="text-4xl font-bold text-cyan-600">
-                비주얼 쩌는 요리들~
-              </p>
-              <RecipePreview />
-            </article>
-            <article>
-              <p className="text-lg text-neutral-400">먹어는 봤나~</p>
-              <p className="text-4xl font-bold text-cyan-600">
-                자취인, 한 그릇의 품격
+            <article className="space-y-4">
+              <p className="text-lg text-neutral-400">Recent Recipes</p>
+              <p className="text-3xl font-bold text-cyan-600">
+                최근 업로드된 따끈따끈한 레시피들 🍽
               </p>
               <RecipePreview />
             </article>

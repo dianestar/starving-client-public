@@ -13,7 +13,7 @@ const RecipeCard = ({
   return (
     <div className="w-[250px] h-[400px] bg-white border-solid border-2 border-neutral-200 flex flex-col items-center justify-between">
       <section className="w-[95%] h-[60%] bg-black mt-1 relative">
-      <img className="w-full h-full" src={cookImages[0]} />
+      <img className="w-full h-full object-cover" src={cookImages[0]} />
         <article className="text-white absolute bottom-0 right-0 mx-2 my-2">
           <p className="text-sm">해먹지수</p>
           <p className="text-4xl font-bold">{percent}</p>
@@ -21,7 +21,7 @@ const RecipeCard = ({
       </section>
       <section className="relative">
         <article className="w-[60px] h-[60px] absolute top-[-80%] left-[50%] right-[50%] translate-x-[-50%] bg-neutral-200 rounded-full">
-          <img className="w-full h-full rounded-full" src={avatarImage || "/defaultAvatarImage.png"} />
+          <img className="w-full h-full rounded-full object-cover" src={avatarImage || "/defaultAvatarImage.png"} />
         </article>
         <article className="flex flex-col text-center">
           <p>{nickname}</p>

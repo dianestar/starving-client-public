@@ -3,7 +3,7 @@ import Link from "next/link";
 import { GET_AUTH } from "../_axios/user";
 import { useRouter } from "next/router";
 
-const category = ["RICE", "SOUP", "BREAD", "NOODLE", "FRIED"];
+const category = ["ALL", "RICE", "SOUP", "BREAD", "NOODLE", "FRIED"];
 
 const Layout = ({ children }) => {
   const router = useRouter();
@@ -104,22 +104,6 @@ const Layout = ({ children }) => {
               해먹남녀
             </span>
             <section className="flex w-1/2 justify-between mx-auto">
-              <a className="flex space-x-6 text-slate-400">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  className="h-5 w-5"
-                  viewBox="0 0 20 20"
-                  fill="gray"
-                >
-                  <path
-                    fillRule="evenodd"
-                    d="M3 5a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 10a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 15a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z"
-                    clipRule="evenodd"
-                  />
-                </svg>
-                <span>카테고리</span>
-                <span>|</span>
-              </a>
               {category.map((v, i) => (
                 <span
                   key={i}

@@ -18,6 +18,7 @@ const Mypage = () => {
 
   const [nickname, setNickname] = useState("");
   const [email, setEmail] = useState("");
+  const [avatarImage, setAvatarImage] = useState("/defaultAvatarImage.png");
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
 
   const [page, setPage] = useState(1);
@@ -32,19 +33,19 @@ const Mypage = () => {
     } else {
       setNickname(res.data.nickname);
       setEmail(res.data.email);
+      setAvatarImage(res.data.avatarImage);
     }
   }, [currentUrl, router]);
 
   const getMyrecipePage = async () => {
-    const SIZE = 4;
+    const SIZE = 8;
     try {
       const {
-        data: { access, recipesCount, totalPages, recipes },
+        data: { access, totalPages, recipes },
       } = await GET_MY_RECIPE(page, SIZE);
 
       if (access) {
         setRecipes(recipes);
-        setRecipesCount(recipesCount);
         setPageCount(totalPages);
       }
     } catch (err) {
@@ -157,17 +158,17 @@ const Mypage = () => {
               <article>
                 {recipes.length !== 0 ? (
                   <div>
-                    <div className="flex">
+                    <div className="grid grid-rows-1 grid-cols-4 my-4">
                       {recipes.map((recipe) => (
                         <RecipeCard
-                          key={recipe.category.pk}
+                          key={recipe.pk}
                           percent="5.0"
                           nickname={nickname}
                           desc={recipe.description}
                           title={recipe.title}
                           time="⏰"
                           like="♾"
-                          avatarImage={"/defaultAvatarImage.png"}
+                          avatarImage={avatarImage}
                           cookImages={recipe.cookImages}
                         />
                       ))}

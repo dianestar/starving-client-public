@@ -1,4 +1,5 @@
 import React, { useState, useRef, useEffect } from "react";
+import { useRouter } from "next/router";
 import Image from "next/image";
 import { UPLOAD_AVATAR, GET_AUTH } from "../../_axios/user";
 import { useSnackbar } from "notistack";
@@ -6,6 +7,7 @@ import { useSnackbar } from "notistack";
 const NO_USER_IMAGE_URL = "/defaultAvatarImage.png";
 
 const AvatarImage = ({ nickname }) => {
+  const router = useRouter();
   const imageInputRef = useRef();
   const [imageFile, setImageFile] = useState(null);
   const [imageUrl, setImageUrl] = useState(NO_USER_IMAGE_URL);
@@ -56,6 +58,7 @@ const AvatarImage = ({ nickname }) => {
       console.log(response);
       setEditMode(false);
       enqueueSnackbar("이미지 변경 완료", { variant: "success" });
+      await router.replace(router.asPath);
     } catch (error) {
       console.log(error);
     }
