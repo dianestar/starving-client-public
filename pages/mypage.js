@@ -162,6 +162,7 @@ const Mypage = () => {
                       {recipes.map((recipe) => (
                         <RecipeCard
                           key={recipe.pk}
+                          pk={recipe.pk}
                           percent="5.0"
                           nickname={nickname}
                           desc={recipe.description}

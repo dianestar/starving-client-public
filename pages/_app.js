@@ -1,4 +1,5 @@
 import "../styles/globals.css";
+import "../styles/slick-styles.css";
 import { RecoilRoot } from "recoil";
 import { SnackbarProvider } from "notistack";
 

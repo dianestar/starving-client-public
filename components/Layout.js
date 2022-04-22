@@ -95,7 +95,7 @@ const Layout = ({ children }) => {
             </section>
           </article>
         </section>
-        <section className="w-full h-[55px] bg-slate-100">
+        <section className="w-full h-[55px] bg-white">
           <article className="w-2/3 h-full flex items-center mx-auto">
             <span
               onClick={async () => await router.push("/")}
@@ -123,7 +123,7 @@ const Layout = ({ children }) => {
         </section>
       </header>
       {children}
-      <footer className="w-full h-[150px] bg-slate-100 flex items-center justify-center">
+      <footer className="w-full h-[150px] bg-white flex items-center justify-center">
         <span className="text-xl text-neutral-400 italic">
           Starving Project
         </span>

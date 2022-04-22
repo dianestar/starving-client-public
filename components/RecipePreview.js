@@ -24,6 +24,7 @@ const RecipePreview = () => {
         {recipes.map((recipe, index) => (
           <RecipeCard
             key={recipe.pk}
+            pk={recipe.pk}
             percent="1.5"
             nickname={recipe.owner.nickname}
             desc={recipe.description}

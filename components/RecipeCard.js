@@ -1,6 +1,8 @@
 import React from "react";
+import { useRouter } from "next/router";
 
 const RecipeCard = ({
+  pk,
   percent,
   nickname,
   desc,
@@ -10,24 +12,39 @@ const RecipeCard = ({
   avatarImage,
   cookImages,
 }) => {
+
+  const router = useRouter();
+  const pushToDetail = async () => {
+    await router.push({
+      pathname: "/detail",
+      query: { pk: pk },
+    });
+  }
+
   return (
-    <div className="w-[250px] h-[400px] bg-white border-solid border-2 border-neutral-200 flex flex-col items-center justify-between">
-      <section className="w-[95%] h-[60%] bg-black mt-1 relative">
-      <img className="w-full h-full object-cover" src={cookImages[0]} />
+    <div className="w-[250px] h-[400px] bg-white border-solid border-2 border-neutral-200 flex flex-col items-center justify-between relative">
+      <section
+        className="w-[95%] h-[60%] bg-black mt-1 relative cursor-pointer"
+        onClick={pushToDetail}
+      >
+        <img className="w-full h-full object-cover" src={cookImages[0]} />
         <article className="text-white absolute bottom-0 right-0 mx-2 my-2">
           <p className="text-sm">해먹지수</p>
           <p className="text-4xl font-bold">{percent}</p>
         </article>
       </section>
-      <section className="relative">
-        <article className="w-[60px] h-[60px] absolute top-[-80%] left-[50%] right-[50%] translate-x-[-50%] bg-neutral-200 rounded-full">
-          <img className="w-full h-full rounded-full object-cover" src={avatarImage || "/defaultAvatarImage.png"} />
-        </article>
-        <article className="flex flex-col text-center">
-          <p>{nickname}</p>
-          <p>{desc}</p>
-          <p className="font-bold">{title}</p>
-        </article>
+      <section
+        className="cursor-pointer flex flex-col items-center"
+      >
+        <img className="absolute top-[50%] w-[60px] h-[60px] rounded-full object-cover" src={avatarImage || "/defaultAvatarImage.png"} />
+        <span className="absolute top-[65%] text-neutral-400">{nickname}</span>
+      </section>
+      <section
+        className="text-center cursor-pointer"
+        onClick={pushToDetail}      
+      >
+          <p className="font-bold w-[200px] overflow-hidden text-ellipsis">{title}</p>
+          <p className="w-[200px] overflow-hidden text-ellipsis">{desc}</p>
       </section>
       <section className="w-full flex border-t-2 text-neutral-400">
         <article className="w-1/3 flex justify-evenly">

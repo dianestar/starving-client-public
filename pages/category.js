@@ -52,28 +52,30 @@ const Category = () => {
     return (
         <>
             <Layout>
-                <section className="w-[1060px] space-y-8 my-16 mx-auto">
-                    <p className="text-2xl font-bold">#{categoryName}</p>
-                    <p className="text-3xl font-bold">조건에 맞는 레시피가 <span className="text-cyan-600">{recipesCount}</span>개 있습니다.</p>
-                    <article className="w-[1060px] grid grid-rows-2 grid-cols-4 mx-auto my-4">
-                        {recipes.map((recipe, index) => (
-                            <RecipeCard
-                                key={recipe.pk}
-                                percent="1.5"
-                                nickname={recipe.owner.nickname}
-                                desc={recipe.description}
-                                title={recipe.title}
-                                time="30분"
-                                like="702명"
-                                avatarImage={recipe.owner.avatarImage}
-                                cookImages={recipe.cookImages}
-                            />
-                        ))}
-                    </article>
-                    <CustomizedPaginate setPage={setPage} pageCount={pageCount} />
-                </section>
+                <div className="w-full min-h-screen bg-slate-50">
+                    <section className="w-[1060px] space-y-8 py-16 mx-auto">
+                        <p className="text-2xl font-bold text-cyan-600">#{categoryName}</p>
+                        <p className="text-3xl font-bold">조건에 맞는 레시피가 <span className="text-cyan-600">{recipesCount}</span>개 있습니다.</p>
+                        <article className="w-[1060px] grid grid-rows-2 grid-cols-4 mx-auto my-4">
+                            {recipes.map((recipe, index) => (
+                                <RecipeCard
+                                    key={recipe.pk}
+                                    pk={recipe.pk}
+                                    percent="1.5"
+                                    nickname={recipe.owner.nickname}
+                                    desc={recipe.description}
+                                    title={recipe.title}
+                                    time="30분"
+                                    like="702명"
+                                    avatarImage={recipe.owner.avatarImage}
+                                    cookImages={recipe.cookImages}
+                                />
+                            ))}
+                        </article>
+                        <CustomizedPaginate setPage={setPage} pageCount={pageCount} />
+                    </section>
+                </div>
             </Layout>
-            
         </>
     );
 }

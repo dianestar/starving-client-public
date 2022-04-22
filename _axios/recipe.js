@@ -21,6 +21,13 @@ export const GET_MY_RECIPE = (page, size) => {
   });
 };
 
+export const GET_ONE_RECIPE = (pk) => {
+  return Api({
+    method: METHOD.GET,
+    url: `recipe/one?pk=${pk}`,
+  })
+}
+
 export const UPLOAD_RECIPE = (form) => {
   return Api({
     method: METHOD.POST,
