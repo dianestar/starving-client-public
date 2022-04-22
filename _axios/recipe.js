@@ -35,3 +35,10 @@ export const UPLOAD_RECIPE = (form) => {
     data: form,
   });
 };
+
+export const DELETE_RECIPE = (pk) => {
+  return Api({
+    method: METHOD.DELETE,
+    url: `recipe?pk=${pk}`,
+  })
+}

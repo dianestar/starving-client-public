@@ -17,12 +17,12 @@ const RecipeCard = ({
   const pushToDetail = async () => {
     await router.push({
       pathname: "/detail",
-      query: { pk: pk },
+      query: { recipePk: pk },
     });
   }
 
   return (
-    <div className="w-[250px] h-[400px] bg-white border-solid border-2 border-neutral-200 flex flex-col items-center justify-between relative">
+    <div className="w-[250px] h-[400px] bg-white border-solid border-2 border-neutral-200 flex flex-col items-center justify-between relative my-2">
       <section
         className="w-[95%] h-[60%] bg-black mt-1 relative cursor-pointer"
         onClick={pushToDetail}

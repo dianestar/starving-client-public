@@ -1,6 +1,9 @@
-import React, { useState, useEffect, useCallback, useRef } from "react";
-import { GET_ONE_RECIPE } from "../_axios/recipe";
+import React, { useState, useEffect, useCallback, useRef, Fragment } from "react";
+import { GET_AUTH } from "../_axios/user";
+import { GET_ONE_RECIPE, DELETE_RECIPE } from "../_axios/recipe";
 import { useRouter } from "next/router";
+import { useSnackbar } from "notistack";
+import Button from '@mui/material/Button';
 import Layout from "../components/Layout";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css"; 
@@ -8,55 +11,93 @@ import "slick-carousel/slick/slick-theme.css";
 
 const Detail = () => {
     const router = useRouter();
-    const pk = router.query.pk;
+    const recipePk = router.query.recipePk;
 
     const [recipe, setRecipe] = useState({});
     const [owner, setOwner] = useState({});
     const [cookImages, setCookImages] = useState([]);
     const [category, setCategory] = useState("");
 
+    const [yesDelete, setYesDelete] = useState(false);
+
     const [navA, setNavA] = useState(null);
     const [navB, setNavB] = useState(null);
     const slickA = useRef(null);
     const slickB = useRef(null);
 
+    const { enqueueSnackbar, closeSnackbar } = useSnackbar();
+
     const getRecipeOne = useCallback(async() => {
         try {
-          const {
-            data: { 
-                access,
-                recipe: {
-                    updatedAt,
-                    title,
-                    description,
-                    mainText,
-                    cookImages,
-                    owner: {
-                        nickname,
-                        avatarImage,
-                    },
-                    category: {
-                        values,
-                    },
+            const {
+                data: { 
+                    access,
+                    recipe: {
+                        title,
+                        description,
+                        mainText,
+                        cookImages,
+                        owner: {
+                            pk,
+                            nickname,
+                            avatarImage,
+                        },
+                        category: {
+                            values,
+                        },
+                    }
                 }
-            }
-          } = await GET_ONE_RECIPE(pk);
+            } = await GET_ONE_RECIPE(recipePk);
           
-          if (access) {
-              setRecipe({updatedAt, title, description, mainText});
-              setCookImages(cookImages);
-              if (avatarImage) {
-                  setOwner({nickname, avatarImage});
-              }
-              else {
-                  setOwner({nickname, avatarImage: "/defaultAvatarImage.png"});
-              }
-              setCategory(values);
-          }
+            if (access) {
+                setRecipe({title, description, mainText});
+                setCookImages(cookImages);
+                if (avatarImage) {
+                    setOwner({nickname, avatarImage});
+                }
+                else {
+                    setOwner({nickname, avatarImage: "/defaultAvatarImage.png"});
+                }
+                setCategory(values);
+
+                checkOwner(pk);
+            }
         } catch (error) {
           console.log(error);
         }
-    }, [pk])
+    }, [recipePk]);
+
+    const checkOwner = useCallback(async(ownerPk) => {
+        try {
+            const {
+                data: { pk }
+            } = await GET_AUTH();
+
+            if (pk) {
+                console.log(recipePk, pk, ownerPk);
+                if (pk === ownerPk) { setYesDelete(true); }
+                else { setYesDelete(false); }
+            }
+        } catch (error) {
+            console.log(error);
+        }
+    }, [recipePk]);
+
+    const handleDeleteRecipe = async () => {
+        try {
+            const {
+                data: { access, message }
+            } = await DELETE_RECIPE(recipePk);
+
+            if (access) {
+                enqueueSnackbar("삭제되었습니다", { variant: "info" });
+                router.push("/");
+            }
+
+        } catch (error) {
+            console.log(error);
+        }
+    }
 
     useEffect(() => {
         getRecipeOne();
@@ -69,7 +110,33 @@ const Detail = () => {
             <div className="w-full min-h-screen bg-slate-50">
                 <section className="w-[1060px] mx-auto flex">
                     <article className="w-3/4 min-h-screen bg-white mx-2 my-4 p-8 shadow-sm space-y-4">
-                        <p className="text-xl font-bold text-cyan-600">#{category}</p>
+                        <section className="flex items-center justify-between">
+                            <p className="text-xl font-bold text-cyan-600">#{category}</p>
+                            {yesDelete ?
+                            <p
+                                className="text-sm text-neutral-400 hover:text-neutral-800 hover:cursor-pointer"
+                                onClick={() => {
+                                    const action = key => (
+                                        <Fragment>
+                                            <Button color="error" onClick={() => { closeSnackbar(key); }}>
+                                                취소
+                                            </Button>
+                                            <Button color="error" onClick={handleDeleteRecipe}>
+                                                확인
+                                            </Button>
+                                        </Fragment>
+                                    );
+
+                                    return enqueueSnackbar("삭제하시겠습니까?", {
+                                        variant: "warning",
+                                        action,
+                                    });
+                                }}
+                            >
+                                레시피 삭제
+                            </p>
+                            : null}
+                        </section>
                         <hr />
                         <p className="text-3xl font-bold text-center break-all">{recipe.title}</p>
                         <p className="text-lg text-center text-neutral-400 break-all">{recipe.description}</p>

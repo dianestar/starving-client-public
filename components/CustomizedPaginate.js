@@ -13,7 +13,7 @@ const CustomizedPaginate = ({ setPage, pageCount }) => {
             onPageChange={onPageChange}
             pageRangeDisplayed={5}
             pageCount={pageCount}
-            previousLabel="< previous"
+            previousLabel="< prev"
             renderOnZeroPageCount={null}
             >
         </ReactPaginate>

@@ -8,7 +8,7 @@ const RecipePreview = () => {
   const getRecipeAll = async () => {
     const {
       data: { access, recipes },
-    } = await GET_ALL_RECIPE(1, 4);
+    } = await GET_ALL_RECIPE(1, 8);
     if (access) {
       setRecipes(recipes);
     }
