@@ -26,5 +26,6 @@ export const UPLOAD_RECIPE = (form) => {
     method: METHOD.POST,
     url: "recipe",
     data: form,
+    headers: { "Content-Type": "multipart/form-data" },
   });
 };

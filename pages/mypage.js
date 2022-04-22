@@ -38,12 +38,12 @@ const Mypage = () => {
     const SIZE = 4;
     try {
       const {
-        data: { access, recipesCount, totalPages, recipes },
+        data: { access, totalPages, recipes },
       } = await GET_MY_RECIPE(page, SIZE);
 
       if (access) {
         setRecipes(recipes);
-        setRecipesCount(recipesCount);
+
         setPageCount(totalPages);
       }
     } catch (err) {
@@ -165,7 +165,7 @@ const Mypage = () => {
                       ))}
                     </div>
                     <ReactPaginate
-                      className="flex justify-center space-x-4"
+                      className="flex justify-center space-x-4 mt-3"
                       breakLabel="..."
                       nextLabel="next >"
                       onPageChange={handlePageClick}

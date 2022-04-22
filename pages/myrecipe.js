@@ -5,9 +5,14 @@ import { UPLOAD_RECIPE } from "../_axios/recipe";
 import FormErrorMessage from "../components/error/FormErrorMessage";
 import ImageUpload from "../components/ImageUpload";
 import { useState } from "react";
+import { useSnackbar } from "notistack";
+import router from "next/router";
 
 const Myrecipe = () => {
   const [showImages, setShowImages] = useState([]);
+  const [saveImages, setSaveImages] = useState([]);
+  const { enqueueSnackbar } = useSnackbar();
+
   const categories = ["RICE", "SOUP", "BREAD", "NOODLE", "FRIED"];
   const {
     register,
@@ -17,13 +22,17 @@ const Myrecipe = () => {
   } = useForm({ mode: "onChange" });
 
   const onSubmit = async () => {
-    const form = {
-      title: watch("title"),
-      description: watch("description"),
-      mainText: watch("mainText"),
-      cookImages: watch(showImages),
-      category: watch("category"),
-    };
+    const form = new FormData();
+    form.append("title", watch("title"));
+    form.append("description", watch("description"));
+    form.append("mainText", watch("mainText"));
+    saveImages.forEach((obj) => {
+      for (let i = 0; i < obj.length; i++) {
+        form.append("cookImages", obj.fileList[i]);
+      }
+    });
+
+    form.append("category", watch("category"));
 
     try {
       const {
@@ -31,9 +40,12 @@ const Myrecipe = () => {
       } = await UPLOAD_RECIPE(form);
 
       if (!access) {
-        alert(message);
+        return enqueueSnackbar(message, { variant: "error" });
       } else {
-        alert("레시피 등록이 완료되었습니다.");
+        enqueueSnackbar("레시피 등록이 완료되었습니다.", {
+          variant: "success",
+        });
+        await router.reload();
       }
     } catch (err) {
       console.log(err);
@@ -42,6 +54,14 @@ const Myrecipe = () => {
 
   const onLoadFile = (e) => {
     const imageList = e.target.files;
+
+    setSaveImages(
+      saveImages.concat({
+        fileList: e.target.files,
+        length: e.target.files.length,
+      })
+    );
+
     let imageUrlList = [...showImages];
 
     for (let i = 0; i < imageList.length; i++) {
@@ -51,14 +71,17 @@ const Myrecipe = () => {
 
     if (imageUrlList.length > 10) {
       imageUrlList = imageUrlList.slice(0, 10);
-      alert("이미지는 최대 10장입니다.");
+      enqueueSnackbar("이미지는 최대 10장입니다.", { variant: "error" });
     }
 
     setShowImages(imageUrlList);
+
+    console.log(saveImages);
   };
 
   const handleDeleteImage = (id) => {
     setShowImages(showImages.filter((_, index) => index !== id));
+    setSaveImages(saveImages.filter((_, index) => index !== id));
   };
 
   return (
@@ -164,15 +187,8 @@ const Myrecipe = () => {
                 onLoadFile={onLoadFile}
                 handleDeleteImage={handleDeleteImage}
                 showImages={showImages}
-                register={register}
-                name={"cookImages"}
               />
-              {errors.cookImages && errors.cookImages.type === "required" && (
-                <FormErrorMessage message={"최소 업로드 갯수는 1개입니다."} />
-              )}
-              {errors.cookImages && errors.cookImages.type === "maxLength" && (
-                <FormErrorMessage message={"최대 업로드 갯수는 10개입니다."} />
-              )}
+
               <div className="text-center my-3">
                 <button className="px-10 py-3 rounded font-medium text-white bg-sky-600">
                   등록완료

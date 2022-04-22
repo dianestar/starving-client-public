@@ -34,12 +34,12 @@ const RecipePreview = () => {
           <RecipeCard
             key={index}
             percent="1.5"
-            nickname={recipe.owner.nickname}
+            nickname={recipe.owner?.nickname}
             desc={recipe.description}
             title={recipe.title}
             time="30분"
             like="702명"
-            avatarImage={recipe.owner.avatarImage}
+            avatarImage={recipe.owner?.avatarImage}
             cookImages={recipe.cookImages}
           />
         ))}

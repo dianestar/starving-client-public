@@ -1,3 +1,5 @@
+import FormErrorMessage from "../components/error/FormErrorMessage";
+
 const ImageUpload = ({ onLoadFile, handleDeleteImage, showImages }) => {
   const DeleteBtn = ({ onClick }) => {
     return (
@@ -28,7 +30,7 @@ const ImageUpload = ({ onLoadFile, handleDeleteImage, showImages }) => {
         <label
           htmlFor="cookImages"
           className="w-[160px] flex mr-4 py-2 px-3 text-sm text-sky-600 cursor-pointer
-          rounded-full border border-sky-600 items-center"
+          rounded-full border border-sky-600 items-center mb-1"
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -46,17 +48,17 @@ const ImageUpload = ({ onLoadFile, handleDeleteImage, showImages }) => {
         </label>
         <input
           type="file"
+          id="cookImages"
           multiple
           onChange={onLoadFile}
           accept="image/jpg, image/jpeg,"
-          id="cookImages"
           className="hidden"
         />
       </article>
 
-      <article className="flex mt-3">
+      <article className="grid gap-4 grid-cols-5 grid-rows-2 mt-5">
         {showImages.map((image, i) => (
-          <div key={i} className="mr-4">
+          <div key={i} className="mr-4 mb-4">
             <DeleteBtn
               onClick={() => {
                 handleDeleteImage(i);
