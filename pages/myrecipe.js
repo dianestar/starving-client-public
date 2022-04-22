@@ -4,10 +4,16 @@ import { useForm } from "react-hook-form";
 import { UPLOAD_RECIPE } from "../_axios/recipe";
 import FormErrorMessage from "../components/error/FormErrorMessage";
 import ImageUpload from "../components/ImageUpload";
-import { useState } from "react";
+import { useState, useRef } from "react";
+import { useSnackbar } from "notistack";
 
 const Myrecipe = () => {
+  // 방금 선택한 사진을 바로 삭제한 경우 input ref를 비워주기 위해 useRef 활용
+  // ImageUpload 컴포넌트에 props로 넘김
+  const imageInputRef = useRef();
   const [showImages, setShowImages] = useState([]);
+  const { enqueueSnackbar } = useSnackbar();
+
   const categories = ["RICE", "SOUP", "BREAD", "NOODLE", "FRIED"];
   const {
     register,
@@ -17,13 +23,15 @@ const Myrecipe = () => {
   } = useForm({ mode: "onChange" });
 
   const onSubmit = async () => {
-    const form = {
-      title: watch("title"),
-      description: watch("description"),
-      mainText: watch("mainText"),
-      cookImages: watch(showImages),
-      category: watch("category"),
-    };
+    const form = new FormData();
+    form.append("title", watch("title"));
+    form.append("description", watch("description"));
+    form.append("mainText", watch("mainText"));
+    showImages.forEach((image) => {
+      form.append("cookImages", image.file);
+    })
+
+    form.append("category", watch("category"));
 
     try {
       const {
@@ -41,24 +49,32 @@ const Myrecipe = () => {
   };
 
   const onLoadFile = (e) => {
+    // cf. showImages, saveImages 그냥 하나로 합침
     const imageList = e.target.files;
-    let imageUrlList = [...showImages];
+    let tempList = [...showImages];
 
     for (let i = 0; i < imageList.length; i++) {
-      const currentImageUrl = URL.createObjectURL(imageList[i]);
-      imageUrlList.push(currentImageUrl);
+      tempList.push({
+        file: imageList[i],
+        url: URL.createObjectURL(imageList[i]),
+      });
     }
 
-    if (imageUrlList.length > 10) {
-      imageUrlList = imageUrlList.slice(0, 10);
-      alert("이미지는 최대 10장입니다.");
+    if (tempList.length > 10) {
+      tempList = tempList.slice(0, 10);
+      enqueueSnackbar("이미지는 최대 10장입니다.", { variant: "error" });
     }
 
-    setShowImages(imageUrlList);
+    setShowImages(tempList);
   };
 
-  const handleDeleteImage = (id) => {
-    setShowImages(showImages.filter((_, index) => index !== id));
+  const handleDeleteImage = (url) => {
+    // cf. url 기준 필터링으로 수정
+    setShowImages(showImages.filter((image) => image.url !== url));
+    // createObjectURL로부터 생성된 URL 해제
+    URL.revokeObjectURL(url);
+    // input ref 비우기
+    imageInputRef.current.value = "";
   };
 
   return (
@@ -164,8 +180,7 @@ const Myrecipe = () => {
                 onLoadFile={onLoadFile}
                 handleDeleteImage={handleDeleteImage}
                 showImages={showImages}
-                register={register}
-                name={"cookImages"}
+                imageInputRef={imageInputRef}
               />
               {errors.cookImages && errors.cookImages.type === "required" && (
                 <FormErrorMessage message={"최소 업로드 갯수는 1개입니다."} />

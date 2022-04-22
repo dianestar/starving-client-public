@@ -1,4 +1,6 @@
-const ImageUpload = ({ onLoadFile, handleDeleteImage, showImages }) => {
+import FormErrorMessage from "../components/error/FormErrorMessage";
+
+const ImageUpload = ({ onLoadFile, handleDeleteImage, showImages, imageInputRef }) => {
   const DeleteBtn = ({ onClick }) => {
     return (
       <button onClick={onClick}>
@@ -51,20 +53,23 @@ const ImageUpload = ({ onLoadFile, handleDeleteImage, showImages }) => {
           accept="image/jpg, image/jpeg,"
           id="cookImages"
           className="hidden"
+          ref={imageInputRef}
         />
       </article>
 
       <article className="flex mt-3">
+        {/* 중간에 수정 또는 삭제 가능성이 있는 컴포넌트는 index를 key로 쓰는 것은 권장하지 않는다는 얘기를 들은 적이 있어서
+        image.url로 key 수정 + showImages의 구조가 saveImages의 역할까지 포함하느라 바꼈으므로 image 전부 image.url로 수정*/}
         {showImages.map((image, i) => (
-          <div key={i} className="mr-4">
+          <div key={image.url} className="mr-4">
             <DeleteBtn
               onClick={() => {
-                handleDeleteImage(i);
+                handleDeleteImage(image.url);
               }}
             />
             <img
-              src={image}
-              alt={`${image}-${i}`}
+              src={image.url}
+              alt={`${image.url}-${i}`}
               className="w-[200px] h-auto"
             />
           </div>
