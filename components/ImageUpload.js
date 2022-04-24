@@ -1,6 +1,9 @@
-import FormErrorMessage from "../components/error/FormErrorMessage";
-
-const ImageUpload = ({ onLoadFile, handleDeleteImage, showImages }) => {
+const ImageUpload = ({
+  onLoadFile,
+  handleDeleteImage,
+  showImages,
+  imageInputRef,
+}) => {
   const DeleteBtn = ({ onClick }) => {
     return (
       <button onClick={onClick}>
@@ -46,6 +49,7 @@ const ImageUpload = ({ onLoadFile, handleDeleteImage, showImages }) => {
           </svg>
           조리과정 추가하기
         </label>
+
         <input
           type="file"
           id="cookImages"
@@ -53,20 +57,21 @@ const ImageUpload = ({ onLoadFile, handleDeleteImage, showImages }) => {
           onChange={onLoadFile}
           accept="image/jpg, image/jpeg,"
           className="hidden"
+          ref={imageInputRef}
         />
       </article>
 
-      <article className="grid gap-4 grid-cols-5 grid-rows-2 mt-5">
+      <article className="flex mt-3">
         {showImages.map((image, i) => (
-          <div key={i} className="mr-4 mb-4">
+          <div key={image.url} className="mr-4">
             <DeleteBtn
               onClick={() => {
-                handleDeleteImage(i);
+                handleDeleteImage(image.url);
               }}
             />
             <img
-              src={image}
-              alt={`${image}-${i}`}
+              src={image.url}
+              alt={`${image.url}-${i}`}
               className="w-[200px] h-auto"
             />
           </div>

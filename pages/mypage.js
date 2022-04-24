@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from "react";
+import React, { useState, useEffect, useCallback, Fragment } from "react";
 import { useRouter } from "next/router";
 import { GET_AUTH, DELETE_AUTH } from "../_axios/user";
 import { GET_MY_RECIPE } from "../_axios/recipe";
@@ -8,8 +8,9 @@ import Layout from "../components/Layout";
 import NoContent from "../components/NoContent";
 import RecipeCard from "../components/RecipeCard";
 import UpdataUserForm from "../components/form/UpdateUserForm";
-import { useSnackbar, Fragment, Button } from "notistack";
-import ReactPaginate from "react-paginate";
+import { useSnackbar } from "notistack";
+import Button from "@mui/material/Button";
+import CustomizedPaginate from "../components/CustomizedPaginate";
 
 const Mypage = () => {
   const router = useRouter();
@@ -17,7 +18,8 @@ const Mypage = () => {
 
   const [nickname, setNickname] = useState("");
   const [email, setEmail] = useState("");
-  const { enqueueSnackbar } = useSnackbar();
+  const [avatarImage, setAvatarImage] = useState("/defaultAvatarImage.png");
+  const { enqueueSnackbar, closeSnackbar } = useSnackbar();
 
   const [page, setPage] = useState(1);
   const [recipes, setRecipes] = useState([]);
@@ -31,11 +33,12 @@ const Mypage = () => {
     } else {
       setNickname(res.data.nickname);
       setEmail(res.data.email);
+      setAvatarImage(res.data.avatarImage);
     }
   }, [currentUrl, router]);
 
   const getMyrecipePage = async () => {
-    const SIZE = 4;
+    const SIZE = 8;
     try {
       const {
         data: { access, totalPages, recipes },
@@ -43,7 +46,6 @@ const Mypage = () => {
 
       if (access) {
         setRecipes(recipes);
-
         setPageCount(totalPages);
       }
     } catch (err) {
@@ -70,16 +72,12 @@ const Mypage = () => {
 
       if (access) {
         localStorage.removeItem("access_token");
-        alert("회원탈퇴가 완료되었습니다.");
-        router.push("/");
+        enqueueSnackbar("회원탈퇴가 완료되었습니다", { variant: "info" });
+        await router.push("/");
       }
     } catch (error) {
       console.log(error);
     }
-  };
-
-  const handlePageClick = (e) => {
-    setPage(e.selected + 1);
   };
 
   return (
@@ -97,10 +95,26 @@ const Mypage = () => {
               <article className="space-x-2 text-gray-400">
                 <button
                   onClick={() => {
-                    const isConfirmed = confirm("탈퇴하시겠습니까?");
-                    if (isConfirmed) {
-                      handleDeleteUser();
-                    }
+                    const action = (key) => (
+                      <Fragment>
+                        <Button
+                          color="error"
+                          onClick={() => {
+                            closeSnackbar(key);
+                          }}
+                        >
+                          취소
+                        </Button>
+                        <Button color="error" onClick={handleDeleteUser}>
+                          확인
+                        </Button>
+                      </Fragment>
+                    );
+
+                    return enqueueSnackbar("탈퇴하시겠습니까?", {
+                      variant: "warning",
+                      action,
+                    });
                   }}
                 >
                   회원탈퇴
@@ -149,31 +163,26 @@ const Mypage = () => {
               <article>
                 {recipes.length !== 0 ? (
                   <div>
-                    <div className="flex">
+                    <div className="grid grid-rows-1 grid-cols-4 my-4">
                       {recipes.map((recipe) => (
                         <RecipeCard
-                          key={recipe.category.pk}
+                          key={recipe.pk}
+                          pk={recipe.pk}
                           percent="5.0"
                           nickname={nickname}
                           desc={recipe.description}
                           title={recipe.title}
                           time="⏰"
                           like="♾"
-                          avatarImage={"/defaultAvatarImage.png"}
+                          avatarImage={avatarImage}
                           cookImages={recipe.cookImages}
                         />
                       ))}
                     </div>
-                    <ReactPaginate
-                      className="flex justify-center space-x-4 mt-3"
-                      breakLabel="..."
-                      nextLabel="next >"
-                      onPageChange={handlePageClick}
-                      pageRangeDisplayed={5}
+                    <CustomizedPaginate
+                      setPage={setPage}
                       pageCount={pageCount}
-                      previousLabel="< previous"
-                      renderOnZeroPageCount={null}
-                    ></ReactPaginate>
+                    />
                   </div>
                 ) : (
                   <NoContent text={`아직 등록하신 레시피가 없습니다`} />

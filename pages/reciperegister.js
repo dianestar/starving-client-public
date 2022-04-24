@@ -4,13 +4,13 @@ import { useForm } from "react-hook-form";
 import { UPLOAD_RECIPE } from "../_axios/recipe";
 import FormErrorMessage from "../components/error/FormErrorMessage";
 import ImageUpload from "../components/ImageUpload";
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { useSnackbar } from "notistack";
 import router from "next/router";
 
-const Myrecipe = () => {
+const recipeRegister = () => {
+  const imageInputRef = useRef();
   const [showImages, setShowImages] = useState([]);
-  const [saveImages, setSaveImages] = useState([]);
   const { enqueueSnackbar } = useSnackbar();
 
   const categories = ["RICE", "SOUP", "BREAD", "NOODLE", "FRIED"];
@@ -26,10 +26,8 @@ const Myrecipe = () => {
     form.append("title", watch("title"));
     form.append("description", watch("description"));
     form.append("mainText", watch("mainText"));
-    saveImages.forEach((obj) => {
-      for (let i = 0; i < obj.length; i++) {
-        form.append("cookImages", obj.fileList[i]);
-      }
+    showImages.forEach((image) => {
+      form.append("cookImages", image.file);
     });
 
     form.append("category", watch("category"));
@@ -38,6 +36,12 @@ const Myrecipe = () => {
       const {
         data: { access, message },
       } = await UPLOAD_RECIPE(form);
+
+      if (showImages.length <= 0) {
+        return enqueueSnackbar("이미지는 최소 1장입니다.", {
+          variant: "error",
+        });
+      }
 
       if (!access) {
         return enqueueSnackbar(message, { variant: "error" });
@@ -55,33 +59,29 @@ const Myrecipe = () => {
   const onLoadFile = (e) => {
     const imageList = e.target.files;
 
-    setSaveImages(
-      saveImages.concat({
-        fileList: e.target.files,
-        length: e.target.files.length,
-      })
-    );
-
-    let imageUrlList = [...showImages];
+    let tempList = [...showImages];
 
     for (let i = 0; i < imageList.length; i++) {
-      const currentImageUrl = URL.createObjectURL(imageList[i]);
-      imageUrlList.push(currentImageUrl);
+      tempList.push({
+        file: imageList[i],
+        url: URL.createObjectURL(imageList[i]),
+      });
     }
 
-    if (imageUrlList.length > 10) {
-      imageUrlList = imageUrlList.slice(0, 10);
+    if (tempList.length > 10) {
+      tempList = tempList.slice(0, 10);
       enqueueSnackbar("이미지는 최대 10장입니다.", { variant: "error" });
     }
 
-    setShowImages(imageUrlList);
+    console.log(tempList, "tempList");
 
-    console.log(saveImages);
+    setShowImages(tempList);
   };
 
-  const handleDeleteImage = (id) => {
-    setShowImages(showImages.filter((_, index) => index !== id));
-    setSaveImages(saveImages.filter((_, index) => index !== id));
+  const handleDeleteImage = (url) => {
+    setShowImages(showImages.filter((image) => image.url !== url));
+    URL.revokeObjectURL(url);
+    imageInputRef.current.value = "";
   };
 
   return (
@@ -187,6 +187,7 @@ const Myrecipe = () => {
                 onLoadFile={onLoadFile}
                 handleDeleteImage={handleDeleteImage}
                 showImages={showImages}
+                imageInputRef={imageInputRef}
               />
 
               <div className="text-center my-3">
@@ -202,4 +203,4 @@ const Myrecipe = () => {
   );
 };
 
-export default Myrecipe;
+export default recipeRegister;
