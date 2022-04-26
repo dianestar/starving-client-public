@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useCallback } from "react";
+import Head from "next/head";
 import Layout from "../components/Layout";
 import RecipeCard from "../components/RecipeCard";
 import CustomizedPaginate from "../components/CustomizedPaginate";
@@ -50,6 +51,9 @@ const Category = () => {
 
   return (
     <>
+      <Head>
+        <title>STARVING | {categoryName}</title>
+      </Head>
       <Layout>
         <div className="w-full min-h-screen bg-slate-50">
           <section className="w-[1060px] space-y-8 py-16 mx-auto">

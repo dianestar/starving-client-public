@@ -88,7 +88,7 @@ const recipeRegister = () => {
   return (
     <>
       <Head>
-        <title>해먹남녀 | 레시피</title>
+        <title>STARVING | CREATE RECIPE</title>
       </Head>
       <Layout>
         <section className="w-[1060px] mx-auto">

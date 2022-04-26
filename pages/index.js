@@ -14,10 +14,10 @@ function Home() {
   return (
     <>
       <Head>
-        <title>해먹남녀 | STARVING</title>
+        <title>STARVING</title>
       </Head>
       <Layout>
-        <div className="w-full mx-auto my-4 overflow-hidden">
+        <div className="w-full mx-auto overflow-hidden">
           <Slick />
           <section className="w-full h-[500px] py-12 flex flex-col items-center justify-between">
             <article className="flex flex-col items-center space-y-2">

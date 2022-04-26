@@ -101,7 +101,10 @@ const editRecipe = ({ editId }) => {
         enqueueSnackbar("레시피 수정이 완료되었습니다.", {
           variant: "success",
         });
-        await router.reload();
+        await router.push({
+          pathname: "/detail",
+          query: { recipePk: editId },
+        });
       }
     } catch (err) {
       console.log(err);
@@ -141,7 +144,7 @@ const editRecipe = ({ editId }) => {
   return (
     <>
       <Head>
-        <title>해먹남녀 | 레시피</title>
+        <title>STARVING | UPDATE RECIPE</title>
       </Head>
       <Layout>
         <section className="w-[1060px] mx-auto">

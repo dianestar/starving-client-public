@@ -131,7 +131,7 @@ function Login() {
   return (
     <>
       <Head>
-        <title>해먹남녀 | STARVING</title>
+        <title>STARVING | LOGIN</title>
       </Head>
       <Layout>
         <FormBg>
