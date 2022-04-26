@@ -17,7 +17,7 @@ export async function getServerSideProps(context) {
 }
 
 const editRecipe = ({ editId }) => {
-  const categories = ["RICE", "SOUP", "BREAD", "NOODLE", "FRIED"];
+  //const categories = ["RICE", "SOUP", "BREAD", "NOODLE", "FRIED"];
   const [recipe, setRecipe] = useState({});
   const [cookImages, setCookImages] = useState([]);
   const [category, setCategory] = useState("");
