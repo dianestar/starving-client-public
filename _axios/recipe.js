@@ -25,8 +25,8 @@ export const GET_ONE_RECIPE = (pk) => {
   return Api({
     method: METHOD.GET,
     url: `recipe/one?pk=${pk}`,
-  })
-}
+  });
+};
 
 export const UPLOAD_RECIPE = (form) => {
   return Api({
@@ -41,5 +41,14 @@ export const DELETE_RECIPE = (pk) => {
   return Api({
     method: METHOD.DELETE,
     url: `recipe?pk=${pk}`,
-  })
-}
+  });
+};
+
+export const PATCH_RECIPE = (form) => {
+  return Api({
+    method: METHOD.PATCH,
+    url: "recipe",
+    data: form,
+    headers: { "Content-Type": "multipart/form-data" },
+  });
+};

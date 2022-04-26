@@ -1,22 +1,29 @@
 import Head from "next/head";
-import Layout from "../components/Layout";
-import { useForm } from "react-hook-form";
-import { UPLOAD_RECIPE } from "../_axios/recipe";
-import FormErrorMessage from "../components/error/FormErrorMessage";
-import ImageUpload from "../components/ImageUpload";
-import { useState, useRef } from "react";
+import Layout from "../../components/Layout";
+import React, { useState, useEffect, useCallback, useRef } from "react";
+import { GET_ONE_RECIPE, PATCH_RECIPE } from "../../_axios/recipe";
 import { useSnackbar } from "notistack";
+import { useForm } from "react-hook-form";
+import FormErrorMessage from "../../components/error/FormErrorMessage";
+import ImageUpload from "../../components/ImageUpload";
+import DeleteBtn from "../../components/DeleteBtn";
 import router from "next/router";
-import { useRecoilState } from "recoil";
-import { showImagesState } from "../_recoil/state";
-import DeleteBtn from "../components/DeleteBtn";
 
-const recipeRegister = () => {
+export async function getServerSideProps(context) {
+  const editId = context.query.editrecipe;
+  return {
+    props: { editId },
+  };
+}
+
+const editRecipe = ({ editId }) => {
+  const categories = ["RICE", "SOUP", "BREAD", "NOODLE", "FRIED"];
+  const [recipe, setRecipe] = useState({});
+  const [cookImages, setCookImages] = useState([]);
+  const [category, setCategory] = useState("");
   const imageInputRef = useRef();
-  const [showImages, setShowImages] = useRecoilState(showImagesState);
   const { enqueueSnackbar } = useSnackbar();
 
-  const categories = ["RICE", "SOUP", "BREAD", "NOODLE", "FRIED"];
   const {
     register,
     watch,
@@ -24,13 +31,55 @@ const recipeRegister = () => {
     handleSubmit,
   } = useForm({ mode: "onChange" });
 
+  const getRecipeOne = useCallback(async () => {
+    try {
+      const {
+        data: {
+          access,
+          recipe: {
+            title,
+            description,
+            mainText,
+            cookImages,
+            owner: { pk },
+            category: { values },
+          },
+        },
+      } = await GET_ONE_RECIPE(editId);
+
+      if (access) {
+        setRecipe({ title, description, mainText });
+        setCategory(values);
+
+        let cookImageUrl = [];
+
+        for (let i = 0; i < cookImages.length; i++) {
+          cookImageUrl.push({
+            url: cookImages[i],
+          });
+        }
+
+        setCookImages(cookImageUrl);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  }, [editId]);
+
+  useEffect(() => {
+    getRecipeOne();
+  }, []);
+
   const onSubmit = async () => {
     const form = new FormData();
-    form.append("title", watch("title"));
+    form.append("pk", editId);
     form.append("description", watch("description"));
     form.append("mainText", watch("mainText"));
-    showImages.forEach((image) => {
-      form.append("cookImages", image.file);
+    cookImages.forEach((image) => {
+      console.log(image);
+      if (image.file !== undefined) {
+        form.append("cookImages", image.file);
+      }
     });
 
     form.append("category", watch("category"));
@@ -38,9 +87,9 @@ const recipeRegister = () => {
     try {
       const {
         data: { access, message },
-      } = await UPLOAD_RECIPE(form);
+      } = await PATCH_RECIPE(form);
 
-      if (showImages.length <= 0) {
+      if (cookImages.length <= 0) {
         return enqueueSnackbar("이미지는 최소 1장입니다.", {
           variant: "error",
         });
@@ -49,7 +98,7 @@ const recipeRegister = () => {
       if (!access) {
         return enqueueSnackbar(message, { variant: "error" });
       } else {
-        enqueueSnackbar("레시피 등록이 완료되었습니다.", {
+        enqueueSnackbar("레시피 수정이 완료되었습니다.", {
           variant: "success",
         });
         await router.reload();
@@ -62,7 +111,7 @@ const recipeRegister = () => {
   const onLoadFile = (e) => {
     const imageList = e.target.files;
 
-    let tempList = [...showImages];
+    let tempList = [...cookImages];
 
     for (let i = 0; i < imageList.length; i++) {
       tempList.push({
@@ -76,11 +125,15 @@ const recipeRegister = () => {
       enqueueSnackbar("이미지는 최대 10장입니다.", { variant: "error" });
     }
 
-    setShowImages(tempList);
+    setCookImages(tempList);
+  };
+
+  const handleChage = (e) => {
+    setCategory(e.target.value);
   };
 
   const handleDeleteImage = (url) => {
-    setShowImages(showImages.filter((image) => image.url !== url));
+    setCookImages(cookImages.filter((image) => image.url !== url));
     URL.revokeObjectURL(url);
     imageInputRef.current.value = "";
   };
@@ -95,33 +148,15 @@ const recipeRegister = () => {
           <article className="mt-20">
             <div className="flex">
               <h2 className="mb-10 text-gray-700 font-semibold text-2xl mr-auto">
-                레시피 등록하기
+                레시피 수정하기
               </h2>
             </div>
           </article>
-
+        </section>
+        <section className="w-[1060px] mx-auto">
           <section className="space-y-8 my-8">
             <form onSubmit={handleSubmit(onSubmit)}>
               <article>
-                <div className="w-full flex items-center mb-4">
-                  <label
-                    className="mr-11 text-gray-700 font-bold text-xl"
-                    htmlFor="title"
-                  >
-                    레시피 제목
-                  </label>
-                  <input
-                    className="w-3/4 h-12 px-4 border-2 rounded"
-                    placeholder="레시피의 제목을 입력해주세요"
-                    {...register("title", { required: true })}
-                  />
-                  <div className="ml-3">
-                    {errors.title && errors.title.type === "required" && (
-                      <FormErrorMessage message={"제목을 입력해주세요"} />
-                    )}
-                  </div>
-                </div>
-
                 <div className="w-full flex items-center mb-4">
                   <label
                     className="mr-11 text-gray-700 font-bold text-xl"
@@ -131,19 +166,17 @@ const recipeRegister = () => {
                   </label>
                   <input
                     className="w-3/4 h-12 px-4 border-2 rounded"
-                    placeholder="레시피를 소개할 수 있는 한줄설명을 입력해주세요"
-                    {...register("description", { required: true })}
+                    defaultValue={recipe.description}
+                    {...register("description", { minLength: 5 })}
                   />
-
-                  <div className="ml-3">
-                    {errors.description &&
-                      errors.description.type === "required" && (
-                        <FormErrorMessage message={"한줄설명을 입력해주세요"} />
-                      )}
-                  </div>
+                  {errors.description &&
+                    errors.description.type === "minLength" && (
+                      <FormErrorMessage message={"최소 5글자입니다."} />
+                    )}
                 </div>
 
-                <div className="w-full flex items-center mb-4">
+                {/* 카테고리를 수정할 때 추가되는 로직 */}
+                {/* <div className="w-full flex items-center mb-4">
                   <label className="mr-11 text-gray-700 font-bold text-xl mb-4">
                     카테고리
                   </label>
@@ -154,34 +187,23 @@ const recipeRegister = () => {
                           type="radio"
                           id={v}
                           value={v}
-                          checked={v === watch("category")}
-                          {...register("category", { required: true })}
+                          checked={v === category}
+                          onChange={handleChage}
                         />
                         <label htmlFor={v}>{v}</label>
                       </article>
                     ))}
-                    <div className="ml-3">
-                      {errors.category &&
-                        errors.category.type === "required" && (
-                          <FormErrorMessage
-                            message={"카테고리를 선택해주세요"}
-                          />
-                        )}
-                    </div>
                   </section>
-                </div>
+                </div> */}
               </article>
 
               <textarea
-                placeholder="조리 방법을 입력해주세요 🍳"
                 className="w-full h-[250px] px-2 py-2 resize-none border-2 rounded-md"
-                {...register("mainText", { required: true, minLength: 30 })}
+                {...register("mainText", { minLength: 30 })}
+                defaultValue={recipe.mainText}
               ></textarea>
-              {errors.mainText && errors.mainText.type === "required" && (
-                <FormErrorMessage message={"조리 방법을 입력해주세요"} />
-              )}
               {errors.mainText && errors.mainText.type === "minLength" && (
-                <FormErrorMessage message={"내용은 최소 30자입니다."} />
+                <FormErrorMessage message={"최소 30글자입니다."} />
               )}
 
               <ImageUpload
@@ -189,9 +211,8 @@ const recipeRegister = () => {
                 handleDeleteImage={handleDeleteImage}
                 imageInputRef={imageInputRef}
               />
-
               <article className="grid gap-2 grid-cols-5 grid-rows-2 mt-3">
-                {showImages.map((image, i) => (
+                {cookImages.map((image, i) => (
                   <div key={image.url} className="mr-4">
                     <DeleteBtn
                       onClick={() => {
@@ -209,7 +230,7 @@ const recipeRegister = () => {
 
               <div className="text-center my-3">
                 <button className="px-10 py-3 rounded font-medium text-white bg-sky-600">
-                  등록완료
+                  수정완료
                 </button>
               </div>
             </form>
@@ -220,4 +241,4 @@ const recipeRegister = () => {
   );
 };
 
-export default recipeRegister;
+export default editRecipe;

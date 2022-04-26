@@ -116,36 +116,46 @@ const Detail = () => {
           <article className="w-3/4 min-h-screen bg-white mx-2 my-4 p-8 shadow-sm space-y-4">
             <section className="flex items-center justify-between">
               <p className="text-xl font-bold text-cyan-600">#{category}</p>
-
-              {yesDelete ? (
+              <div className="flex items-center">
                 <p
                   className="text-sm text-neutral-400 hover:text-neutral-800 hover:cursor-pointer"
                   onClick={() => {
-                    const action = (key) => (
-                      <Fragment>
-                        <Button
-                          color="error"
-                          onClick={() => {
-                            closeSnackbar(key);
-                          }}
-                        >
-                          취소
-                        </Button>
-                        <Button color="error" onClick={handleDeleteRecipe}>
-                          확인
-                        </Button>
-                      </Fragment>
-                    );
-
-                    return enqueueSnackbar("삭제하시겠습니까?", {
-                      variant: "warning",
-                      action,
-                    });
+                    router.push(`edit/${recipePk}`);
                   }}
                 >
-                  삭제
+                  수정
                 </p>
-              ) : null}
+                <span className="mx-1 text-sm text-neutral-400">|</span>
+                {yesDelete ? (
+                  <p
+                    className="text-sm text-neutral-400 hover:text-neutral-800 hover:cursor-pointer"
+                    onClick={() => {
+                      const action = (key) => (
+                        <Fragment>
+                          <Button
+                            color="error"
+                            onClick={() => {
+                              closeSnackbar(key);
+                            }}
+                          >
+                            취소
+                          </Button>
+                          <Button color="error" onClick={handleDeleteRecipe}>
+                            확인
+                          </Button>
+                        </Fragment>
+                      );
+
+                      return enqueueSnackbar("삭제하시겠습니까?", {
+                        variant: "warning",
+                        action,
+                      });
+                    }}
+                  >
+                    삭제
+                  </p>
+                ) : null}
+              </div>
             </section>
             <hr />
             <p className="text-3xl font-bold text-center break-all">
