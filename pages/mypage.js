@@ -182,6 +182,7 @@ const Mypage = () => {
                     <CustomizedPaginate
                       setPage={setPage}
                       pageCount={pageCount}
+                      pageRangeDisplayed={5}
                     />
                   </div>
                 ) : (

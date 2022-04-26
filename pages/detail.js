@@ -12,6 +12,7 @@ import { useRouter } from "next/router";
 import { useSnackbar } from "notistack";
 import Button from "@mui/material/Button";
 import Layout from "../components/Layout";
+import CommentArea from "../components/comment/CommentArea";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
@@ -20,6 +21,7 @@ const Detail = () => {
   const router = useRouter();
   const recipePk = router.query.recipePk;
 
+  const [userPk, setUserPk] = useState(0);
   const [recipe, setRecipe] = useState({});
   const [owner, setOwner] = useState({});
   const [cookImages, setCookImages] = useState([]);
@@ -42,18 +44,15 @@ const Detail = () => {
         } = await GET_AUTH();
 
         if (pk) {
-          console.log(recipePk, pk, ownerPk);
-          if (pk === ownerPk) {
-            setIsOwner(true);
-          } else {
-            setIsOwner(false);
-          }
+          setUserPk(pk);
+          if (pk === ownerPk) setIsOwner(true);
+          else setIsOwner(false);
         }
       } catch (error) {
         console.log(error);
       }
     },
-    [recipePk]
+    []
   );
 
   const getRecipeOne = useCallback(async () => {
@@ -117,7 +116,7 @@ const Detail = () => {
       </Head>
       <Layout>
         <div className="w-full min-h-screen bg-slate-50">
-          <section className="w-[1060px] mx-auto flex">
+          <section className="w-[1200px] mx-auto flex">
             <article className="w-3/4 min-h-screen bg-white mx-2 my-4 p-8 shadow-sm space-y-4">
               <section className="flex items-center justify-between">
                 <p className="text-xl font-bold text-cyan-600">#{category}</p>  
@@ -218,7 +217,7 @@ const Detail = () => {
               </section>
               <hr />
               <section>
-                <p className="text-sm font-bold">00 Comments</p>
+                <CommentArea recipePk={recipePk}/>
               </section>
             </article>
           </section>

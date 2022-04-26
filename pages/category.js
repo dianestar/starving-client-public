@@ -47,7 +47,7 @@ const Category = () => {
     } else {
       getCategorizedRecipe();
     }
-  }, [getRecipeAll, getCategorizedRecipe]);
+  }, [getRecipeAll, getCategorizedRecipe, categoryName]);
 
   return (
     <>
@@ -78,7 +78,7 @@ const Category = () => {
                 />
               ))}
             </article>
-            <CustomizedPaginate setPage={setPage} pageCount={pageCount} />
+            <CustomizedPaginate setPage={setPage} pageCount={pageCount} pageRangeDisplayed={10}/>
           </section>
         </div>
       </Layout>

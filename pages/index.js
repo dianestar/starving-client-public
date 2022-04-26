@@ -6,7 +6,6 @@ import RecipePreview from "../components/RecipePreview";
 import { FaCarrot } from "react-icons/fa";
 import { GiCookingGlove } from "react-icons/gi";
 import { IoRestaurantOutline } from "react-icons/io5";
-import UpdateUserForm from "../components/form/UpdateUserForm";
 
 const chefOfDay = Array(9).fill("0");
 

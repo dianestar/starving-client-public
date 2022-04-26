@@ -52,7 +52,7 @@ const recipeRegister = () => {
         enqueueSnackbar("레시피 등록이 완료되었습니다.", {
           variant: "success",
         });
-        await router.reload();
+        await router.push("/mypage");
       }
     } catch (err) {
       console.log(err);
