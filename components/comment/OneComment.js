@@ -3,7 +3,7 @@ import { useForm, FormProvider } from "react-hook-form";
 import CommentInput from "./CommentInput";
 import { GET_AUTH } from "../../_axios/user";
 
-const OneComment = ({ ownerPk, avatarImage, nickname, content }) => {
+const OneComment = ({ ownerPk, avatarImage, nickname, content, updateAt }) => {
     const methods = useForm();
     methods.setValue("comment", content);
 
@@ -45,7 +45,10 @@ const OneComment = ({ ownerPk, avatarImage, nickname, content }) => {
             <section className="flex items-center justify-between">
                 <article className="flex items-center space-x-2">
                     <img className="w-6 h-6 rounded-full" src={avatarImage}/>
-                    <span className="font-bold text-cyan-600">{nickname}</span>
+                    <section className="flex flex-col ">
+                        <span className="font-bold text-cyan-600 text-xs">{nickname}</span>
+                        <span className="font-bold text-neutral-400 text-xs">{updateAt}</span>
+                    </section>
                 </article>
                 { isOwner && !isEditMode &&
                     <article className="space-x-2">

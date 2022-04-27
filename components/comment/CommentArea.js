@@ -16,6 +16,7 @@ const CommentArea = ({ recipePk }) => {
     const [pageCount, setPageCount] = useState(0);
     const [page, setPage] = useState(1);
     const [comments, setComments] = useState([]);
+    const [commentsCount, setCommentsCount] = useState(0);
 
     const onSubmit = async () => {
         const form = {
@@ -38,6 +39,7 @@ const CommentArea = ({ recipePk }) => {
         try {
             const {
                 data: {
+                    totalCount,
                     totalPages,
                     comments,
                 }
@@ -45,6 +47,7 @@ const CommentArea = ({ recipePk }) => {
 
             setPageCount(totalPages);
             setComments(comments);    
+            setCommentsCount(totalCount);
         } catch (error) {
             console.log(error);
         }
@@ -64,6 +67,7 @@ const CommentArea = ({ recipePk }) => {
                 </FormProvider>
             </section>
             <section className="min-h-[400px] space-y-4 my-4">
+                <span className="text-sm font-bold text-neutral-400">{commentsCount} Comments</span>
                 {comments.map((comment, index) => (
                     <OneComment
                         key={comment.pk}
@@ -71,6 +75,7 @@ const CommentArea = ({ recipePk }) => {
                         avatarImage={comment.owner.avatarImage}
                         nickname={comment.owner.nickname}
                         content={comment.content}
+                        updateAt={comment.updateAt.slice(0, 10) + " " + comment.updateAt.slice(11,19)}
                     />
                 ))}
             </section>

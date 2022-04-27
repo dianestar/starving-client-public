@@ -65,6 +65,7 @@ const Detail = () => {
             description,
             mainText,
             cookImages,
+            updateAt,
             owner: { pk, nickname, avatarImage },
             category: { values },
           },
@@ -72,7 +73,7 @@ const Detail = () => {
       } = await GET_ONE_RECIPE(recipePk);
 
       if (access) {
-        setRecipe({ title, description, mainText });
+        setRecipe({ title, description, mainText, updateAt: updateAt.slice(0, 10) + " " + updateAt.slice(11, 19), });
         setCookImages(cookImages);
         if (avatarImage) {
           setOwner({ nickname, avatarImage });
@@ -214,6 +215,7 @@ const Detail = () => {
                 <p className="text-2xl font-bold text-cyan-600">
                   {owner.nickname}
                 </p>
+                <span className="font-bold text-sm text-neutral-400">{recipe.updateAt}</span>
               </section>
               <hr />
               <section>
