@@ -1,9 +1,10 @@
-import React, { useEffect, useState, useCallback } from "react";
+import React, { useEffect, useState, useCallback, Fragment } from "react";
 import { useForm, FormProvider } from "react-hook-form";
 import CommentInput from "./CommentInput";
 import { GET_AUTH } from "../../_axios/user";
 import { PATCH_COMMENT, DELETE_COMMENT } from "../../_axios/comment";
 import { useSnackbar } from "notistack";
+import Button from "@mui/material/Button";
 import router from "next/router";
 
 const OneComment = ({
@@ -15,6 +16,7 @@ const OneComment = ({
   updateAt,
 }) => {
   const methods = useForm();
+  methods.setValue("comment", content);
 
   const [isEditMode, setIsEditMode] = useState(false);
   const [isOwner, setIsOwner] = useState(false);
@@ -96,7 +98,30 @@ const OneComment = ({
             >
               ✏
             </span>
-            <span className="hover:cursor-pointer" onClick={onDelete}>
+            <span className="hover:cursor-pointer" 
+              onClick={() => {
+                const action = (key) => (
+                  <Fragment>
+                    <Button
+                      color="error"
+                      onClick={() => {
+                        closeSnackbar(key);
+                      }}
+                    >
+                      취소
+                    </Button>
+                    <Button color="error" onClick={onDelete}>
+                      확인
+                    </Button>
+                  </Fragment>
+                );
+
+                return enqueueSnackbar("삭제하시겠습니까?", {
+                  variant: "warning",
+                  action,
+                });
+              }}
+            >
               ❌
             </span>
           </article>
