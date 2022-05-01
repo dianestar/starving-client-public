@@ -1,19 +1,76 @@
-import React from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import CustomizedPaginate from "../../components/CustomizedPaginate";
 import Layout from "../../components/Layout";
 import RecipeCard from "../../components/RecipeCard";
+import { GET_SEARCH_RECIPE } from "../../_axios/recipe";
+import Head from "next/head";
 
-const searchrecipe = () => {
+export async function getServerSideProps(context) {
+  const searchId = context.query.searchkeyword;
+
+  return {
+    props: { searchId },
+  };
+}
+
+const searchrecipe = ({ searchId }) => {
+  const [search, setSearch] = useState([]);
+  const [page, setPage] = useState(1);
+  const size = 8;
+  const [recipesCount, setRecipesCount] = useState(0);
+  const [pageCount, setPageCount] = useState(0);
+
+  const getSearch = useCallback(async () => {
+    const {
+      data: { totalCount, totalPages, recipes },
+    } = await GET_SEARCH_RECIPE(page, size, searchId);
+
+    setSearch(recipes);
+    setPageCount(totalPages);
+    setRecipesCount(totalCount);
+  }, [page]);
+
+  useEffect(() => {
+    getSearch();
+  }, []);
+
   return (
-    <Layout>
-      <section>
-        <h2>{`조건에 맞는 레시피가 ${1}개 있습니다.`}</h2>
-        {/* <RecipeCard /> */}
-
-        {/* setPage={setPage} pageCount={pageCount} */}
-        <CustomizedPaginate />
-      </section>
-    </Layout>
+    <>
+      <Head>
+        <title>STARVING | 레시피</title>
+      </Head>
+      <Layout>
+        <div className="w-full min-h-screen bg-slate-50">
+          <section className="w-[1060px] space-y-8 py-16 mx-auto">
+            <p className="text-3xl font-bold">
+              조건에 맞는 레시피가{" "}
+              <span className="text-cyan-600">{recipesCount}</span>개 있습니다.
+            </p>
+            <article className="w-[1060px] grid grid-rows-2 grid-cols-4 mx-auto my-4">
+              {search.map((recipe) => (
+                <RecipeCard
+                  key={recipe.pk}
+                  pk={recipe.pk}
+                  percent="1.5"
+                  nickname={recipe.owner.nickname}
+                  desc={recipe.description}
+                  title={recipe.title}
+                  time="30분"
+                  like="702명"
+                  avatarImage={recipe.owner.avatarImage}
+                  cookImages={recipe.cookImages}
+                />
+              ))}
+            </article>
+            <CustomizedPaginate
+              setPage={setPage}
+              pageCount={pageCount}
+              pageRangeDisplayed={10}
+            />
+          </section>
+        </div>
+      </Layout>
+    </>
   );
 };
 

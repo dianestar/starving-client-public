@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import { GET_AUTH } from "../_axios/user";
 import { useRouter } from "next/router";
-import { GET_SEARCH_RECIPE } from "../_axios/recipe";
 import { useForm } from "react-hook-form";
 import { useSnackbar } from "notistack";
 
@@ -11,16 +10,10 @@ const category = ["ALL", "RICE", "SOUP", "BREAD", "NOODLE", "FRIED"];
 const Layout = ({ children }) => {
   const router = useRouter();
   const [isLogin, setIsLogin] = useState(false);
-  const [page, setPage] = useState(1);
+
   const { enqueueSnackbar } = useSnackbar();
 
-  const {
-    register,
-
-    watch,
-    handleSubmit,
-    reset,
-  } = useForm({
+  const { register, watch, handleSubmit, reset } = useForm({
     mode: "onChange",
   });
 
@@ -35,15 +28,12 @@ const Layout = ({ children }) => {
   };
 
   const onSubmit = async () => {
-    const size = 8;
-    const res = await GET_SEARCH_RECIPE(page, size, watch("recipe"));
-
-    if (watch("recipe") === "") {
+    if (watch("search") === "") {
       enqueueSnackbar("검색어를 입력해주세요", {
         variant: "error",
       });
-    } else if (res) {
-      router.push(`${watch("recipe")}/searchrecipe`);
+    } else if (watch("search")) {
+      await router.push(`${watch("search")}/searchrecipe`);
       reset();
     }
   };
@@ -65,9 +55,9 @@ const Layout = ({ children }) => {
                 <input
                   className="w-[350px] h-[30px] rounded px-2 text-xs"
                   type="text"
-                  name="recipe"
+                  name="search"
                   placeholder="음식명, 재료명으로 검색해주세요."
-                  {...register("recipe")}
+                  {...register("search")}
                 ></input>
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
