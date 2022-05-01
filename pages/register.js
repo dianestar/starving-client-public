@@ -49,7 +49,7 @@ function Register() {
   return (
     <>
       <Head>
-        <title>해먹남녀 | STARVING</title>
+        <title>STARVING | REGISTER</title>
       </Head>
       <Layout>
         <FormBg>

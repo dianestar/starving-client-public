@@ -138,7 +138,7 @@ const Layout = ({ children }) => {
               onClick={async () => await router.push("/")}
               className="text-2xl font-bold cursor-pointer"
             >
-              해먹남녀
+              STARVING 🍳
             </span>
             <section className="flex w-1/2 justify-between mx-auto">
               {category.map((v, i) => (

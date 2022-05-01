@@ -1,7 +1,7 @@
 import React from "react";
 import ReactPaginate from "react-paginate";
 
-const CustomizedPaginate = ({ setPage, pageCount }) => {
+const CustomizedPaginate = ({ setPage, pageCount, pageRangeDisplayed }) => {
     const onPageChange = (e) => {
         setPage(e.selected + 1);
     }
@@ -9,11 +9,12 @@ const CustomizedPaginate = ({ setPage, pageCount }) => {
         <ReactPaginate
             className="flex justify-center space-x-4"
             breakLabel="..."
-            nextLabel="next >"
+            nextLabel=">"
             onPageChange={onPageChange}
-            pageRangeDisplayed={5}
+            pageRangeDisplayed={pageRangeDisplayed}
+            marginPagesDisplayed={0}
             pageCount={pageCount}
-            previousLabel="< prev"
+            previousLabel="<"
             renderOnZeroPageCount={null}
             >
         </ReactPaginate>

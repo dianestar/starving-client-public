@@ -83,7 +83,7 @@ const Mypage = () => {
   return (
     <>
       <Head>
-        <title>해먹남녀 | 마이페이지</title>
+        <title>STARVING | MYPAGE</title>
       </Head>
       <Layout>
         <section className="w-[1060px] mx-auto">
@@ -182,6 +182,7 @@ const Mypage = () => {
                     <CustomizedPaginate
                       setPage={setPage}
                       pageCount={pageCount}
+                      pageRangeDisplayed={5}
                     />
                   </div>
                 ) : (
