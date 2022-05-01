@@ -2,12 +2,27 @@ import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import { GET_AUTH } from "../_axios/user";
 import { useRouter } from "next/router";
+import { GET_SEARCH_RECIPE } from "../_axios/recipe";
+import { useForm } from "react-hook-form";
+import { useSnackbar } from "notistack";
 
 const category = ["ALL", "RICE", "SOUP", "BREAD", "NOODLE", "FRIED"];
 
 const Layout = ({ children }) => {
   const router = useRouter();
   const [isLogin, setIsLogin] = useState(false);
+  const [page, setPage] = useState(1);
+  const { enqueueSnackbar } = useSnackbar();
+
+  const {
+    register,
+
+    watch,
+    handleSubmit,
+    reset,
+  } = useForm({
+    mode: "onChange",
+  });
 
   const getAuth = async () => {
     const res = await GET_AUTH();
@@ -16,6 +31,20 @@ const Layout = ({ children }) => {
       setIsLogin(false);
     } else {
       setIsLogin(true);
+    }
+  };
+
+  const onSubmit = async () => {
+    const size = 8;
+    const res = await GET_SEARCH_RECIPE(page, size, watch("recipe"));
+
+    if (watch("recipe") === "") {
+      enqueueSnackbar("검색어를 입력해주세요", {
+        variant: "error",
+      });
+    } else if (res) {
+      router.push(`${watch("recipe")}/searchrecipe`);
+      reset();
     }
   };
 
@@ -28,26 +57,34 @@ const Layout = ({ children }) => {
       <header>
         <section className="w-full h-[45px] bg-cyan-400">
           <article className="w-2/3 h-full mx-auto py-auto flex justify-between">
-            <section className="flex items-center">
-              <input
-                className="w-[350px] h-[30px] rounded px-2 text-xs"
-                type="text"
-                placeholder="음식명, 재료명으로 검색해주세요."
-              ></input>
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                className="h-6 w-6 relative right-8"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="gray"
-                strokeWidth={2}
+            <section>
+              <form
+                className="mt-2 flex items-center"
+                onSubmit={handleSubmit(onSubmit)}
               >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
-                />
-              </svg>
+                <input
+                  className="w-[350px] h-[30px] rounded px-2 text-xs"
+                  type="text"
+                  name="recipe"
+                  placeholder="음식명, 재료명으로 검색해주세요."
+                  {...register("recipe")}
+                ></input>
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="h-6 w-6 relative right-8"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="gray"
+                  strokeWidth={2}
+                  onClick={handleSubmit(onSubmit)}
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+                  />
+                </svg>
+              </form>
             </section>
             <section className="flex items-center space-x-4">
               <svg

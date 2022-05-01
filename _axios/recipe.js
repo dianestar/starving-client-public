@@ -52,3 +52,10 @@ export const PATCH_RECIPE = (form) => {
     headers: { "Content-Type": "multipart/form-data" },
   });
 };
+
+export const GET_SEARCH_RECIPE = (page, size, keyword) => {
+  return Api({
+    method: METHOD.GET,
+    url: `recipe/search?page=${page}&size=${size}&keyword=${keyword}`,
+  });
+};
