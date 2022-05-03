@@ -10,10 +10,12 @@ const searchrecipe = ({ page, setPage }) => {
   const [recipesCount, setRecipesCount] = useState(0);
   const [pageCount, setPageCount] = useState(0);
 
+  const size = 8;
+
   const getSearch = useCallback(async () => {
     const {
       data: { totalCount, totalPages, recipes },
-    } = await GET_SEARCH_RECIPE(1, 8, "[searchrecipe]");
+    } = await GET_SEARCH_RECIPE(page, size, "[searchrecipe]");
 
     setSearch(recipes);
     setPageCount(totalPages);
