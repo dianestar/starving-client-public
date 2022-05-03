@@ -5,25 +5,15 @@ import RecipeCard from "../../components/RecipeCard";
 import { GET_SEARCH_RECIPE } from "../../_axios/recipe";
 import Head from "next/head";
 
-export async function getServerSideProps(context) {
-  const searchId = context.query.searchkeyword;
-
-  return {
-    props: { searchId },
-  };
-}
-
-const searchrecipe = ({ searchId }) => {
+const searchrecipe = ({ page, setPage }) => {
   const [search, setSearch] = useState([]);
-  const [page, setPage] = useState(1);
-  const size = 8;
   const [recipesCount, setRecipesCount] = useState(0);
   const [pageCount, setPageCount] = useState(0);
 
   const getSearch = useCallback(async () => {
     const {
       data: { totalCount, totalPages, recipes },
-    } = await GET_SEARCH_RECIPE(page, size, searchId);
+    } = await GET_SEARCH_RECIPE(1, 8, "[searchrecipe]");
 
     setSearch(recipes);
     setPageCount(totalPages);

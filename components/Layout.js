@@ -17,6 +17,9 @@ const Layout = ({ children }) => {
     mode: "onChange",
   });
 
+  const [page, setPage] = useState(1);
+  const size = 8;
+
   const getAuth = async () => {
     const res = await GET_AUTH();
 
@@ -33,7 +36,14 @@ const Layout = ({ children }) => {
         variant: "error",
       });
     } else if (watch("search")) {
-      await router.push(`${watch("search")}/searchrecipe`);
+      await router.push({
+        pathname: `/search/${watch("search")}`,
+        query: {
+          page: page,
+          size: size,
+          keyword: `${watch("search")}`,
+        },
+      });
       reset();
     }
   };
