@@ -76,8 +76,6 @@ const OneComment = ({
     checkOwner();
   }, [checkOwner]);
 
-  console.log(content);
-
   return (
     <div className="space-y-1">
       <section className="flex items-center justify-between">

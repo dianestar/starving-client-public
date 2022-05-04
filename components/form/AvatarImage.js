@@ -74,7 +74,7 @@ const AvatarImage = ({ nickname }) => {
       {isSocial ?
         <section>
           <Image
-              className="rounded-full object-cover hover:cursor-pointer"
+              className="rounded-full object-cover"
               src={imageUrl}
               alt="avatar image preview"
               width={100}

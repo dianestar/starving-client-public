@@ -1,15 +1,13 @@
 import React, { useEffect, useState, useCallback } from "react";
 import { useForm, FormProvider } from "react-hook-form";
-import { useRouter } from "next/router";
 import OneComment from "./OneComment";
 import CommentInput from "./CommentInput";
 import CustomizedPaginate from "../CustomizedPaginate";
 import { GET_COMMENT, POST_COMMENT } from "../../_axios/comment";
 import { useSnackbar } from "notistack";
 
-const CommentArea = ({ recipePk }) => {
+const CommentArea = ({recipePk}) => {
   const methods = useForm();
-  const router = useRouter();
 
   const { enqueueSnackbar } = useSnackbar();
 
@@ -17,6 +15,7 @@ const CommentArea = ({ recipePk }) => {
   const [page, setPage] = useState(1);
   const [comments, setComments] = useState([]);
   const [commentsCount, setCommentsCount] = useState(0);
+  const [toggle, setToggle] = useState(false);
 
   const onSubmit = async () => {
     const form = {
@@ -25,9 +24,10 @@ const CommentArea = ({ recipePk }) => {
     };
 
     try {
-      const res = POST_COMMENT(form);
+      const res = await POST_COMMENT(form);
       if (res) {
-        router.reload();
+        methods.setValue("comment", "");
+        setToggle(!toggle);
         enqueueSnackbar("댓글이 작성되었습니다", { variant: "info" });
       }
     } catch (error) {
@@ -51,7 +51,7 @@ const CommentArea = ({ recipePk }) => {
 
   useEffect(() => {
     getComments();
-  }, [getComments]);
+  }, [getComments, toggle]);
 
   return (
     <div>
