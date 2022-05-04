@@ -12,18 +12,23 @@ const AvatarImage = ({ nickname }) => {
   const [imageFile, setImageFile] = useState(null);
   const [imageUrl, setImageUrl] = useState(NO_USER_IMAGE_URL);
   const [defaultUrl, setDefaultUrl] = useState(NO_USER_IMAGE_URL);
+  const [isSocial, setIsSocial] = useState(false);
   const [editMode, setEditMode] = useState(false);
   const { enqueueSnackbar } = useSnackbar();
 
   const getUserImage = async () => {
     try {
       const {
-        data: { avatarImage },
+        data: { avatarImage, social },
       } = await GET_AUTH();
 
       if (avatarImage) {
         setDefaultUrl(avatarImage);
         setImageUrl(avatarImage);
+      }
+
+      if (social) {
+        setIsSocial(true);
       }
     } catch (error) {
       console.log(error);
@@ -58,7 +63,7 @@ const AvatarImage = ({ nickname }) => {
       console.log(response);
       setEditMode(false);
       enqueueSnackbar("이미지 변경 완료", { variant: "success" });
-      await router.replace(router.asPath);
+      await router.reload();
     } catch (error) {
       console.log(error);
     }
@@ -66,47 +71,64 @@ const AvatarImage = ({ nickname }) => {
 
   return (
     <div className="w-[100px] h-[100px] drop-shadow-lg">
-      <section>
-        <label className="cursor-pointer" htmlFor="image-input">
+      {isSocial ?
+        <section>
           <Image
-            className="rounded-full object-cover"
-            src={imageUrl}
-            alt="avatar image preview"
-            width={100}
-            height={100}
+              className="rounded-full object-cover hover:cursor-pointer"
+              src={imageUrl}
+              alt="avatar image preview"
+              width={100}
+              height={100}
           />
-        </label>
-        <input
-          id="image-input"
-          className="hidden"
-          type="file"
-          accept="image/*"
-          ref={imageInputRef}
-          onChange={onChangeImage}
-        />
-      </section>
-
-      {editMode ? (
-        <section className="space-x-2">
-          <button
-            className="border-solid border-2 rounded-md p-0.5 text-neutral-400 hover:text-white hover:bg-neutral-200"
-            onClick={onCancelImage}
-          >
-            취소
-          </button>
-          <button
-            className="border-solid border-2 rounded-md p-0.5 text-neutral-400 hover:text-white hover:bg-neutral-400"
-            onClick={onConfirmImage}
-          >
-            확인
-          </button>
+          <p className="font-semibold text-sm text-center mt-2">
+            {nickname}
+            <span className="font-light">님</span>
+          </p>
         </section>
-      ) : (
-        <p className="font-semibold text-sm text-center mt-2">
-          {nickname}
-          <span className="font-light">님</span>
-        </p>
-      )}
+      :
+      <>
+        <section>
+          <label className="cursor-pointer" htmlFor="image-input">
+            <Image
+              className="rounded-full object-cover"
+              src={imageUrl}
+              alt="avatar image preview"
+              width={100}
+              height={100}
+            />
+          </label>
+          <input
+            id="image-input"
+            className="hidden"
+            type="file"
+            accept="image/*"
+            ref={imageInputRef}
+            onChange={onChangeImage}
+          />
+        </section>
+        {editMode ? (
+          <section className="space-x-2">
+            <button
+              className="border-solid border-2 rounded-md p-0.5 text-neutral-400 hover:text-white hover:bg-neutral-200"
+              onClick={onCancelImage}
+            >
+              취소
+            </button>
+            <button
+              className="border-solid border-2 rounded-md p-0.5 text-neutral-400 hover:text-white hover:bg-neutral-400"
+              onClick={onConfirmImage}
+            >
+              확인
+            </button>
+          </section>
+        ) : (
+          <p className="font-semibold text-sm text-center mt-2">
+            {nickname}
+            <span className="font-light">님</span>
+          </p>
+        )}
+      </>
+      }
     </div>
   );
 };

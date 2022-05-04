@@ -3,20 +3,25 @@ import Link from "next/link";
 import { GET_AUTH } from "../_axios/user";
 import { useRouter } from "next/router";
 import SearchRecipeInput from "./SearchRecipeInput";
+import Image from "next/image";
 
 const category = ["ALL", "RICE", "SOUP", "BREAD", "NOODLE", "FRIED"];
+const NO_USER_IMAGE_URL = "/defaultAvatarImage.png";
 
 const Layout = ({ children }) => {
   const router = useRouter();
   const [isLogin, setIsLogin] = useState(false);
+  const [imageUrl, setImageUrl] = useState(NO_USER_IMAGE_URL);
 
   const getAuth = async () => {
     const res = await GET_AUTH();
 
     if (!res) {
       setIsLogin(false);
+      
     } else {
       setIsLogin(true);
+      setImageUrl(res.data.avatarImage);
     }
   };
 
@@ -45,7 +50,7 @@ const Layout = ({ children }) => {
                   clipRule="evenodd"
                 />
               </svg>
-              <Link href={isLogin ? "/reciperegister" : "/login"}>
+              <Link href={isLogin ? "/reciperegister" : "/login"} passHref>
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   className="h-8 w-8 hover:stroke-slate-400 hover:cursor-pointer"
@@ -62,6 +67,9 @@ const Layout = ({ children }) => {
                 </svg>
               </Link>
               <Link href={isLogin ? "/mypage" : "/login"} passHref>
+                {isLogin ?
+                <img className="w-8 h-8 rounded-full object-cover hover:cursor-pointer" src={imageUrl} alt="avatar image"/>
+                :
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   className="h-8 w-8 hover:fill-slate-400 hover:cursor-pointer"
@@ -74,6 +82,7 @@ const Layout = ({ children }) => {
                     clipRule="evenodd"
                   />
                 </svg>
+                }
               </Link>
             </section>
           </article>
