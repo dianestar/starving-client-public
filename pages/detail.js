@@ -73,7 +73,7 @@ const Detail = () => {
       } = await GET_ONE_RECIPE(recipePk);
 
       if (access) {
-        setRecipe({ title, description, mainText, updateAt: updateAt.slice(0, 10) + " " + updateAt.slice(11, 19), });
+        setRecipe({ title, description, mainText, updateAt });
         setCookImages(cookImages);
         if (avatarImage) {
           setOwner({ nickname, avatarImage });
@@ -215,7 +215,7 @@ const Detail = () => {
                 <p className="text-2xl font-bold text-cyan-600">
                   {owner.nickname}
                 </p>
-                <span className="font-bold text-sm text-neutral-400">{recipe.updateAt}</span>
+                <span className="font-bold text-sm text-neutral-400">{new Date(recipe.updateAt).toLocaleString("ko-KR")}</span>
               </section>
               <hr />
               <section>

@@ -74,11 +74,7 @@ const CommentArea = ({recipePk}) => {
             avatarImage={comment.owner.avatarImage}
             nickname={comment.owner.nickname}
             content={comment.content}
-            updateAt={
-              comment.updateAt.slice(0, 10) +
-              " " +
-              comment.updateAt.slice(11, 19)
-            }
+            updateAt={new Date(comment.updateAt).toLocaleString("ko-KR")}
           />
         ))}
       </section>

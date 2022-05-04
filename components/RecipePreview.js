@@ -8,7 +8,7 @@ const RecipePreview = () => {
   const getRecipeAll = async () => {
     const {
       data: { access, recipes },
-    } = await GET_ALL_RECIPE(1, 8);
+    } = await GET_ALL_RECIPE(1, 4);
     if (access) {
       setRecipes(recipes);
     }
@@ -20,7 +20,7 @@ const RecipePreview = () => {
 
   return (
     <>
-      <div className="w-[1060px] grid grid-rows-2 grid-cols-4">
+      <div className="w-[1060px] grid grid-rows-1 grid-cols-4">
         {recipes.map((recipe, index) => (
           <RecipeCard
             key={recipe.pk}
