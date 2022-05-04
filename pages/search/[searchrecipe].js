@@ -38,6 +38,7 @@ const searchrecipe = ({ searchKeyword }) => {
     getSearch();
   }, [searchKeyword]);
 
+  console.log(searchKeyword);
   return (
     <>
       <Head>
