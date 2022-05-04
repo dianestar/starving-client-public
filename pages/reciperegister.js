@@ -25,37 +25,40 @@ const recipeRegister = () => {
   } = useForm({ mode: "onChange" });
 
   const onSubmit = async () => {
-    const form = new FormData();
-    form.append("title", watch("title"));
-    form.append("description", watch("description"));
-    form.append("mainText", watch("mainText"));
-    showImages.forEach((image) => {
-      form.append("cookImages", image.file);
-    });
+    if (showImages.length <= 0) {
+      return enqueueSnackbar("이미지는 최소 1장입니다.", {
+        variant: "error",
+      });
+    }
 
-    form.append("category", watch("category"));
+    else {
+      const form = new FormData();
+      form.append("title", watch("title"));
+      form.append("description", watch("description"));
+      form.append("mainText", watch("mainText"));
+      showImages.forEach((image) => {
+        form.append("cookImages", image.file);
+      });
 
-    try {
-      const {
-        data: { access, message },
-      } = await UPLOAD_RECIPE(form);
+      form.append("category", watch("category"));
 
-      if (showImages.length <= 0) {
-        return enqueueSnackbar("이미지는 최소 1장입니다.", {
-          variant: "error",
-        });
+      try {
+        const {
+          data: { access, message },
+        } = await UPLOAD_RECIPE(form);
+
+        if (!access) {
+          return enqueueSnackbar(message, { variant: "error" });
+        } else {
+          setShowImages([]);
+          enqueueSnackbar("레시피 등록이 완료되었습니다.", {
+            variant: "success",
+          });
+          await router.push("/mypage");
+        }
+      } catch (err) {
+        console.log(err);
       }
-
-      if (!access) {
-        return enqueueSnackbar(message, { variant: "error" });
-      } else {
-        enqueueSnackbar("레시피 등록이 완료되었습니다.", {
-          variant: "success",
-        });
-        await router.push("/mypage");
-      }
-    } catch (err) {
-      console.log(err);
     }
   };
 
