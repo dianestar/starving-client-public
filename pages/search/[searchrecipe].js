@@ -5,24 +5,38 @@ import RecipeCard from "../../components/RecipeCard";
 import { GET_SEARCH_RECIPE } from "../../_axios/recipe";
 import Head from "next/head";
 
-const searchrecipe = ({ page, setPage }) => {
+export async function getServerSideProps(context) {
+  const searchKeyword = context.query.searchrecipe;
+
+  return {
+    props: { searchKeyword },
+  };
+}
+
+const searchrecipe = ({ searchKeyword }) => {
   const [search, setSearch] = useState([]);
   const [recipesCount, setRecipesCount] = useState(0);
+  const [page, setPage] = useState(1);
   const [pageCount, setPageCount] = useState(0);
 
   const getSearch = useCallback(async () => {
-    const {
-      data: { totalCount, totalPages, recipes },
-    } = await GET_SEARCH_RECIPE(1, 8, "[searchrecipe]");
+    const size = 8;
+    try {
+      const {
+        data: { totalCount, totalPages, recipes },
+      } = await GET_SEARCH_RECIPE(page, size, searchKeyword);
 
-    setSearch(recipes);
-    setPageCount(totalPages);
-    setRecipesCount(totalCount);
-  }, [page]);
+      setRecipesCount(totalCount);
+      setPageCount(totalPages);
+      setSearch(recipes);
+    } catch (e) {
+      console.log(e);
+    }
+  }, [page, searchKeyword]);
 
   useEffect(() => {
     getSearch();
-  }, []);
+  }, [searchKeyword]);
 
   return (
     <>
