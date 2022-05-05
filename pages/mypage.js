@@ -24,13 +24,16 @@ const Mypage = () => {
   const [page, setPage] = useState(1);
   const [recipes, setRecipes] = useState([]);
   const [pageCount, setPageCount] = useState(0);
+  const [isSocial, setIsSocial] = useState(false);
 
   const getAuth = useCallback(async () => {
     const res = await GET_AUTH();
 
     if (!res) {
       await router.push(`/login/?returnUrl=${currentUrl}`);
-    } else {
+    } else if (res.data.social) {
+      setIsSocial(true);
+    } else if (res) {
       setNickname(res.data.nickname);
       setEmail(res.data.email);
       setAvatarImage(res.data.avatarImage);
@@ -142,17 +145,19 @@ const Mypage = () => {
             </section>
           </section>
 
-          <section className="my-20">
-            <h2 className="mb-14 text-gray-700 font-semibold text-2xl">
-              회원정보수정
-            </h2>
+          {isSocial ? null : (
+            <section className="my-20">
+              <h2 className="mb-14 text-gray-700 font-semibold text-2xl">
+                회원정보수정
+              </h2>
 
-            <section className="flex py-6 px-5 border-solid border border-gray-200">
-              <article className="w-full">
-                <UpdataUserForm />
-              </article>
+              <section className="flex py-6 px-5 border-solid border border-gray-200">
+                <article className="w-full">
+                  <UpdataUserForm />
+                </article>
+              </section>
             </section>
-          </section>
+          )}
 
           <section className="my-20">
             <h2 className="mb-14 text-gray-700 font-semibold text-2xl">
