@@ -94,7 +94,12 @@ function Home() {
                 요리 좀 할 줄 아는 당신! 해먹남녀들의 풍요로운 식탁을 위해
                 해머거가 되어주세요!
               </span>
-              <button className="w-[250px] h-12 rounded border-solid border-2 border-white text-white text-lg">
+              <button
+                className="w-[250px] h-12 rounded border-solid border-2 border-white text-white text-lg"
+                onClick={() => {
+                  router.push(isLogin ? "/reciperegister" : "/login");
+                }}
+              >
                 나만의 레시피 등록하기
               </button>
             </article>
