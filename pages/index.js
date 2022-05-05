@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import Head from "next/head";
 import Layout from "../components/Layout";
 import Slick from "../components/Slick";
@@ -6,10 +6,28 @@ import RecipePreview from "../components/RecipePreview";
 import { FaCarrot } from "react-icons/fa";
 import { GiCookingGlove } from "react-icons/gi";
 import { IoRestaurantOutline } from "react-icons/io5";
+import router from "next/router";
+import { GET_AUTH } from "../_axios/user";
 
 const chefOfDay = Array(9).fill("0");
 
 function Home() {
+  const [isLogin, setIsLogin] = useState(false);
+
+  const getAuth = async () => {
+    const res = await GET_AUTH();
+
+    if (!res) {
+      setIsLogin(false);
+    } else {
+      setIsLogin(true);
+    }
+  };
+
+  useEffect(() => {
+    getAuth();
+  }, []);
+
   return (
     <>
       <Head>
@@ -51,7 +69,12 @@ function Home() {
                 </span>
               </section>
             </article>
-            <button className="w-[250px] h-12 rounded bg-cyan-400 text-white text-lg">
+            <button
+              className="w-[250px] h-12 rounded bg-cyan-400 text-white text-lg"
+              onClick={() => {
+                router.push(isLogin ? "/reciperegister" : "/login");
+              }}
+            >
               시작하기
             </button>
           </section>
