@@ -2,7 +2,6 @@ import React from "react";
 import { useForm } from "react-hook-form";
 import { useSnackbar } from "notistack";
 import router from "next/router";
-import { useRecoilState } from "recoil";
 
 const SearchRecipeInput = () => {
   const { enqueueSnackbar } = useSnackbar();
