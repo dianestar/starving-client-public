@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { useRouter } from "next/router";
 import { LOGIN, REGISTER } from "../_axios/user";
 import KakaoLogin from "react-kakao-login";
-import NaverLogin from "react-naver-login";
+
 import Head from "next/head";
 import Layout from "../components/Layout";
 import FormBg from "../components/form/FormBg";
@@ -180,20 +180,6 @@ function Login() {
               onSuccess={handleKakaoSuccess}
               onFail={(error) => console.error("로그인 실패", error)}
               onLogout={() => console.log("로그아웃")}
-            />
-            <NaverLogin
-              clientId="xHsYc3c4HlvbuZ1gQZ9Z"
-              callbackUrl="http://localhost:3000/"
-              render={(props) => (
-                <div
-                  className="mt-4 px-3 py-3 rounded text-center text-white bg-green-500 z-10"
-                  onClick={props.onClick}
-                >
-                  네이버로 로그인하기
-                </div>
-              )}
-              onSuccess={(res) => console.log(res)}
-              onFailure={(err) => console.error("로그인 실패", err)}
             />
           </div>
         </FormBg>
