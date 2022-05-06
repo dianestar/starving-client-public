@@ -37,7 +37,7 @@ const Layout = ({ children }) => {
             <section>
               <SearchRecipeInput />
             </section>
-            <section className="flex items-center space-x-4">
+            <section className="flex items-center">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 className="h-8 w-8 hover:fill-slate-400 hover:cursor-pointer"
@@ -53,7 +53,7 @@ const Layout = ({ children }) => {
               <Link href={isLogin ? "/reciperegister" : "/login"} passHref>
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
-                  className="h-8 w-8 hover:stroke-slate-400 hover:cursor-pointer"
+                  className="h-8 w-8 hover:stroke-slate-400 hover:cursor-pointer ml-2 mr-2"
                   fill="none"
                   viewBox="0 0 24 24"
                   stroke="white"
@@ -68,7 +68,13 @@ const Layout = ({ children }) => {
               </Link>
               <Link href={isLogin ? "/mypage" : "/login"} passHref>
                 {isLogin ?
-                <img className="w-8 h-8 rounded-full object-cover hover:cursor-pointer" src={imageUrl} alt="avatar image"/>
+                <Image
+                className="rounded-full object-cover hover:cursor-pointer"
+                src={imageUrl ? imageUrl : "/defaultAvatarImage.png"}
+                alt="avatar image preview"
+                width={32}
+                height={32}
+                />
                 :
                 <svg
                   xmlns="http://www.w3.org/2000/svg"

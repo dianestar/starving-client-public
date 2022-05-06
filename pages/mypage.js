@@ -31,16 +31,17 @@ const Mypage = () => {
 
     if (!res) {
       await router.push(`/login/?returnUrl=${currentUrl}`);
-    } else if (res.data.social) {
-      setIsSocial(true);
-    } else if (res) {
+    } else {
       setNickname(res.data.nickname);
       setEmail(res.data.email);
       setAvatarImage(res.data.avatarImage);
+      if (res.data.social) {
+        setIsSocial(true);
+      }
     }
   }, [currentUrl, router]);
 
-  const getMyrecipePage = async () => {
+  const getMyrecipePage = useCallback(async () => {
     const SIZE = 8;
     try {
       const {
@@ -54,12 +55,12 @@ const Mypage = () => {
     } catch (err) {
       console.log(err);
     }
-  };
+  }, [page]);
 
   useEffect(() => {
     getAuth();
     getMyrecipePage();
-  }, [getAuth, page]);
+  }, [getAuth, getMyrecipePage]);
 
   const logout = async () => {
     localStorage.removeItem("access_token");
@@ -75,6 +76,8 @@ const Mypage = () => {
 
       if (access) {
         localStorage.removeItem("access_token");
+        localStorage.removeItem("kakao_d77c395d42b3169ad3162e37fbab295c");
+        localStorage.clear();
         enqueueSnackbar("회원탈퇴가 완료되었습니다", { variant: "info" });
         await router.push("/");
       }
