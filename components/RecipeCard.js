@@ -43,8 +43,8 @@ const RecipeCard = ({
         className="text-center cursor-pointer"
         onClick={pushToDetail}      
       >
-          <p className="font-bold w-[200px] overflow-hidden text-ellipsis">{title}</p>
-          <p className="w-[200px] overflow-hidden text-ellipsis">{desc}</p>
+          <p className="font-bold w-[200px] truncate">{title}</p>
+          <p className="w-[200px] truncate">{desc}</p>
       </section>
     </div>
   );
