@@ -20,7 +20,7 @@ const Layout = ({ children }) => {
       setIsLogin(false);
     } else {
       setIsLogin(true);
-      //setImageUrl(res.data.avatarImage);
+      // setImageUrl(res.data.avatarImage);
       if (res.data.avatarImage) {
         setImageUrl(res.data.avatarImage);
       } else {
