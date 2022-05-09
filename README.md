@@ -35,4 +35,21 @@
 🥂 All
 - 레시피 이미지 추가
 
+##기능별 gif
+<details>
+<summary>메인화면</summary>
+<div markdown="1">       
+<br/>
+![main_page](https://user-images.githubusercontent.com/64053930/167358599-e79692bc-f741-4783-8339-94f2a974bb34.gif)
 
+</div>
+</details>
+
+<details>
+<summary>회원가입 & 로그인</summary>
+<div markdown="2">       
+<br/>
+![register login](https://user-images.githubusercontent.com/64053930/167383792-3e93d3b0-cf4d-4463-8296-7f7e69770038.gif)
+
+</div>
+</details>
