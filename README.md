@@ -41,8 +41,7 @@
 <summary>메인화면</summary>
 <div markdown="1">       
 <br/>
-![main_page](https://user-images.githubusercontent.com/64053930/167358599-e79692bc-f741-4783-8339-94f2a974bb34.gif)
-
+<img src="https://user-images.githubusercontent.com/64053930/167384409-31bdc293-7723-4681-a0c7-3e18b1aa705d.gif" alt="main_page"/>
 </div>
 </details>
 
@@ -50,7 +49,6 @@
 <summary>회원가입 & 로그인</summary>
 <div markdown="2">       
 <br/>
-![register login](https://user-images.githubusercontent.com/64053930/167383792-3e93d3b0-cf4d-4463-8296-7f7e69770038.gif)
-
+ <img src="https://user-images.githubusercontent.com/64053930/167383792-3e93d3b0-cf4d-4463-8296-7f7e69770038.gif" alt="register&login"/>
 </div>
 </details>
