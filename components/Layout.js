@@ -18,10 +18,14 @@ const Layout = ({ children }) => {
 
     if (!res) {
       setIsLogin(false);
-      
     } else {
       setIsLogin(true);
-      setImageUrl(res.data.avatarImage);
+      //setImageUrl(res.data.avatarImage);
+      if (res.data.avatarImage) {
+        setImageUrl(res.data.avatarImage);
+      } else {
+        setImageUrl("/defaultAvatarImage.png");
+      }
     }
   };
 
@@ -67,22 +71,26 @@ const Layout = ({ children }) => {
                 </svg>
               </Link>
               <Link href={isLogin ? "/mypage" : "/login"} passHref>
-                {isLogin ?
-                <img className="w-8 h-8 rounded-full object-cover hover:cursor-pointer" src={imageUrl} alt="avatar image"/>
-                :
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  className="h-8 w-8 hover:fill-slate-400 hover:cursor-pointer"
-                  viewBox="0 0 20 20"
-                  fill="white"
-                >
-                  <path
-                    fillRule="evenodd"
-                    d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z"
-                    clipRule="evenodd"
+                {isLogin ? (
+                  <img
+                    className="w-8 h-8 rounded-full object-cover hover:cursor-pointer"
+                    src={imageUrl}
+                    alt="avatar image"
                   />
-                </svg>
-                }
+                ) : (
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    className="h-8 w-8 hover:fill-slate-400 hover:cursor-pointer"
+                    viewBox="0 0 20 20"
+                    fill="white"
+                  >
+                    <path
+                      fillRule="evenodd"
+                      d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z"
+                      clipRule="evenodd"
+                    />
+                  </svg>
+                )}
               </Link>
             </section>
           </article>

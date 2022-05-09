@@ -88,7 +88,7 @@ function Home() {
             </article>
           </section>
           {/*<RecommendForm />*/}
-          <section className="w-full py-16 bg-neutral-600 flex flex-col items-center space-y-16">
+          {/* <section className="w-full py-16 bg-neutral-600 flex flex-col items-center space-y-16">
             <article className="flex flex-col items-center space-y-4">
               <span className="text-white text-xl">
                 요리 좀 할 줄 아는 당신! 해먹남녀들의 풍요로운 식탁을 위해
@@ -129,7 +129,7 @@ function Home() {
                 ))}
               </section>
             </article>
-          </section>
+          </section> */}
         </div>
       </Layout>
     </>
