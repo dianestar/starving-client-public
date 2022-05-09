@@ -35,7 +35,7 @@
 🥂 All
 - 레시피 이미지 추가
 
-##기능별 gif
+## 기능별 gif
 <details>
 <summary>메인화면</summary>
 <div markdown="1">       
