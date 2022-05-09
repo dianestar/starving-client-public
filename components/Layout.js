@@ -20,12 +20,7 @@ const Layout = ({ children }) => {
       setIsLogin(false);
     } else {
       setIsLogin(true);
-      // setImageUrl(res.data.avatarImage);
-      if (res.data.avatarImage) {
-        setImageUrl(res.data.avatarImage);
-      } else {
-        setImageUrl("/defaultAvatarImage.png");
-      }
+      setImageUrl(res.data.avatarImage);
     }
   };
 
@@ -74,7 +69,7 @@ const Layout = ({ children }) => {
                 {isLogin ? (
                   <img
                     className="w-8 h-8 rounded-full object-cover hover:cursor-pointer"
-                    src={imageUrl}
+                    src={imageUrl ? imageUrl : "/defaultAvatarImage.png"}
                     alt="avatar image"
                   />
                 ) : (
