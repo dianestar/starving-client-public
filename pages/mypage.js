@@ -55,7 +55,7 @@ const Mypage = () => {
     } catch (err) {
       console.log(err);
     }
-  }, []);
+  }, [page]);
 
   useEffect(() => {
     getAuth();
@@ -76,7 +76,6 @@ const Mypage = () => {
 
       if (access) {
         localStorage.removeItem("access_token");
-        localStorage.clear();
         enqueueSnackbar("회원탈퇴가 완료되었습니다", { variant: "info" });
         await router.push("/");
       }
@@ -175,12 +174,10 @@ const Mypage = () => {
                         <RecipeCard
                           key={recipe.pk}
                           pk={recipe.pk}
-                          percent="5.0"
                           nickname={nickname}
                           desc={recipe.description}
                           title={recipe.title}
-                          time="⏰"
-                          like="♾"
+                          likesCount={recipe.likesCount}
                           avatarImage={avatarImage}
                           cookImages={recipe.cookImages}
                         />

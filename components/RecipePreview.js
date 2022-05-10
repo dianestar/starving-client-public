@@ -25,12 +25,10 @@ const RecipePreview = () => {
           <RecipeCard
             key={recipe.pk}
             pk={recipe.pk}
-            percent="73"
             nickname={recipe.owner?.nickname}
             desc={recipe.description}
             title={recipe.title}
-            time="30분"
-            like="702명"
+            likesCount={recipe.likesCount}
             avatarImage={recipe.owner?.avatarImage}
             cookImages={recipe.cookImages}
           />
