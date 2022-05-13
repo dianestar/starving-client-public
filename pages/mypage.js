@@ -11,6 +11,7 @@ import UpdataUserForm from "../components/form/UpdateUserForm";
 import { useSnackbar } from "notistack";
 import Button from "@mui/material/Button";
 import CustomizedPaginate from "../components/CustomizedPaginate";
+import { GET_MY_LIKE } from "../_axios/like";
 
 const Mypage = () => {
   const router = useRouter();
@@ -25,6 +26,10 @@ const Mypage = () => {
   const [recipes, setRecipes] = useState([]);
   const [pageCount, setPageCount] = useState(0);
   const [isSocial, setIsSocial] = useState(false);
+
+  const [likes, setLikes] = useState([]);
+  const [likeCount, setLikeCount] = useState(0);
+  const [likePage, setLikePage] = useState(0);
 
   const getAuth = useCallback(async () => {
     const res = await GET_AUTH();
@@ -57,10 +62,25 @@ const Mypage = () => {
     }
   }, [page]);
 
+  const getMyLikeRecipe = useCallback(async () => {
+    try {
+      const {
+        data: { likes, totalCount, totalPages },
+      } = await GET_MY_LIKE(page, 8);
+
+      setLikes(likes);
+      setLikeCount(totalCount);
+      setLikePage(totalPages);
+    } catch (e) {
+      console.log(e);
+    }
+  }, [page]);
+
   useEffect(() => {
     getAuth();
     getMyrecipePage();
-  }, [getAuth, getMyrecipePage]);
+    getMyLikeRecipe();
+  }, [getAuth, getMyrecipePage, getMyLikeRecipe]);
 
   const logout = async () => {
     localStorage.removeItem("access_token");
@@ -192,6 +212,42 @@ const Mypage = () => {
                 ) : (
                   <NoContent text={`아직 등록하신 레시피가 없습니다`} />
                 )}
+              </article>
+            </section>
+          </section>
+
+          <section className="my-20">
+            <h2 className="mb-14 text-gray-700 font-semibold text-2xl">
+              좋아요한 레시피
+            </h2>
+
+            <section>
+              <article>
+                {/* {likes.length !== 0 ? (
+                  <div>
+                    <div className="grid grid-rows-1 grid-cols-4 my-4">
+                      {likes.map((like) => (
+                        <RecipeCard
+                          key={like.pk}
+                          pk={like.pk}
+                          nickname={nickname}
+                          desc={like.description}
+                          title={like.title}
+                          likesCount={like.likesCount}
+                          avatarImage={avatarImage}
+                          cookImages={like.cookImages}
+                        />
+                      ))}
+                    </div>
+                    <CustomizedPaginate
+                      setPage={setPage}
+                      pageCount={pageCount}
+                      pageRangeDisplayed={5}
+                    />
+                  </div>
+                ) : (
+                  <NoContent text={`아직 좋아요를 누른 레시피가 없습니다`} />
+                )} */}
               </article>
             </section>
           </section>
