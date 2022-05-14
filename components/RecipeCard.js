@@ -3,12 +3,10 @@ import { useRouter } from "next/router";
 
 const RecipeCard = ({
   pk,
-  percent,
   nickname,
   desc,
   title,
-  time,
-  like,
+  likesCount,
   avatarImage,
   cookImages,
 }) => {
@@ -30,7 +28,7 @@ const RecipeCard = ({
         <img className="w-full h-full object-cover" src={cookImages[0]} />
         <article className="text-center text-white absolute bottom-0 right-0 mx-2 my-2">
           <p className="text-lg">LIKES</p>
-          <p className="text-4xl font-bold">{percent}</p>
+          <p className="text-4xl font-bold">{likesCount}</p>
         </article>
       </section>
       <section
