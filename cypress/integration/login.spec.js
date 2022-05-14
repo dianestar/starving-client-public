@@ -1,4 +1,4 @@
-describe("should init", () => {
+describe("user login", () => {
   it("should render main", () => {
     cy.visit("/");
   });
