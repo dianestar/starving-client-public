@@ -1,3 +1,9 @@
+after("logout", () => {
+  cy.visit("/mypage");
+  cy.get(".space-x-2 > :nth-child(3)").click();
+  cy.visit("/");
+});
+
 describe("user login", () => {
   it("should render main", () => {
     cy.visit("/");

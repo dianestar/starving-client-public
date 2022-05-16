@@ -74,6 +74,14 @@ describe("user register", () => {
         .get(".w-full > .rounded")
         .click();
       cy.title().should("eq", "STARVING");
+      cy.visit("mypage");
+      cy.get(".space-x-2 > :nth-child(1)")
+        .click()
+        .get(".SnackbarItem-action > :nth-child(2)")
+        .click()
+        .visit("/")
+        .title()
+        .should("eq", "STARVING");
     });
   });
 });
