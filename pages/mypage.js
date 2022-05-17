@@ -155,7 +155,7 @@ const Mypage = () => {
 
               <article className="flex flex-col justify-center pl-5 basis-3/4 border-solid border-r border-b border-gray-200">
                 <div>
-                  <h3 className="text-sm text-blue-400">이름</h3>
+                  <h3 className="text-sm text-blue-400">닉네임</h3>
                   <p className="text-gray-700">{nickname}</p>
                 </div>
                 <div className="mt-2">

@@ -43,7 +43,7 @@ function ProfileUpdateForm() {
     <form onSubmit={handleSubmit(onSubmit)}>
       <section className="flex justify-between mb-6">
         <label>
-          <h2 className="mb-2 text-sm text-blue-400">이름</h2>
+          <h2 className="mb-2 text-sm text-blue-400">닉네임</h2>
           <input
             {...register("nickname", {
               required: false,
