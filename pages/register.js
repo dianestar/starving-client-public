@@ -64,17 +64,17 @@ function Register() {
               className="w-full flex flex-col items-center text-center"
               onSubmit={handleSubmit(onSubmit)}
             >
-              <label htmlFor="email"></label>
+              <label htmlFor="email" />
               <input
                 name="email"
-                className="w-3/4 px-4 py-3"
+                className="email w-3/4 px-4 py-3"
                 placeholder="이메일주소"
                 {...register("email", {
-                  required: true,
+                  required: "이메일을 입력해 주세요",
                   pattern: {
                     value:
                       /^[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*\.[a-zA-Z]{2,3}$/i,
-                    message: "이메일을 입력해 주세요",
+                    message: "이메일 형식에 맞게 입력해 주세요",
                   },
                 })}
               />
@@ -82,11 +82,11 @@ function Register() {
                 <FormErrorMessage message={errors.email.message} />
               )}
 
-              <label htmlFor="nickname"></label>
+              <label htmlFor="nickname" />
               <input
                 name="nickname"
                 type="name"
-                className="w-3/4 px-4 py-3 mt-3"
+                className="nickname w-3/4 px-4 py-3 mt-3"
                 placeholder="닉네임"
                 {...register("nickname", { required: true, maxLength: 10 })}
               />
@@ -99,11 +99,11 @@ function Register() {
                 />
               )}
 
-              <label htmlFor="password"></label>
+              <label htmlFor="password" />
               <input
                 name="password"
                 type="password"
-                className="w-3/4 px-4 py-3 mt-3"
+                className="password w-3/4 px-4 py-3 mt-3"
                 placeholder="비밀번호(8자 이상)"
                 {...register("password", { required: true, minLength: 8 })}
               />
@@ -114,11 +114,11 @@ function Register() {
                 <FormErrorMessage message={"비밀번호는 최소 8자리 입니다"} />
               )}
 
-              <label htmlFor="password_confirm"></label>
+              <label htmlFor="password_confirm" />
               <input
                 name="password_confirm"
                 type="password"
-                className="w-3/4 px-4 py-3 mt-3 mb-3"
+                className="password_confirm w-3/4 px-4 py-3 mt-3 mb-3"
                 placeholder="비밀번호 확인"
                 {...register("password_confirm", {
                   required: true,
