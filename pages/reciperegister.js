@@ -29,9 +29,7 @@ const recipeRegister = () => {
       return enqueueSnackbar("이미지는 최소 1장입니다.", {
         variant: "error",
       });
-    }
-
-    else {
+    } else {
       const form = new FormData();
       form.append("title", watch("title"));
       form.append("description", watch("description"));
@@ -108,13 +106,13 @@ const recipeRegister = () => {
               <article>
                 <div className="w-full flex items-center mb-4">
                   <label
-                    className="mr-11 text-gray-700 font-bold text-xl"
+                    className="basis-2/12 text-gray-700 font-bold text-xl"
                     htmlFor="title"
                   >
                     레시피 제목
                   </label>
                   <input
-                    className="w-3/4 h-12 px-4 border-2 rounded"
+                    className="title basis-8/12 h-12 px-4 border-2 rounded"
                     placeholder="레시피의 제목을 입력해주세요"
                     {...register("title", { required: true })}
                   />
@@ -127,13 +125,13 @@ const recipeRegister = () => {
 
                 <div className="w-full flex items-center mb-4">
                   <label
-                    className="mr-11 text-gray-700 font-bold text-xl"
+                    className="basis-2/12 text-gray-700 font-bold text-xl"
                     htmlFor="description"
                   >
                     한줄설명
                   </label>
                   <input
-                    className="w-3/4 h-12 px-4 border-2 rounded"
+                    className="description basis-8/12 h-12 px-4 border-2 rounded"
                     placeholder="레시피를 소개할 수 있는 한줄설명을 입력해주세요"
                     {...register("description", { required: true })}
                   />
@@ -147,12 +145,15 @@ const recipeRegister = () => {
                 </div>
 
                 <div className="w-full flex items-center mb-4">
-                  <label className="mr-11 text-gray-700 font-bold text-xl mb-4">
+                  <label className="basis-2/12 text-gray-700 font-bold text-xl mb-4">
                     카테고리
                   </label>
-                  <section className="w-3/4 flex space-x-4">
+                  <section className="basis-8/12 flex space-x-4">
                     {categories.map((v, i) => (
-                      <article key={i} className="space-x-2 font-bold">
+                      <article
+                        key={i}
+                        className="categories space-x-2 font-bold"
+                      >
                         <input
                           type="radio"
                           id={v}
@@ -177,7 +178,7 @@ const recipeRegister = () => {
 
               <textarea
                 placeholder="조리 방법을 입력해주세요 🍳"
-                className="w-full h-[250px] px-2 py-2 resize-none border-2 rounded-md"
+                className="mainText w-full h-[250px] px-2 py-2 resize-none border-2 rounded-md"
                 {...register("mainText", { required: true, minLength: 30 })}
               ></textarea>
               {errors.mainText && errors.mainText.type === "required" && (

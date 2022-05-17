@@ -162,13 +162,13 @@ const editRecipe = ({ editId }) => {
               <article>
                 <div className="w-full flex items-center mb-4">
                   <label
-                    className="mr-11 text-gray-700 font-bold text-xl"
+                    className="basis-2/12 text-gray-700 font-bold text-xl"
                     htmlFor="description"
                   >
                     한줄설명
                   </label>
                   <input
-                    className="w-3/4 h-12 px-4 border-2 rounded"
+                    className="description basis-8/12 w-3/4 h-12 px-4 border-2 rounded"
                     defaultValue={recipe.description}
                     {...register("description", { minLength: 5 })}
                   />
@@ -201,7 +201,7 @@ const editRecipe = ({ editId }) => {
               </article>
 
               <textarea
-                className="w-full h-[250px] px-2 py-2 resize-none border-2 rounded-md"
+                className="mainText w-full h-[250px] px-2 py-2 resize-none border-2 rounded-md"
                 {...register("mainText", { minLength: 30 })}
                 defaultValue={recipe.mainText}
               ></textarea>
