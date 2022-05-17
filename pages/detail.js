@@ -17,6 +17,7 @@ import CommentArea from "../components/comment/CommentArea";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
+import { getContainerUtilityClass } from "@mui/material";
 
 const Detail = () => {
   const router = useRouter();
@@ -36,10 +37,7 @@ const Detail = () => {
   const slickA = useRef(null);
   const slickB = useRef(null);
 
-  const [myLike, setMyLike] = useState([]);
-  const [myLikeCount, setMyLikeCount] = useState(1);
-  const [myLikePage, setMyLikePage] = useState(0);
-
+  const [myLikeCount, setMyLikeCount] = useState(10);
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
 
   const checkOwner = useCallback(async (ownerPk) => {
@@ -118,21 +116,20 @@ const Detail = () => {
   const getMyLike = useCallback(async () => {
     try {
       const {
-        data: { likes, totalCount, totalPages },
-      } = await GET_MY_LIKE(myLikeCount, 10);
-      setMyLike(likes);
+        data: { likes, totalCount },
+      } = await GET_MY_LIKE(1, myLikeCount);
+      
       setMyLikeCount(totalCount);
-      setMyLikePage(totalPages);
 
-      for (let i = 0; i < myLike.length; i++) {
-        if (myLike[i]?.recipe.pk === Number(recipePk)) {
+      for (let i = 0; i < likes.length; i++) {
+        if (likes[i].recipe.pk === Number(recipePk)) {
           setLiked(true);
         }
       }
     } catch (e) {
-      console.log(e, "recipe==============");
+      console.log(e);
     }
-  }, [myLike]);
+  }, [myLikeCount, recipePk]);
 
   const onClickLike = async () => {
     const form = { recipePk: recipePk };
@@ -144,8 +141,8 @@ const Detail = () => {
         } = await DELETE_LIKE(form);
 
         if (access) {
-          getRecipeOne();
           setLiked(false);
+          getRecipeOne();
         }
       } catch (error) {
         needLogin();
@@ -157,8 +154,8 @@ const Detail = () => {
         } = await POST_LIKE(form);
 
         if (access) {
-          getRecipeOne();
           setLiked(true);
+          getRecipeOne();
         }
       } catch (error) {
         needLogin();
@@ -171,8 +168,8 @@ const Detail = () => {
     getMyLike();
     setNavA(slickA.current);
     setNavB(slickB.current);
-  }, [getRecipeOne]);
-  console.log(myLike, "myLike");
+  }, [getRecipeOne, getMyLike]);
+
   return (
     <>
       <Head>

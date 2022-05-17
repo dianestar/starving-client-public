@@ -223,19 +223,19 @@ const Mypage = () => {
 
             <section>
               <article>
-                {/* {likes.length !== 0 ? (
+                {likes.length !== 0 ? (
                   <div>
                     <div className="grid grid-rows-1 grid-cols-4 my-4">
                       {likes.map((like) => (
                         <RecipeCard
                           key={like.pk}
-                          pk={like.pk}
+                          pk={like.recipe.pk}
                           nickname={nickname}
-                          desc={like.description}
-                          title={like.title}
-                          likesCount={like.likesCount}
+                          desc={like.recipe.description}
+                          title={like.recipe.title}
+                          likesCount={like.recipe.likesCount}
                           avatarImage={avatarImage}
-                          cookImages={like.cookImages}
+                          cookImages={like.recipe.cookImages}
                         />
                       ))}
                     </div>
@@ -247,7 +247,7 @@ const Mypage = () => {
                   </div>
                 ) : (
                   <NoContent text={`아직 좋아요를 누른 레시피가 없습니다`} />
-                )} */}
+                )}
               </article>
             </section>
           </section>
