@@ -22,3 +22,10 @@ export const GET_MY_LIKE = (page, size) => {
     url: `like?page=${page}&size=${size}`,
   });
 };
+
+export const GET_LIKE = (recipePk) => {
+  return Api({
+    method: METHOD.GET,
+    url: `like/${recipePk}`
+  });
+};
