@@ -1,4 +1,5 @@
 import React, { useEffect, useState, useCallback } from "react";
+import { useRouter } from "next/router";
 import { useForm, FormProvider } from "react-hook-form";
 import OneComment from "./OneComment";
 import CommentInput from "./CommentInput";
@@ -7,6 +8,7 @@ import { GET_COMMENT, POST_COMMENT } from "../../_axios/comment";
 import { useSnackbar } from "notistack";
 
 const CommentArea = ({recipePk}) => {
+  const router = useRouter();
   const methods = useForm();
 
   const { enqueueSnackbar } = useSnackbar();
@@ -17,7 +19,18 @@ const CommentArea = ({recipePk}) => {
   const [commentsCount, setCommentsCount] = useState(0);
   const [toggle, setToggle] = useState(false);
 
+  const needLogin = async () => {
+    enqueueSnackbar("로그인 또는 회원가입이 필요합니다", {
+      variant: "warning",
+    });
+    await router.push("/login");
+  };
+
   const onSubmit = async () => {
+    if (localStorage.getItem("access_token") === null) {
+      needLogin();
+    }
+
     const form = {
       content: methods.watch("comment"),
       recipePk: recipePk,
