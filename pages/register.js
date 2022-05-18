@@ -1,4 +1,3 @@
-import { useRef } from "react";
 import Head from "next/head";
 import Layout from "../components/Layout";
 import FormWrapper from "../components/form/FormWrapper";
@@ -9,6 +8,8 @@ import router from "next/router";
 import { REGISTER } from "../_axios/user";
 import FormErrorMessage from "../components/error/FormErrorMessage";
 import { useSnackbar } from "notistack";
+import { USER_FORM_CONSTANTS } from "../constants/form/user.constants";
+import { SERVER_ERROR_CONSTANTS } from "../constants/error/sever.error.constants";
 
 function Register() {
   const { enqueueSnackbar } = useSnackbar();
@@ -16,33 +17,35 @@ function Register() {
   const {
     register,
     watch,
+    getValues,
     formState: { errors },
     handleSubmit,
   } = useForm({ mode: "onChange" });
 
-  const password = useRef({});
-  password.current = watch("password", "");
-
   const onSubmit = async () => {
-    const form = {
-      email: watch("email"),
-      password: watch("password"),
-      nickname: watch("nickname"),
-    };
-
     try {
       const {
         data: { access, message },
-      } = await REGISTER(form);
+      } = await REGISTER(getValues());
 
       if (!access) {
-        return enqueueSnackbar(message, { variant: "error" });
+        if (message === "This email already to exists") {
+          return enqueueSnackbar(USER_FORM_CONSTANTS.ALERT.FAILED.email, {
+            variant: "error",
+          });
+        } else if (message === "This nickname already to exists") {
+          return enqueueSnackbar(USER_FORM_CONSTANTS.ALERT.FAILED.nickname, {
+            variant: "error",
+          });
+        }
       } else {
         await router.push("/login");
-        return enqueueSnackbar("회원가입 완료!", { variant: "success" });
+        return enqueueSnackbar(USER_FORM_CONSTANTS.ALERT.REGISTER.resolve, {
+          variant: "success",
+        });
       }
     } catch (err) {
-      console.log(err);
+      SERVER_ERROR_CONSTANTS(err);
     }
   };
 
@@ -64,17 +67,17 @@ function Register() {
               className="w-full flex flex-col items-center text-center"
               onSubmit={handleSubmit(onSubmit)}
             >
-              <label htmlFor="email"></label>
+              <label htmlFor="email" />
               <input
                 name="email"
                 className="w-3/4 px-4 py-3"
                 placeholder="이메일주소"
                 {...register("email", {
-                  required: true,
+                  required: USER_FORM_CONSTANTS.REQUIRED.email,
                   pattern: {
                     value:
                       /^[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*\.[a-zA-Z]{2,3}$/i,
-                    message: "이메일을 입력해 주세요",
+                    message: USER_FORM_CONSTANTS.PATTERN.email,
                   },
                 })}
               />
@@ -82,61 +85,58 @@ function Register() {
                 <FormErrorMessage message={errors.email.message} />
               )}
 
-              <label htmlFor="nickname"></label>
+              <label htmlFor="nickname" />
               <input
                 name="nickname"
                 type="name"
                 className="w-3/4 px-4 py-3 mt-3"
                 placeholder="닉네임"
-                {...register("nickname", { required: true, maxLength: 10 })}
+                {...register("nickname", {
+                  required: USER_FORM_CONSTANTS.REQUIRED.nickname,
+                  pattern: {
+                    value: /^[A-za-z0-9ㄱ-ㅎㅏ-ㅣ가-힣]{2,12}$/,
+                    message: USER_FORM_CONSTANTS.PATTERN.nickname,
+                  },
+                })}
               />
-              {errors.nickname && errors.nickname.type === "required" && (
-                <FormErrorMessage message={"이름을 입력해주세요"} />
-              )}
-              {errors.nickname && errors.nickname.type === "maxLength" && (
-                <FormErrorMessage
-                  message={"이름은 10자리를 넘길 수 없습니다."}
-                />
+              {errors.nickname && errors.nickname.message && (
+                <FormErrorMessage message={errors.nickname.message} />
               )}
 
-              <label htmlFor="password"></label>
+              <label htmlFor="password" />
               <input
                 name="password"
                 type="password"
                 className="w-3/4 px-4 py-3 mt-3"
                 placeholder="비밀번호(8자 이상)"
-                {...register("password", { required: true, minLength: 8 })}
+                {...register("password", {
+                  required: USER_FORM_CONSTANTS.REQUIRED.password,
+                  pattern: {
+                    value: /(?=.*\d)(?=.*[a-z]).{8,}/,
+                    message: USER_FORM_CONSTANTS.PATTERN.password,
+                  },
+                })}
               />
-              {errors.password && errors.password.type === "required" && (
-                <FormErrorMessage message={"비밀번호를 입력해주세요"} />
-              )}
-              {errors.password && errors.password.type === "minLength" && (
-                <FormErrorMessage message={"비밀번호는 최소 8자리 입니다"} />
+              {errors.password && errors.password.message && (
+                <FormErrorMessage message={errors.password.message} />
               )}
 
-              <label htmlFor="password_confirm"></label>
+              <label htmlFor="password_confirm" />
               <input
                 name="password_confirm"
                 type="password"
                 className="w-3/4 px-4 py-3 mt-3 mb-3"
                 placeholder="비밀번호 확인"
                 {...register("password_confirm", {
-                  required: true,
-                  validate: (value) => value === password.current,
+                  required: USER_FORM_CONSTANTS.REQUIRED.password,
+                  validate: (value) =>
+                    value === watch("password") ||
+                    USER_FORM_CONSTANTS.MATCH.confirmPassword,
                 })}
               />
-
-              {errors.password_confirm &&
-                errors.password_confirm.type === "required" && (
-                  <FormErrorMessage
-                    message={"비밀번호를 한번 더 입력해주세요"}
-                  />
-                )}
-
-              {errors.password_confirm &&
-                errors.password_confirm.type === "validate" && (
-                  <FormErrorMessage message={"비밀번호가 일치하지 않습니다"} />
-                )}
+              {errors.password_confirm && errors.password_confirm.message && (
+                <FormErrorMessage message={errors.password_confirm.message} />
+              )}
 
               <FormButton desc="회원가입" />
             </form>
