@@ -70,7 +70,7 @@ function Register() {
               <label htmlFor="email" />
               <input
                 name="email"
-                className="w-3/4 px-4 py-3"
+                className="input-email w-3/4 px-4 py-3"
                 placeholder="이메일주소"
                 {...register("email", {
                   required: USER_FORM_CONSTANTS.REQUIRED.email,
@@ -89,7 +89,7 @@ function Register() {
               <input
                 name="nickname"
                 type="name"
-                className="w-3/4 px-4 py-3 mt-3"
+                className="input-nickname w-3/4 px-4 py-3 mt-3"
                 placeholder="닉네임"
                 {...register("nickname", {
                   required: USER_FORM_CONSTANTS.REQUIRED.nickname,
@@ -107,7 +107,7 @@ function Register() {
               <input
                 name="password"
                 type="password"
-                className="w-3/4 px-4 py-3 mt-3"
+                className="input-password w-3/4 px-4 py-3 mt-3"
                 placeholder="비밀번호(8자 이상)"
                 {...register("password", {
                   required: USER_FORM_CONSTANTS.REQUIRED.password,
@@ -125,7 +125,7 @@ function Register() {
               <input
                 name="password_confirm"
                 type="password"
-                className="w-3/4 px-4 py-3 mt-3 mb-3"
+                className="input-confirmPassword w-3/4 px-4 py-3 mt-3 mb-3"
                 placeholder="비밀번호 확인"
                 {...register("password_confirm", {
                   required: USER_FORM_CONSTANTS.REQUIRED.password,
