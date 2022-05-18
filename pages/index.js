@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import Head from "next/head";
 import Layout from "../components/Layout";
 import Slick from "../components/Slick";
@@ -8,13 +8,16 @@ import { GiCookingGlove } from "react-icons/gi";
 import { IoRestaurantOutline } from "react-icons/io5";
 import router from "next/router";
 import { GET_AUTH } from "../_axios/user";
-
-const chefOfDay = Array(9).fill("0");
+import { GET_ALL_RECIPE } from "../_axios/recipe";
+import Image from "next/image";
 
 function Home() {
   const [isLogin, setIsLogin] = useState(false);
+  const [recentRecipes, setRecentRecipes] = useState([]);
+  const [recipesCount, setRecipesCount] = useState(0);
+  const [bestChefs, setBestChefs] = useState([]);
 
-  const getAuth = async () => {
+  const getAuth = useCallback(async () => {
     const res = await GET_AUTH();
 
     if (!res) {
@@ -22,11 +25,54 @@ function Home() {
     } else {
       setIsLogin(true);
     }
-  };
+  }, []);
+
+  const getRecentRecipes = useCallback(async () => {
+    const {
+      data: { access, recipes, recipesCount },
+    } = await GET_ALL_RECIPE(1, 4);
+    if (access) {
+      setRecentRecipes(recipes);
+      setRecipesCount(recipesCount);
+    }
+  }, []);
+
+  const getBestChefs = useCallback(async () => {
+    const {
+      data: { access, recipes }
+    } = await GET_ALL_RECIPE(1, recipesCount);
+    if (access) {
+      // 정렬
+      recipes.sort((a,b) => {
+        if (a.likesCount === b.likesCount) {
+          return b.createAt - a.createAt;
+        }
+        return b.likesCount - a.likesCount;
+      })
+
+      let sortedChefs = [];
+      for (let i=0; i<recipes.length; i++) {
+        sortedChefs.push(JSON.stringify(recipes[i].owner));
+      }
+
+      // 중복 제거
+      let filteredChefs = [...new Set(sortedChefs)];
+
+      // TOP 10 외 제거
+      let finalChefs = filteredChefs.slice(0, 10);
+
+      for (let i=0; i<finalChefs.length; i++) {
+        finalChefs[i] = JSON.parse(finalChefs[i]);
+      }
+      setBestChefs(finalChefs);      
+    }
+  }, [recipesCount]);
 
   useEffect(() => {
     getAuth();
-  }, []);
+    getRecentRecipes();
+    getBestChefs();
+  }, [getAuth, getRecentRecipes, getBestChefs]);
 
   return (
     <>
@@ -84,11 +130,10 @@ function Home() {
               <p className="text-3xl font-bold text-cyan-600">
                 최근 업로드된 따끈따끈한 레시피들 🍽
               </p>
-              <RecipePreview />
+              <RecipePreview recipes={recentRecipes}/>
             </article>
           </section>
-          {/*<RecommendForm />*/}
-          {/* <section className="w-full py-16 bg-neutral-600 flex flex-col items-center space-y-16">
+          <section className="w-full py-16 bg-neutral-600 flex flex-col items-center space-y-16">
             <article className="flex flex-col items-center space-y-4">
               <span className="text-white text-xl">
                 요리 좀 할 줄 아는 당신! 해먹남녀들의 풍요로운 식탁을 위해
@@ -105,31 +150,27 @@ function Home() {
             </article>
             <article className="flex flex-col items-center space-y-8">
               <span className="text-4xl text-white font-bold">
-                오늘의 해머거
+                베스트 해먹 셰프
               </span>
               <section className="flex space-x-4">
-                {chefOfDay.map((v, i) => (
-                  <div
-                    key={i}
-                    className="w-[100px] h-[100px] rounded-full bg-neutral-200"
-                  ></div>
+                {bestChefs.map((chef, index) => (
+                  <article
+                    key={index}
+                    className="flex flex-col items-center space-y-2"
+                  > 
+                    <Image
+                      className="rounded-full object-cover"
+                      src={chef.avatarImage || "/defaultAvatarImage.png"}
+                      alt="avatar image preview"
+                      width={100}
+                      height={100}
+                    />
+                    <span className="text-white">{chef.nickname}</span>
+                  </article>
                 ))}
               </section>
             </article>
-            <article className="flex flex-col items-center space-y-8">
-              <span className="text-4xl text-white font-bold">
-                오늘의 베스트해먹셰프
-              </span>
-              <section className="flex space-x-4">
-                {chefOfDay.map((v, i) => (
-                  <div
-                    key={i}
-                    className="w-[100px] h-[100px] rounded-full bg-neutral-200"
-                  ></div>
-                ))}
-              </section>
-            </article>
-          </section> */}
+          </section>
         </div>
       </Layout>
     </>
