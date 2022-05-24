@@ -80,7 +80,10 @@ const OneComment = ({
     <div className="space-y-1">
       <section className="flex items-center justify-between">
         <article className="flex items-center space-x-2">
-          <img className="w-6 h-6 rounded-full" src={avatarImage} />
+          <img
+            className="w-6 h-6 rounded-full"
+            src={avatarImage ? avatarImage : "/defaultAvatarImage.png"}
+          />
           <section className="flex flex-col ">
             <span className="font-bold text-cyan-600 text-xs">{nickname}</span>
             <span className="font-bold text-neutral-400 text-xs">
@@ -96,7 +99,8 @@ const OneComment = ({
             >
               ✏
             </span>
-            <span className="hover:cursor-pointer" 
+            <span
+              className="hover:cursor-pointer"
               onClick={() => {
                 const action = (key) => (
                   <Fragment>
