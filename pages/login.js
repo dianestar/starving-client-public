@@ -8,6 +8,7 @@ import Layout from "../components/Layout";
 import FormBg from "../components/form/FormBg";
 import FormWrapper from "../components/form/FormWrapper";
 import FormButton from "../components/form/FormButton";
+import Loading from "../components/Loading";
 import { useSnackbar } from "notistack";
 
 function Login() {
@@ -19,6 +20,8 @@ function Login() {
   const [passwordInput, setPasswordInput] = useState("");
   const [emailWarning, setEmailWarning] = useState(false);
   const [passwordWarning, setPasswordWarning] = useState(false);
+
+  const [isLoading, setIsLoading] = useState(false);
 
   const onChangeEmail = (e) => {
     if (emailInput !== "") {
@@ -65,6 +68,7 @@ function Login() {
       password: passwordInput,
     };
 
+    setIsLoading(true);
     try {
       const {
         data: { access, error, token },
@@ -134,6 +138,9 @@ function Login() {
         <title>STARVING | LOGIN</title>
       </Head>
       <Layout>
+        {isLoading ? 
+        <Loading/>
+        :
         <FormBg>
           <FormWrapper
             title="로그인"
@@ -183,6 +190,7 @@ function Login() {
             />
           </div>
         </FormBg>
+        }
       </Layout>
     </>
   );

@@ -1,27 +1,11 @@
 import React, { useCallback, useEffect, useState } from "react";
 import RecipeCard from "./RecipeCard";
-import { GET_ALL_RECIPE } from "../_axios/recipe";
 
-const RecipePreview = () => {
-  const [recipes, setRecipes] = useState([]);
-
-  const getRecipeAll = async () => {
-    const {
-      data: { access, recipes },
-    } = await GET_ALL_RECIPE(1, 4);
-    if (access) {
-      setRecipes(recipes);
-    }
-  };
-
-  useEffect(() => {
-    getRecipeAll();
-  }, []);
-
+const RecipePreview = ({ recipes }) => {
   return (
     <>
       <div className="w-[1060px] grid grid-rows-1 grid-cols-4">
-        {recipes.map((recipe, index) => (
+        {recipes.map((recipe) => (
           <RecipeCard
             key={recipe.pk}
             pk={recipe.pk}

@@ -8,7 +8,7 @@ import React, {
 import Head from "next/head";
 import { GET_AUTH } from "../_axios/user";
 import { GET_ONE_RECIPE, DELETE_RECIPE } from "../_axios/recipe";
-import { POST_LIKE, DELETE_LIKE, GET_MY_LIKE } from "../_axios/like";
+import { POST_LIKE, DELETE_LIKE, GET_LIKE } from "../_axios/like";
 import { useRouter } from "next/router";
 import { useSnackbar } from "notistack";
 import Button from "@mui/material/Button";
@@ -17,7 +17,6 @@ import CommentArea from "../components/comment/CommentArea";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
-import { getContainerUtilityClass } from "@mui/material";
 
 const Detail = () => {
   const router = useRouter();
@@ -113,25 +112,28 @@ const Detail = () => {
     await router.push("/login");
   };
 
-  const getMyLike = useCallback(async () => {
+  const getLike = useCallback(async () => {
     try {
       const {
-        data: { likes, totalCount },
-      } = await GET_MY_LIKE(1, myLikeCount);
+        data: { access },
+      } = await GET_LIKE(recipePk);
       
-      setMyLikeCount(totalCount);
-
-      for (let i = 0; i < likes.length; i++) {
-        if (likes[i].recipe.pk === Number(recipePk)) {
-          setLiked(true);
-        }
+      if (access) {
+        setLiked(true);
+      }
+      else {
+        setLiked(false);
       }
     } catch (e) {
       console.log(e);
     }
-  }, [myLikeCount, recipePk]);
+  }, [recipePk]);
 
   const onClickLike = async () => {
+    if (localStorage.getItem("access_token") === null) {
+      needLogin();
+    }
+
     const form = { recipePk: recipePk };
 
     if (liked) {
@@ -145,7 +147,7 @@ const Detail = () => {
           getRecipeOne();
         }
       } catch (error) {
-        needLogin();
+        console.log(error);
       }
     } else {
       try {
@@ -158,17 +160,17 @@ const Detail = () => {
           getRecipeOne();
         }
       } catch (error) {
-        needLogin();
+        console.log(error);
       }
     }
   };
 
   useEffect(() => {
     getRecipeOne();
-    getMyLike();
+    getLike();
     setNavA(slickA.current);
     setNavB(slickB.current);
-  }, [getRecipeOne, getMyLike]);
+  }, [getRecipeOne, getLike]);
 
   return (
     <>
