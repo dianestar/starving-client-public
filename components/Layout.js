@@ -1,9 +1,12 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import { GET_AUTH } from "../_axios/user";
 import { useRouter } from "next/router";
 import SearchRecipeInput from "./SearchRecipeInput";
-import Image from "next/image";
+import { useForm, FormProvider } from "react-hook-form";
+import { useSnackbar } from "notistack";
+import { GET_SEARCH_RECIPE } from "../_axios/recipe";
+import useDebounce from "../hook/useDebounce";
 
 const category = ["ALL", "RICE", "SOUP", "BREAD", "NOODLE", "FRIED"];
 const NO_USER_IMAGE_URL = "/defaultAvatarImage.png";
@@ -12,6 +15,18 @@ const Layout = ({ children }) => {
   const router = useRouter();
   const [isLogin, setIsLogin] = useState(false);
   const [imageUrl, setImageUrl] = useState(NO_USER_IMAGE_URL);
+
+  const { enqueueSnackbar } = useSnackbar();
+
+  const methods = useForm();
+
+  const [keyword, setKeyword] = useState([]);
+  const [count, setCount] = useState(0);
+
+  const debouncedSearch = useDebounce(methods.watch("search"), 2000);
+
+  const searchListRef = useRef(null);
+  const [searchList, setSearchList] = useState(false);
 
   const getAuth = async () => {
     const res = await GET_AUTH();
@@ -26,7 +41,37 @@ const Layout = ({ children }) => {
 
   useEffect(() => {
     getAuth();
+
+    const getSearchRecipe = async () => {
+      const {
+        data: { totalCount, recipes },
+      } = await GET_SEARCH_RECIPE(1, count, debouncedSearch);
+      setCount(totalCount);
+      setKeyword(recipes);
+    };
+
+    if (debouncedSearch) getSearchRecipe();
+  }, [debouncedSearch]);
+
+  useEffect(() => {
+    document.addEventListener("click", handleClickOutside);
+    return () => document.removeEventListener("click", handleClickOutside);
   }, []);
+
+  const handleClickOutside = (e) => {
+    if (searchListRef.current && !searchListRef.current.contains(e.target))
+      setSearchList(false);
+  };
+
+  const onSubmit = async () => {
+    if (methods.watch("search") === "") {
+      enqueueSnackbar("검색어를 입력해주세요", {
+        variant: "error",
+      });
+    } else if (methods.watch("search")) {
+      await router.push(`/search/${methods.watch("search")}`);
+    }
+  };
 
   return (
     <div>
@@ -34,7 +79,15 @@ const Layout = ({ children }) => {
         <section className="w-full h-[45px] bg-cyan-400">
           <article className="w-2/3 h-full mx-auto py-auto flex justify-between">
             <section>
-              <SearchRecipeInput />
+              <FormProvider {...methods}>
+                <SearchRecipeInput
+                  onSubmit={methods.handleSubmit(onSubmit)}
+                  keyword={keyword}
+                  searchList={searchList}
+                  setSearchList={setSearchList}
+                  searchListRef={searchListRef}
+                />
+              </FormProvider>
             </section>
             <section className="flex items-center space-x-4">
               <svg
