@@ -122,8 +122,8 @@ const Layout = ({ children }) => {
                 {isLogin ? (
                   <img
                     className="w-8 h-8 rounded-full object-cover hover:cursor-pointer"
-                    src={imageUrl ? imageUrl : "/defaultAvatarImage.png"}
-                    alt="avatar image"
+                    src={imageUrl ?? "/defaultAvatarImage.png"}
+                    alt="avatar-image"
                   />
                 ) : (
                   <svg

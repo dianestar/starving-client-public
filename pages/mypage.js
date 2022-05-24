@@ -54,6 +54,7 @@ const Mypage = () => {
       } = await GET_MY_RECIPE(page, SIZE);
 
       if (access) {
+        console.log(recipes);
         setRecipes(recipes);
         setPageCount(totalPages);
       }

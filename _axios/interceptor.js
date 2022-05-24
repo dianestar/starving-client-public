@@ -1,7 +1,8 @@
 import axios from "axios";
 
 const instance = axios.create({
-  baseURL: "http://3.38.33.154:9999/api/",
+  baseURL: "https://starving-server.herokuapp.com/api/",
+  withCredentials: true,
 });
 
 instance.interceptors.request.use(
@@ -27,9 +28,7 @@ instance.interceptors.response.use(
       const token = localStorage.getItem("access_token");
       if (token) {
         localStorage.removeItem("access_token");
-        return;
       }
-      return;
     }
   }
 );
