@@ -1,7 +1,11 @@
 import Head from "next/head";
 import Layout from "../../components/Layout";
 import React, { useState, useEffect, useCallback, useRef } from "react";
-import { GET_ONE_RECIPE, PATCH_RECIPE } from "../../_axios/recipe";
+import {
+  GET_ONE_RECIPE,
+  PATCH_RECIPE,
+  DELETE_RECIPE_IMAGE,
+} from "../../_axios/recipe";
 import { useSnackbar } from "notistack";
 import { useForm } from "react-hook-form";
 import FormErrorMessage from "../../components/error/FormErrorMessage";
@@ -66,17 +70,12 @@ const editRecipe = ({ editId }) => {
     }
   }, [editId]);
 
-  useEffect(() => {
-    getRecipeOne();
-  }, []);
-
   const onSubmit = async () => {
     const form = new FormData();
     form.append("pk", editId);
     form.append("description", watch("description"));
     form.append("mainText", watch("mainText"));
     cookImages.forEach((image) => {
-      console.log(image);
       if (image.file !== undefined) {
         form.append("cookImages", image.file);
       }
@@ -131,15 +130,25 @@ const editRecipe = ({ editId }) => {
     setCookImages(tempList);
   };
 
-  const handleChage = (e) => {
-    setCategory(e.target.value);
+  // const handleChage = (e) => {
+  //   setCategory(e.target.value);
+  // };
+
+  const handleDeleteImage = async (url) => {
+    for (let i = 0; i < cookImages.length; i++) {
+      if (cookImages[i].url === url) {
+        await DELETE_RECIPE_IMAGE(editId, url);
+      } else {
+        setCookImages(cookImages.filter((image) => image.url !== url));
+        URL.revokeObjectURL(url);
+        imageInputRef.current.value = "";
+      }
+    }
   };
 
-  const handleDeleteImage = (url) => {
-    setCookImages(cookImages.filter((image) => image.url !== url));
-    URL.revokeObjectURL(url);
-    imageInputRef.current.value = "";
-  };
+  useEffect(() => {
+    getRecipeOne();
+  }, []);
 
   return (
     <>

@@ -1,10 +1,4 @@
-import { useRecoilState } from "recoil";
-import { showImagesState } from "../_recoil/state";
-import DeleteBtn from "../components/DeleteBtn";
-
-const ImageUpload = ({ onLoadFile, handleDeleteImage, imageInputRef }) => {
-  const [showImages, setShowImages] = useRecoilState(showImagesState);
-
+const ImageUpload = ({ onLoadFile, imageInputRef }) => {
   return (
     <section className="mt-3">
       <article>

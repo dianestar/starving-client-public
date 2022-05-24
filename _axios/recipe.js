@@ -59,3 +59,10 @@ export const GET_SEARCH_RECIPE = (page, size, keyword) => {
     url: `recipe/search?page=${page}&size=${size}&keyword=${keyword}`,
   });
 };
+
+export const DELETE_RECIPE_IMAGE = (pk, image) => {
+  return Api({
+    method: METHOD.DELETE,
+    url: `upload/recipe-image?pk=${pk}&image=${image}`,
+  });
+};
