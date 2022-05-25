@@ -2,6 +2,7 @@ import React from "react";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css"; 
 import "slick-carousel/slick/slick-theme.css";
+import Image from "next/image";
 
 const Slick = () => {
     return (
@@ -30,7 +31,13 @@ const Slick = () => {
               </article>
               <article className="flex space-x-4 ">
                 <div className="flex items-center space-x-2">
-                  <img className="w-8 h-8 rounded-full" src="https://avatars.githubusercontent.com/u/64053930?v=4" alt="Shin Hyeri profile"/>
+                  <Image
+                    width={32}
+                    height={32}
+                    className="rounded-full"
+                    src="https://avatars.githubusercontent.com/u/64053930?v=4"
+                    alt="Shin Hyeri profile"
+                  />
                   <p className="font-bold">Shin Hyeri</p>
                   <a className="flex items-center space-x-2 hover:text-cyan-600 hover:cursor-pointer" href="https://github.com/Jetom88" target="_blank" rel="noreferrer">
                     <p className="underline">@jetom88</p>
@@ -40,7 +47,13 @@ const Slick = () => {
                   </a>
                 </div>
                 <div className="flex items-center space-x-2">
-                  <img className="w-8 h-8 rounded-full" src="https://avatars.githubusercontent.com/u/59408502?v=4" alt="정다은 profile"/>
+                  <Image
+                    width={32}
+                    height={32}
+                    className="rounded-full"
+                    src="https://avatars.githubusercontent.com/u/59408502?v=4"
+                    alt="정다은 profile"
+                  />
                   <p className="font-bold">정다은</p>
                   <a className="flex items-center space-x-2 hover:text-cyan-600 hover:cursor-pointer" href="https://github.com/dianestar" target="_blank" rel="noreferrer">
                     <p className="underline">@dianestar</p>
@@ -63,7 +76,13 @@ const Slick = () => {
               </article>
               <article className="flex items-center space-x-2">
                 <div className="w-8 h-8 rounded-full bg-white">
-                  <img className="w-8 h-8 rounded-full" src="https://avatars.githubusercontent.com/u/74044653?v=4" alt="MAD profile"/>
+                  <Image
+                    width={32}
+                    height={32}
+                    className="rounded-full"
+                    src="https://avatars.githubusercontent.com/u/74044653?v=4"
+                    alt="MAD profile"
+                  />
                 </div>
                 <p className="font-bold">MAD</p>
                 <a className="flex items-center space-x-2 hover:text-cyan-600 hover:cursor-pointer" href="https://github.com/maaaaaaaaad" target="_blank" rel="noreferrer">

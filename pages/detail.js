@@ -17,6 +17,9 @@ import CommentArea from "../components/comment/CommentArea";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
+import Image from "next/image";
+
+const NO_USER_IMAGE_URL = "/defaultAvatarImage.png";
 
 const Detail = () => {
   const router = useRouter();
@@ -24,7 +27,7 @@ const Detail = () => {
 
   const [userPk, setUserPk] = useState(0);
   const [recipe, setRecipe] = useState({});
-  const [owner, setOwner] = useState({});
+  const [owner, setOwner] = useState({nickname: "", avatarImage: NO_USER_IMAGE_URL});
   const [cookImages, setCookImages] = useState([]);
   const [category, setCategory] = useState("");
 
@@ -79,7 +82,7 @@ const Detail = () => {
         if (avatarImage) {
           setOwner({ nickname, avatarImage });
         } else {
-          setOwner({ nickname, avatarImage: "/defaultAvatarImage.png" });
+          setOwner({ nickname, avatarImage: NO_USER_IMAGE_URL });
         }
         setCategory(values);
 
@@ -285,8 +288,13 @@ const Detail = () => {
                 slidesToScroll={1}
               >
                 {cookImages.map((v, i) => (
-                  <div key={i}>
-                    <img src={v} className="h-[500px] mx-auto" />
+                  <div key={i} className="relative w-auto h-[500px]">
+                    <Image
+                      layout="fill"
+                      objectFit="contain"
+                      src={v}
+                      alt="main image"
+                    />
                   </div>
                 ))}
               </Slider>
@@ -300,10 +308,13 @@ const Detail = () => {
                   focusOnSelect={true}
                 >
                   {cookImages.map((v, i) => (
-                    <div key={i}>
-                      <img
+                    <div key={i} className="relative w-full h-[200px]">
+                      <Image
+                        layout="fill"
+                        objectFit="cover"
+                        className="brightness-75"
                         src={v}
-                        className="brightness-75 w-full h-[200px] object-cover"
+                        alt="prev image"
                       />
                     </div>
                   ))}
@@ -313,9 +324,13 @@ const Detail = () => {
             </article>
             <article className="w-1/4 min-h-screen bg-sky-50 mx-2 my-4 p-4 shadow-sm space-y-4">
               <section className="flex flex-col items-center space-y-4">
-                <img
-                  className="w-[100px] h-[100px] rounded-full object-cover"
+                <Image
+                  width={100}
+                  height={100}
+                  objectFit="cover"
+                  className="rounded-full"
                   src={owner.avatarImage}
+                  alt="avatar image"
                 />
                 <p className="text-2xl font-bold text-cyan-600">
                   {owner.nickname}

@@ -6,6 +6,7 @@ import { PATCH_COMMENT, DELETE_COMMENT } from "../../_axios/comment";
 import { useSnackbar } from "notistack";
 import Button from "@mui/material/Button";
 import router from "next/router";
+import Image from "next/image";
 
 const OneComment = ({
   commentPk,
@@ -80,9 +81,12 @@ const OneComment = ({
     <div className="space-y-1">
       <section className="flex items-center justify-between">
         <article className="flex items-center space-x-2">
-          <img
-            className="w-6 h-6 rounded-full"
+          <Image
+            width={24}
+            height={24}
+            className="rounded-full"
             src={avatarImage ? avatarImage : "/defaultAvatarImage.png"}
+            alt="avatar image"
           />
           <section className="flex flex-col ">
             <span className="font-bold text-cyan-600 text-xs">{nickname}</span>

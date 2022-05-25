@@ -7,6 +7,7 @@ import { useForm, FormProvider } from "react-hook-form";
 import { useSnackbar } from "notistack";
 import { GET_SEARCH_RECIPE } from "../_axios/recipe";
 import useDebounce from "../hook/useDebounce";
+import Image from "next/image";
 
 const category = ["ALL", "RICE", "SOUP", "BREAD", "NOODLE", "FRIED"];
 const NO_USER_IMAGE_URL = "/defaultAvatarImage.png";
@@ -89,7 +90,7 @@ const Layout = ({ children }) => {
                 />
               </FormProvider>
             </section>
-            <section className="flex items-center space-x-4">
+            <section className="flex items-center">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 className="h-8 w-8 hover:fill-slate-400 hover:cursor-pointer"
@@ -105,7 +106,7 @@ const Layout = ({ children }) => {
               <Link href={isLogin ? "/reciperegister" : "/login"} passHref>
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
-                  className="h-8 w-8 hover:stroke-slate-400 hover:cursor-pointer"
+                  className="h-8 w-8 hover:stroke-slate-400 hover:cursor-pointer mx-4"
                   fill="none"
                   viewBox="0 0 24 24"
                   stroke="white"
@@ -120,10 +121,12 @@ const Layout = ({ children }) => {
               </Link>
               <Link href={isLogin ? "/mypage" : "/login"} passHref>
                 {isLogin ? (
-                  <img
-                    className="w-8 h-8 rounded-full object-cover hover:cursor-pointer"
+                  <Image
+                    className="rounded-full object-cover hover:cursor-pointer"
                     src={imageUrl ? imageUrl : "/defaultAvatarImage.png"}
                     alt="avatar image"
+                    width={32}
+                    height={32}
                   />
                 ) : (
                   <svg

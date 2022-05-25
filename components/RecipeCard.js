@@ -2,6 +2,7 @@ import React, { useState, useEffect, useCallback } from "react";
 import { useRouter } from "next/router";
 import { GET_COMMENT } from "../_axios/comment";
 import { POST_LIKE, DELETE_LIKE, GET_LIKE } from "../_axios/like";
+import Image from "next/image";
 
 const RecipeCard = ({
   pk,
@@ -107,12 +108,24 @@ const RecipeCard = ({
         className="w-[95%] h-[60%] bg-black mt-1 relative cursor-pointer"
         onClick={pushToDetail}
       >
-        <img className="w-full h-full object-cover" src={cookImages[0]} />
+        <Image
+          layout="fill"
+          objectFit="cover"
+          src={cookImages[0]}
+          alt="cook image"/>
       </section>
       <section
         className="cursor-pointer flex flex-col items-center"
-      >
-        <img className="absolute top-[50%] w-[60px] h-[60px] rounded-full object-cover" src={avatarImage || "/defaultAvatarImage.png"} />
+      > 
+        <div className="w-[60px] h-[60px] absolute top-[50%]">
+          <Image
+            layout="fill"
+            objectFit="cover"
+            className="rounded-full"
+            src={avatarImage || "/defaultAvatarImage.png"}
+            alt="avatar image"
+          />
+        </div>
         <span className="absolute top-[67%] text-neutral-400">{nickname}</span>
       </section>
       <section
