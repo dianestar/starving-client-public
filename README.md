@@ -41,4 +41,5 @@
 <br/>
 
 ## 프로젝트 동영상
-<img src="https://user-images.githubusercontent.com/64053930/170474805-ca8a65e9-19af-48f9-ae6e-0b76ee917dfe.gif" />
+
+https://user-images.githubusercontent.com/64053930/170476874-39ec7d8d-d5cf-4a78-a35b-83e61178ed14.mov
