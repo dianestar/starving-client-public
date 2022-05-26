@@ -181,6 +181,7 @@ const editRecipe = ({ editId }) => {
                     className="description basis-8/12 w-3/4 h-12 px-4 border-2 rounded"
                     defaultValue={recipe.description}
                     {...register("description", { minLength: 5 })}
+                    autoComplete="off"
                   />
                   {errors.description &&
                     errors.description.type === "minLength" && (

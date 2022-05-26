@@ -116,6 +116,7 @@ const recipeRegister = () => {
                     className="title basis-8/12 h-12 px-4 border-2 rounded"
                     placeholder="레시피의 제목을 입력해주세요"
                     {...register("title", { required: true })}
+                    autoComplete="off"
                   />
                   <div className="ml-3">
                     {errors.title && errors.title.type === "required" && (
@@ -135,6 +136,7 @@ const recipeRegister = () => {
                     className="description basis-8/12 h-12 px-4 border-2 rounded"
                     placeholder="레시피를 소개할 수 있는 한줄설명을 입력해주세요"
                     {...register("description", { required: true })}
+                    autoComplete="off"
                   />
 
                   <div className="ml-3">
@@ -161,6 +163,7 @@ const recipeRegister = () => {
                           value={v}
                           checked={v === watch("category")}
                           {...register("category", { required: true })}
+                          autoComplete="off"
                         />
                         <label htmlFor={v}>{v}</label>
                       </article>
