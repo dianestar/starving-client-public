@@ -40,12 +40,5 @@
 - 레시피 이미지 추가
 <br/>
 
-## 기능별 gif
-<details>
-<summary>프로젝트 동영상</summary>
-<div markdown="1">       
-<br/>
-<img src="https://user-images.githubusercontent.com/64053930/170474805-ca8a65e9-19af-48f9-ae6e-0b76ee917dfe.gif" alt="video"/>
-</div>
-</details>
-
+## 프로젝트 동영상
+https://user-images.githubusercontent.com/64053930/170474805-ca8a65e9-19af-48f9-ae6e-0b76ee917dfe.gif
