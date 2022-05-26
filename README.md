@@ -40,6 +40,6 @@
 - 레시피 이미지 추가
 <br/>
 
-## 프로젝트 동영상
+## 🍿 영상
 
 https://user-images.githubusercontent.com/64053930/170476874-39ec7d8d-d5cf-4a78-a35b-83e61178ed14.mov
