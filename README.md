@@ -42,17 +42,10 @@
 
 ## 기능별 gif
 <details>
-<summary>메인화면</summary>
+<summary>프로젝트 동영상</summary>
 <div markdown="1">       
 <br/>
-<img src="https://user-images.githubusercontent.com/64053930/167384409-31bdc293-7723-4681-a0c7-3e18b1aa705d.gif" alt="main_page"/>
+<img src="https://user-images.githubusercontent.com/64053930/170474805-ca8a65e9-19af-48f9-ae6e-0b76ee917dfe.gif" alt="video"/>
 </div>
 </details>
 
-<details>
-<summary>회원가입 & 로그인</summary>
-<div markdown="2">       
-<br/>
- <img src="https://user-images.githubusercontent.com/64053930/167383792-3e93d3b0-cf4d-4463-8296-7f7e69770038.gif" alt="register&login"/>
-</div>
-</details>
