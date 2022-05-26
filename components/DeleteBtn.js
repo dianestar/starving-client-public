@@ -1,6 +1,6 @@
 const DeleteBtn = ({ onClick }) => {
   return (
-    <button onClick={onClick}>
+    <button onClick={onClick} className="absolute z-10">
       <svg
         xmlns="http://www.w3.org/2000/svg"
         className="h-5 w-5 text-rose-500"

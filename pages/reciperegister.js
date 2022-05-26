@@ -10,6 +10,7 @@ import router from "next/router";
 import { useRecoilState } from "recoil";
 import { showImagesState } from "../_recoil/state";
 import DeleteBtn from "../components/DeleteBtn";
+import Image from "next/image";
 
 const recipeRegister = () => {
   const imageInputRef = useRef();
@@ -196,16 +197,20 @@ const recipeRegister = () => {
 
               <article className="grid gap-2 grid-cols-5 grid-rows-2 mt-3">
                 {showImages.map((image, i) => (
-                  <div key={image.url} className="mr-4">
+                  <div
+                    key={image.url}
+                    className="mr-4 relative w-auto h-[200px]"
+                  >
                     <DeleteBtn
                       onClick={() => {
                         handleDeleteImage(image.url);
                       }}
                     />
-                    <img
+                    <Image
                       src={image.url}
                       alt={`${image.url}-${i}`}
-                      className="w-[200px] h-auto"
+                      layout="fill"
+                      objectFit="contain"
                     />
                   </div>
                 ))}

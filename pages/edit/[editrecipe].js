@@ -12,6 +12,7 @@ import FormErrorMessage from "../../components/error/FormErrorMessage";
 import ImageUpload from "../../components/ImageUpload";
 import DeleteBtn from "../../components/DeleteBtn";
 import router from "next/router";
+import Image from "next/image";
 
 export async function getServerSideProps(context) {
   const editId = context.query.editrecipe;
@@ -225,16 +226,21 @@ const editRecipe = ({ editId }) => {
               />
               <article className="grid gap-2 grid-cols-5 grid-rows-2 mt-3">
                 {cookImages.map((image, i) => (
-                  <div key={image.url} className="mr-4">
+                  <div
+                    key={image.url}
+                    className="mr-4 relative w-auto h-[200px]"
+                  >
                     <DeleteBtn
                       onClick={() => {
                         handleDeleteImage(image.url);
                       }}
                     />
-                    <img
+                    <Image
+                      className="mt-2"
                       src={image.url}
                       alt={`${image.url}-${i}`}
-                      className="w-[200px] h-auto"
+                      layout="fill"
+                      objectFit="contain"
                     />
                   </div>
                 ))}
