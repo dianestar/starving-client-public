@@ -1,5 +1,7 @@
+import { useState } from "react";
 import Head from "next/head";
 import Layout from "../components/Layout";
+import Loading from "../components/Loading";
 import FormWrapper from "../components/form/FormWrapper";
 import FormButton from "../components/form/FormButton";
 import { useForm } from "react-hook-form";
@@ -13,6 +15,7 @@ import { SERVER_ERROR_CONSTANTS } from "../constants/error/sever.error.constants
 
 function Register() {
   const { enqueueSnackbar } = useSnackbar();
+  const [isLoading, setIsLoading] = useState(false);
 
   const {
     register,
@@ -23,12 +26,14 @@ function Register() {
   } = useForm({ mode: "onChange" });
 
   const onSubmit = async () => {
+    setIsLoading(true);
     try {
       const {
         data: { access, message },
       } = await REGISTER(getValues());
 
       if (!access) {
+        setIsLoading(false);
         if (message === "This email already to exists") {
           return enqueueSnackbar(USER_FORM_CONSTANTS.ALERT.FAILED.email, {
             variant: "error",
@@ -55,6 +60,9 @@ function Register() {
         <title>STARVING | REGISTER</title>
       </Head>
       <Layout>
+        {isLoading ?
+        <Loading />
+        :
         <FormBg>
           <FormWrapper
             title="회원가입"
@@ -146,6 +154,7 @@ function Register() {
             </form>
           </FormWrapper>
         </FormBg>
+        }
       </Layout>
     </>
   );

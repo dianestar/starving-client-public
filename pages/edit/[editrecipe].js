@@ -1,5 +1,6 @@
 import Head from "next/head";
 import Layout from "../../components/Layout";
+import Loading from "../../components/Loading";
 import React, { useState, useEffect, useCallback, useRef } from "react";
 import {
   GET_ONE_RECIPE,
@@ -28,6 +29,7 @@ const editRecipe = ({ editId }) => {
   const [category, setCategory] = useState("");
   const imageInputRef = useRef();
   const { enqueueSnackbar } = useSnackbar();
+  const [isLoading, setIsLoading] = useState(false);
 
   const {
     register,
@@ -85,6 +87,8 @@ const editRecipe = ({ editId }) => {
     form.append("category", watch("category"));
 
     try {
+      setIsLoading(true);
+
       const {
         data: { access, message },
       } = await PATCH_RECIPE(form);
@@ -96,6 +100,7 @@ const editRecipe = ({ editId }) => {
       }
 
       if (!access) {
+        setIsLoading(false);
         return enqueueSnackbar(message, { variant: "error" });
       } else {
         enqueueSnackbar("레시피 수정이 완료되었습니다.", {
@@ -157,6 +162,10 @@ const editRecipe = ({ editId }) => {
         <title>STARVING | UPDATE RECIPE</title>
       </Head>
       <Layout>
+        {isLoading ?
+        <Loading />
+        :
+        <>
         <section className="w-[1060px] mx-auto">
           <article className="mt-20">
             <div className="flex">
@@ -255,6 +264,8 @@ const editRecipe = ({ editId }) => {
             </form>
           </section>
         </section>
+        </>
+        }
       </Layout>
     </>
   );

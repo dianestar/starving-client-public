@@ -28,43 +28,54 @@ function Home() {
   }, []);
 
   const getRecentRecipes = useCallback(async () => {
-    const {
-      data: { access, recipes, recipesCount },
-    } = await GET_ALL_RECIPE(1, 4);
-    if (access) {
-      setRecentRecipes(recipes);
-      setRecipesCount(recipesCount);
+    try {
+      const {
+        data: { access, recipes, recipesCount },
+      } = await GET_ALL_RECIPE(1, 4);
+
+      if (access) {
+        setRecentRecipes(recipes);
+        setRecipesCount(recipesCount);
+      }
+    } catch (error) {
+      console.log(error);
     }
+    
   }, []);
 
   const getBestChefs = useCallback(async () => {
-    const {
-      data: { access, recipes }
-    } = await GET_ALL_RECIPE(1, recipesCount);
-    if (access) {
-      // 정렬
-      recipes.sort((a,b) => {
-        if (a.likesCount === b.likesCount) {
-          return b.createAt - a.createAt;
+    try {
+      const {
+        data: { access, recipes }
+      } = await GET_ALL_RECIPE(1, recipesCount);
+      
+      if (access) {
+        // 정렬
+        recipes.sort((a,b) => {
+          if (a.likesCount === b.likesCount) {
+            return b.createAt - a.createAt;
+          }
+          return b.likesCount - a.likesCount;
+        })
+  
+        let sortedChefs = [];
+        for (let i=0; i<recipes.length; i++) {
+          sortedChefs.push(JSON.stringify(recipes[i].owner));
         }
-        return b.likesCount - a.likesCount;
-      })
-
-      let sortedChefs = [];
-      for (let i=0; i<recipes.length; i++) {
-        sortedChefs.push(JSON.stringify(recipes[i].owner));
+  
+        // 중복 제거
+        let filteredChefs = [...new Set(sortedChefs)];
+  
+        // TOP 10 외 제거
+        let finalChefs = filteredChefs.slice(0, 10);
+  
+        for (let i=0; i<finalChefs.length; i++) {
+          finalChefs[i] = JSON.parse(finalChefs[i]);
+        }
+        setBestChefs(finalChefs);      
       }
-
-      // 중복 제거
-      let filteredChefs = [...new Set(sortedChefs)];
-
-      // TOP 10 외 제거
-      let finalChefs = filteredChefs.slice(0, 10);
-
-      for (let i=0; i<finalChefs.length; i++) {
-        finalChefs[i] = JSON.parse(finalChefs[i]);
-      }
-      setBestChefs(finalChefs);      
+    } catch (error) {
+      console.log(error);
     }
   }, [recipesCount]);
 

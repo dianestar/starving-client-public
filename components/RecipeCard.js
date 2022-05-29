@@ -40,7 +40,9 @@ const RecipeCard = ({
     enqueueSnackbar("로그인 또는 회원가입이 필요합니다", {
       variant: "warning",
     });
-    await router.push("/login");
+    setTimeout(async () => {
+      await router.push("/login");
+    }, 2000);
   };
 
   const getLike = useCallback(async () => {

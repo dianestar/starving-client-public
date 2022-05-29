@@ -1,5 +1,6 @@
 import Head from "next/head";
 import Layout from "../components/Layout";
+import Loading from "../components/Loading";
 import { useForm } from "react-hook-form";
 import { UPLOAD_RECIPE } from "../_axios/recipe";
 import FormErrorMessage from "../components/error/FormErrorMessage";
@@ -16,6 +17,8 @@ const recipeRegister = () => {
   const imageInputRef = useRef();
   const [showImages, setShowImages] = useRecoilState(showImagesState);
   const { enqueueSnackbar } = useSnackbar();
+
+  const [isLoading, setIsLoading] = useState(false);
 
   const categories = ["RICE", "SOUP", "BREAD", "NOODLE", "FRIED"];
   const {
@@ -42,11 +45,14 @@ const recipeRegister = () => {
       form.append("category", watch("category"));
 
       try {
+        setIsLoading(true);
+
         const {
           data: { access, message },
         } = await UPLOAD_RECIPE(form);
 
         if (!access) {
+          setIsLoading(false);
           return enqueueSnackbar(message, { variant: "error" });
         } else {
           setShowImages([]);
@@ -93,6 +99,9 @@ const recipeRegister = () => {
         <title>STARVING | CREATE RECIPE</title>
       </Head>
       <Layout>
+        {isLoading ?
+        <Loading />
+        :
         <section className="w-[1060px] mx-auto">
           <article className="mt-20">
             <div className="flex">
@@ -227,6 +236,7 @@ const recipeRegister = () => {
             </form>
           </section>
         </section>
+        }
       </Layout>
     </>
   );

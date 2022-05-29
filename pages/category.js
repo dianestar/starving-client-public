@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useCallback } from "react";
 import Head from "next/head";
 import Layout from "../components/Layout";
+import Loading from "../components/Loading";
 import RecipeCard from "../components/RecipeCard";
 import CustomizedPaginate from "../components/CustomizedPaginate";
 import { GET_ALL_RECIPE, GET_CATEGORY_RECIPE } from "../_axios/recipe";
@@ -13,8 +14,10 @@ const Category = () => {
   const [recipesCount, setRecipesCount] = useState(0);
   const [pageCount, setPageCount] = useState(0);
   const [page, setPage] = useState(1);
+  const [isLoading, setIsLoading] = useState(false);
 
   const getCategorizedRecipe = useCallback(async () => {
+    setIsLoading(true);
     try {
       const {
         data: { access, recipesCount, totalPages, recipes },
@@ -28,17 +31,25 @@ const Category = () => {
     } catch (error) {
       console.log(error);
     }
+    setIsLoading(false);
   }, [categoryName, page]);
 
   const getRecipeAll = useCallback(async () => {
-    const {
-      data: { access, recipesCount, totalPages, recipes },
-    } = await GET_ALL_RECIPE(page, 8);
-    if (access) {
-      setRecipes(recipes);
-      setRecipesCount(recipesCount);
-      setPageCount(totalPages);
+    setIsLoading(true);
+    try {
+      const {
+        data: { access, recipesCount, totalPages, recipes },
+      } = await GET_ALL_RECIPE(page, 8);
+
+      if (access) {
+        setRecipes(recipes);
+        setRecipesCount(recipesCount);
+        setPageCount(totalPages);
+      }
+    } catch(error) {
+      console.log(error);
     }
+    setIsLoading(false);
   }, [page]);
 
   useEffect(() => {
@@ -55,6 +66,9 @@ const Category = () => {
         <title>STARVING | {categoryName}</title>
       </Head>
       <Layout>
+        {isLoading ?
+        <Loading />
+        :
         <div className="w-full min-h-screen bg-slate-50">
           <section className="w-[1060px] space-y-8 py-16 mx-auto">
             <p className="text-2xl font-bold text-cyan-600">#{categoryName}</p>
@@ -79,6 +93,7 @@ const Category = () => {
             <CustomizedPaginate setPage={setPage} pageCount={pageCount} pageRangeDisplayed={10}/>
           </section>
         </div>
+        }
       </Layout>
     </>
   );

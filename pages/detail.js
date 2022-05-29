@@ -13,6 +13,7 @@ import { useRouter } from "next/router";
 import { useSnackbar } from "notistack";
 import Button from "@mui/material/Button";
 import Layout from "../components/Layout";
+import Loading from "../components/Loading";
 import CommentArea from "../components/comment/CommentArea";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
@@ -24,7 +25,7 @@ const NO_USER_IMAGE_URL = "/defaultAvatarImage.png";
 const Detail = () => {
   const router = useRouter();
   const recipePk = router.query.recipePk;
-
+  
   const [userPk, setUserPk] = useState(0);
   const [recipe, setRecipe] = useState({});
   const [owner, setOwner] = useState({nickname: "", avatarImage: NO_USER_IMAGE_URL});
@@ -39,7 +40,6 @@ const Detail = () => {
   const slickA = useRef(null);
   const slickB = useRef(null);
 
-  const [myLikeCount, setMyLikeCount] = useState(10);
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
 
   const checkOwner = useCallback(async (ownerPk) => {
@@ -101,7 +101,9 @@ const Detail = () => {
 
       if (access) {
         enqueueSnackbar("삭제되었습니다", { variant: "info" });
-        await router.push("/");
+        setTimeout(async () => {
+          await router.push("/");
+        }, 2000);
       }
     } catch (error) {
       console.log(error);
@@ -112,7 +114,9 @@ const Detail = () => {
     enqueueSnackbar("로그인 또는 회원가입이 필요합니다", {
       variant: "warning",
     });
-    await router.push("/login");
+    setTimeout(async () => {
+      await router.push("/login");
+    }, 2000);
   };
 
   const getLike = useCallback(async () => {

@@ -84,8 +84,10 @@ const Mypage = () => {
 
   const logout = async () => {
     localStorage.removeItem("access_token");
-    await router.push(`/login/?returnUrl=${currentUrl}`);
-    return enqueueSnackbar("로그아웃", { variant: "info" });
+    enqueueSnackbar("로그아웃", { variant: "info" });
+    setTimeout(async () => {
+      await router.push(`/login/?returnUrl=${currentUrl}`);
+    }, 1000);
   };
 
   const handleDeleteUser = async () => {
@@ -97,7 +99,9 @@ const Mypage = () => {
       if (access) {
         localStorage.removeItem("access_token");
         enqueueSnackbar("회원탈퇴가 완료되었습니다", { variant: "info" });
-        await router.push("/");
+        setTimeout(async () => {
+          await router.push("/");
+        }, 1000);  
       }
     } catch (error) {
       console.log(error);

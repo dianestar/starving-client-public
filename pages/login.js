@@ -68,14 +68,16 @@ function Login() {
       password: passwordInput,
     };
 
-    setIsLoading(true);
     try {
+      setIsLoading(true);
+
       const {
         data: { access, error, token },
       } = await LOGIN(form);
 
       // 로그인 실패 시
       if (!access) {
+        setIsLoading(false);
         return enqueueSnackbar(error, { variant: "error" });
       }
 
