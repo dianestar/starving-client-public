@@ -40,19 +40,6 @@
 - 레시피 이미지 추가
 <br/>
 
-## 기능별 gif
-<details>
-<summary>메인화면</summary>
-<div markdown="1">       
-<br/>
-<img src="https://user-images.githubusercontent.com/64053930/167384409-31bdc293-7723-4681-a0c7-3e18b1aa705d.gif" alt="main_page"/>
-</div>
-</details>
+## 🍿 영상
 
-<details>
-<summary>회원가입 & 로그인</summary>
-<div markdown="2">       
-<br/>
- <img src="https://user-images.githubusercontent.com/64053930/167383792-3e93d3b0-cf4d-4463-8296-7f7e69770038.gif" alt="register&login"/>
-</div>
-</details>
+https://user-images.githubusercontent.com/64053930/170476874-39ec7d8d-d5cf-4a78-a35b-83e61178ed14.mov
