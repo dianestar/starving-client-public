@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const instance = axios.create({
-  baseURL: "http://3.38.33.154:9999/api/",
+  baseURL: process.env.NEXT_PUBLIC_API,
 });
 
 instance.interceptors.request.use(
